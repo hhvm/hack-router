@@ -9,98 +9,72 @@
  *
  */
 
+namespace Facebook\HackRouter;
 
-use HHVM\UserDocumentation\ArgAssert;
-use HHVM\UserDocumentation\BuildPaths;
-use HHVM\UserDocumentation\LocalConfig;
+abstract class BaseRouter<
+  TBaseController,
+  TGETController as TBaseController,
+  TPOSTController as TBaseController
+> {
+  abstract protected function getGETRoutes(): ImmMap<string, classname<TGETController>>;
+  abstract protected function getPOSTRoutes(): ImmMap<string, classname<TGETController>>;
 
-class Router {
-  private function getReadOnlyRoutes(
-  ): KeyedIterable<string, classname<WebController>> {
-    return ImmMap {
-      '/' => HomePageController::class,
-      '/search' => SearchController::class,
-      '/{product:(?:hack|hhvm)}/'
-        => GuidesListController::class,
-      '/{product:(?:hack)}/reference/'
-        => APIListController::class,
-      '/{product:(?:hack)}/reference/{type:(?:class|function|interface|trait)}/'
-        => APIListController::class,
-      '/{product:(?:hack)}/reference/{type:(?:class|function|interface|trait)}/{name}/'
-        => APIGenericPageController::class,
-      '/{product:(?:hack)}/reference/{type:(?:class|interface|trait)}/{class}/{method}/'
-        => APIMethodPageController::class,
-      '/{product:(?:hack|hhvm)}/{guide}/'
-        => RedirectToGuideFirstPageController::class,
-      '/{product:(?:hack|hhvm)}/{guide}/{page}'
-        => GuidePageController::class,
-      '/manual/en/{legacy_id}.php'
-        => LegacyRedirectController::class,
-      '/robots.txt'
-        => RobotsTxtController::class,
-      '/__content'
-        => WebPageContentController::class,
-      '/s/{checksum}{file:/.+}'
-        => StaticResourcesController::class,
-      '/j/{keyword}'
-        => JumpController::class,
-    };
-  }
-
-  private function getWriteRoutes(
-  ): KeyedIterable<string, classname<WebController>> {
-    return ImmMap {
-      '/__survey/go'
-        => SurveyRedirectController::class,
-      '/__survey/nothanks'
-        => SurveyNoThanksController::class,
-    };
-  }
-
-  private function getDispatcher(): \FastRoute\Dispatcher {
-    return \FastRoute\cachedDispatcher(
-      function(\FastRoute\RouteCollector $r): void {
-        foreach ($this->getReadOnlyRoutes() as $route => $classname) {
-          $r->addRoute('GET', $route, $classname);
-        }
-
-        foreach ($this->getWriteRoutes() as $route => $classname) {
-          $r->addRoute('POST', $route, $classname);
-        }
-      },
-      /* HH_FIXME[4110] nikic/fastroute#83*/
-      shape(
-        'cacheFile' => BuildPaths::FASTROUTE_CACHE,
-        'cacheDisabled' => !LocalConfig::CACHE_ROUTES,
-      ),
-    );
+  protected function getCacheFilePath(): ?string {
+    return null;
   }
 
   public function routeRequest(
-    \Psr\Http\Message\ServerRequestInterface $request
-  ): (classname<WebController>, ImmMap<string, string>) {
-    $path = $request->getUri()->getPath();
+    string $method,
+    string $path,
+  ): (classname<TBaseController>, ImmMap<string, string>) {
     $route = $this->getDispatcher()->dispatch(
-      $request->getMethod(),
+      $method,
       $path,
     );
     switch ($route[0]) {
       case \FastRoute\Dispatcher::NOT_FOUND:
-        throw new HTTPNotFoundException($path);
+        throw new NotFoundException($method, $path);
       case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        throw new HTTPMethodNotAllowedException($path);
+        throw new MethodNotAllowedException($method, $path);
       case \FastRoute\Dispatcher::FOUND:
         return tuple(
-          ArgAssert::isClassname($route[1], WebController::class),
+          $route[1],
           (new Map($route[2]))
             ->map($encoded ==> urldecode($encoded))
             ->toImmMap(),
         );
     }
 
-    invariant_violation(
-      "Unknown fastroute result: %s",
-      var_export($route[0], true),
+    throw new UnknownException($route, $method, $path);
+  }
+
+  private function getDispatcher(): \FastRoute\Dispatcher {
+    $cache_file = $this->getCacheFilePath();
+    if ($cache_file !== null) {
+      $options = shape(
+        'cacheFile' => $cache_file,
+        'cacheDisabled' => false,
+      );
+    } else {
+      $options = shape(
+        'cacheDisabled' => true,
+      );
+    }
+
+    return \FastRoute\cachedDispatcher(
+      $rc ==> $this->addRoutesToCollector($rc),
+      $options,
     );
+  }
+
+  private function addRoutesToCollector(
+    \FastRoute\RouteCollector $r,
+  ): void {
+    foreach ($this->getGETRoutes() as $route => $classname) {
+      $r->addRoute('GET', $route, $classname);
+    }
+    foreach ($this->getPOSTRoutes() as $route => $classname) {
+      $r->addRoute('POST', $route, $classname);
+    }
   }
 }

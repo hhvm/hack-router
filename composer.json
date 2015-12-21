@@ -1,0 +1,12 @@
+{
+  "name": "fredemmott/hack-router",
+  "description": "URI routing for Hack",
+  "keywords": ["hack", "router", "routing", "hhvm"],
+  "homepage": "https://github.com/fredemmott/hack-router",
+  "require": {
+    "nikic/fast-route": "^0.7.0"
+  },
+  "autoload": {
+    "classmap": ["src/"],
+  }
+}
