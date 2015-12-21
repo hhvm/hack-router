@@ -51,17 +51,17 @@ abstract class BaseRouter<
   private function getDispatcher(): \FastRoute\Dispatcher {
     $cache_file = $this->getCacheFilePath();
     if ($cache_file !== null) {
+      $factory = fun('\FastRoute\cachedDispatcher');
       $options = shape(
         'cacheFile' => $cache_file,
         'cacheDisabled' => false,
       );
     } else {
-      $options = shape(
-        'cacheDisabled' => true,
-      );
+      $factory = fun('\FastRoute\simpleDispatcher');
+      $options = shape();
     }
 
-    return \FastRoute\cachedDispatcher(
+    return $factory(
       $rc ==> $this->addRoutesToCollector($rc),
       $options,
     );
