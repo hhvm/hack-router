@@ -7,6 +7,6 @@
     "nikic/fast-route": "^0.7.0"
   },
   "autoload": {
-    "classmap": ["src/"],
+    "classmap": ["src/"]
   }
 }
