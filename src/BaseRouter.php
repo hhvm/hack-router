@@ -12,21 +12,21 @@
 namespace Facebook\HackRouter;
 
 abstract class BaseRouter<
-  TBaseController,
-  TGETController as TBaseController,
-  TPOSTController as TBaseController
+  TBaseResponder,
+  TGETResponder as TBaseResponder,
+  TPOSTResponder as TBaseResponder
 > {
-  abstract protected function getGETRoutes(): ImmMap<string, classname<TGETController>>;
-  abstract protected function getPOSTRoutes(): ImmMap<string, classname<TGETController>>;
+  abstract protected function getGETRoutes(): ImmMap<string, TGETResponder>;
+  abstract protected function getPOSTRoutes(): ImmMap<string, TPOSTResponder>;
 
   protected function getCacheFilePath(): ?string {
     return null;
   }
 
-  public function routeRequest(
+  final public function routeRequest(
     string $method,
     string $path,
-  ): (classname<TBaseController>, ImmMap<string, string>) {
+  ): (classname<TBaseResponder>, ImmMap<string, string>) {
     $route = $this->getDispatcher()->dispatch(
       $method,
       $path,
@@ -48,7 +48,7 @@ abstract class BaseRouter<
     throw new UnknownException($route, $method, $path);
   }
 
-  private function getDispatcher(): \FastRoute\Dispatcher {
+  final private function getDispatcher(): \FastRoute\Dispatcher {
     $cache_file = $this->getCacheFilePath();
     if ($cache_file !== null) {
       $factory = fun('\FastRoute\cachedDispatcher');
@@ -67,14 +67,14 @@ abstract class BaseRouter<
     );
   }
 
-  private function addRoutesToCollector(
+  final private function addRoutesToCollector(
     \FastRoute\RouteCollector $r,
   ): void {
-    foreach ($this->getGETRoutes() as $route => $classname) {
-      $r->addRoute('GET', $route, $classname);
+    foreach ($this->getGETRoutes() as $route => $responder) {
+      $r->addRoute('GET', $route, $responder);
     }
-    foreach ($this->getPOSTRoutes() as $route => $classname) {
-      $r->addRoute('POST', $route, $classname);
+    foreach ($this->getPOSTRoutes() as $route => $responder) {
+      $r->addRoute('POST', $route, $responder);
     }
   }
 }
