@@ -11,12 +11,5 @@
 
 namespace Facebook\HackRouter;
 
-class NotFoundException extends HTTPException {
-  public function __construct(string $method, string $path) {
-    parent::__construct(
-      "Not Found: ".$path,
-      $method,
-      $path,
-    );
-  }
+class InternalServerErrorException extends HTTPException {
 }

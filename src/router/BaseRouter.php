@@ -45,7 +45,7 @@ abstract class BaseRouter<
         );
     }
 
-    throw new UnknownException($route, $method, $path);
+    throw new UnknownRouterException($route, $method, $path);
   }
 
   final private function getDispatcher(): \FastRoute\Dispatcher {

@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-abstract class RoutingException extends \Exception {
+abstract class HTTPException extends \Exception {
   public function __construct(
     string $message,
     private string $requestMethod,

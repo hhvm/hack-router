@@ -11,20 +11,20 @@
 
 namespace Facebook\HackRouter;
 
-final class UnknownException extends RoutingException {
+class UnknownRouterException extends InternalServerErrorException {
   public function __construct(
-    private array<mixed> $fastRouteResult,
+    private array<mixed> $fastRouteData,
     string $method,
     string $path,
   ) {
     parent::__construct(
-      "Unknown FastRoute result: ".var_export($fastRouteResult, true),
+      'Request routing error: '.var_export($fastRouteData, true),
       $method,
       $path,
     );
   }
 
-  public function getFastRouteResult(): array<mixed> {
-    return $this->fastRouteResult;
+  public function getFastRouteData(): array<mixed> {
+    return $this->fastRouteData;
   }
 }
