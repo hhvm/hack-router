@@ -33,9 +33,9 @@ abstract class BaseRouter<
     );
     switch ($route[0]) {
       case \FastRoute\Dispatcher::NOT_FOUND:
-        throw new NotFoundException($method, $path);
+        throw new NotFoundException();
       case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        throw new MethodNotAllowedException($method, $path);
+        throw new MethodNotAllowedException();
       case \FastRoute\Dispatcher::FOUND:
         return tuple(
           $route[1],
@@ -45,7 +45,7 @@ abstract class BaseRouter<
         );
     }
 
-    throw new UnknownRouterException($route, $method, $path);
+    throw new UnknownRouterException($route);
   }
 
   final private function getDispatcher(): \FastRoute\Dispatcher {
