@@ -37,6 +37,7 @@ function main() {
   list($controller, $params) = (new Router())->routeRequest('GET', '/foo/bar');
   // $controller is guaranteed to be a classname<BaseController>
 }
+```
 
 HTTP Exceptions
 ---------------
