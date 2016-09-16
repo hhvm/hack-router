@@ -11,24 +11,20 @@
 
 namespace Facebook\HackRouter;
 
-abstract class BaseRouter<
-  TBaseResponder,
-  TGETResponder as TBaseResponder,
-  TPOSTResponder as TBaseResponder
-> {
-  abstract protected function getGETRoutes(): ImmMap<string, TGETResponder>;
-  abstract protected function getPOSTRoutes(): ImmMap<string, TPOSTResponder>;
+abstract class BaseRouter<TResponder> {
+  abstract protected function getRoutes(
+  ): ImmMap<HttpMethod, ImmMap<string, TResponder>>;
 
   protected function getCacheFilePath(): ?string {
     return null;
   }
 
   final public function routeRequest(
-    string $method,
+    HttpMethod $method,
     string $path,
-  ): (classname<TBaseResponder>, ImmMap<string, string>) {
+  ): (TResponder, ImmMap<string, string>) {
     $route = $this->getDispatcher()->dispatch(
-      $method,
+      (string) $method,
       $path,
     );
     switch ($route[0]) {
@@ -70,11 +66,10 @@ abstract class BaseRouter<
   final private function addRoutesToCollector(
     \FastRoute\RouteCollector $r,
   ): void {
-    foreach ($this->getGETRoutes() as $route => $responder) {
-      $r->addRoute('GET', $route, $responder);
-    }
-    foreach ($this->getPOSTRoutes() as $route => $responder) {
-      $r->addRoute('POST', $route, $responder);
+    foreach ($this->getRoutes() as $method => $routes) {
+      foreach ($routes as $route => $responder) {
+        $r->addRoute($method, $route, $responder);
+      }
     }
   }
 }

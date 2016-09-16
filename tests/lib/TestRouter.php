@@ -11,15 +11,20 @@
 
 namespace Facebook\HackRouter\Tests;
 
-use Facebook\HackRouter\GETOnlyRouter;
+use Facebook\HackRouter\BaseRouter;
+use Facebook\HackRouter\HttpMethod;
 
-final class TestRouter<T> extends GETOnlyRouter<T> {
+final class TestRouter<T> extends BaseRouter<T> {
   public function __construct(
     private ImmMap<string, T> $routes,
   ) {
   }
 
-  protected function getGETRoutes(): ImmMap<string, T> {
-    return $this->routes;
+  <<__Override>>
+  protected function getRoutes(
+  ): ImmMap<HttpMethod, ImmMap<string, T>> {
+    return ImmMap {
+      HttpMethod::GET => $this->routes,
+    };
   }
 }

@@ -1,4 +1,4 @@
-<?hh // strict
+<?hh //strict
 /*
  *  Copyright (c) 2015, Facebook, Inc.
  *  All rights reserved.
@@ -11,8 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-abstract class GETOnlyRouter<T> extends BaseRouter<T, T, T> {
-  final protected function getPOSTRoutes(): ImmMap<string, T> {
-    return ImmMap {};
-  }
+enum HttpMethod: string {
+  GET = 'GET';
+  POST = 'POST';
 }
