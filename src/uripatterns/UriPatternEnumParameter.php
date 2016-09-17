@@ -11,16 +11,20 @@
 
 namespace Facebook\HackRouter;
 
-// Non-final so you can do enum-specific derivatives
 class UriPatternEnumParameter<T>
 extends UriPatternParameter
 implements UriPatternTypedParameter<T> {
   public function __construct(
-    /* HH_FIXME[2053] \HH\BuiltinEnum is dark internal magic :p */
+    /* HH_FIXME[2053] */
     private classname<\HH\BuiltinEnum<T>> $enumClass,
     string $name,
   ) {
     parent::__construct($name);
+  }
+
+  /* HH_FIXME[2053] */
+  final public function getEnumName(): classname<\HH\BuiltinEnum<T>> {
+    return $this->enumClass;
   }
 
 

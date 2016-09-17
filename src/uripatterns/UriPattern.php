@@ -21,7 +21,7 @@ class UriPattern implements UriPatternPart {
       $this->parts->addAll($part->parts);
       return $this;
     }
-    
+
     $this->parts[] = $part;
     return $this;
   }
@@ -31,6 +31,14 @@ class UriPattern implements UriPatternPart {
       $part ==> $part->getFastRouteFragment()
     );
     return implode('', $fragments);
+  }
+
+  final public function getParameters(): ImmVector<UriPatternParameter> {
+    return $this->parts->filter(
+      $x ==> $x instanceof UriPatternParameter
+    )->map(
+      $x ==> { assert($x instanceof UriPatternParameter); return $x; }
+    )->immutable();
   }
 
   ///// Convenience Methods /////
