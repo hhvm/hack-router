@@ -11,7 +11,9 @@
 
 namespace Facebook\HackRouter;
 
-final class UriPatternIntParameter extends UriPatternParameter<int> {
+final class UriPatternIntParameter
+extends UriPatternParameter
+implements UriPatternTypedParameter<int> {
   <<__Override>>
   public function assert(string $input): int {
     invariant(

@@ -11,16 +11,8 @@
 
 namespace Facebook\HackRouter;
 
-final class UriPatternStringParameter
-extends UriPatternParameter
-implements UriPatternTypedParameter<string> {
-  <<__Override>>
-  public function assert(string $input): string{
-    return $input;
-  }
+interface UriPatternTypedParameter<T> {
+  require extends UriPatternParameter;
 
-  <<__Override>>
-  public function getRegExpFragment(): ?string {
-    return null;
-  }
+  public function assert(string $value): T;
 }

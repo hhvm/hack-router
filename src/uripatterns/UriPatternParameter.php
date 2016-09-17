@@ -11,9 +11,9 @@
 
 namespace Facebook\HackRouter;
 
-abstract class UriPatternParameter<T> implements UriPatternPart {
+abstract class UriPatternParameter implements UriPatternPart {
   /** Convert to T or throw an exception if failed. */
-  abstract public function assert(string $input): T;
+  abstract public function assert(string $input): mixed;
 
   /** Partial regexp fragment used to define pattern.
    *
