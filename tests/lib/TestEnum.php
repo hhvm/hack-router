@@ -1,4 +1,4 @@
-<?hh //strict
+<?hh // strict
 /*
  *  Copyright (c) 2015, Facebook, Inc.
  *  All rights reserved.
@@ -9,8 +9,14 @@
  *
  */
 
-namespace Facebook\HackRouter;
+namespace Facebook\HackRouter\Tests;
 
-interface UriPatternPart {
-   public function getFastRouteFragment(): string;
- }
+enum TestStringEnum: string {
+  FOO = 'herp';
+  BAR = 'derp';
+}
+
+enum TestIntEnum: int {
+  FOO = 123;
+  BAR = 456;
+}
