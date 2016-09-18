@@ -7,39 +7,43 @@ specific revision if you're crazy enough to use this.
 Components
 ==========
 
-Router
-------
-
-A simple, typed, request router, built on top of nikic/fast-route. Example:
-
-```Hack
-<?hh // strict
-
-class Router extends \Facebook\HackRouter\BaseRouter<
-  classname<BaseController>,
-  classname<ReadController>,
-  classname<WriteController:>
-> {
-  protected function getGETRoutes(): ImmMap<string, ReadController> {
-    return ImmMap {
-      '/foo/bar' => FooController::class,
-    };
-  }
-
-  protected function getPOSTRoutes(): ImmMap<string, WriteController> {
-    return ImmMap {
-      '/herp/derp' => BarController::class,
-    };
-  }
-}
-
-function main() {
-  list($controller, $params) = (new Router())->routeRequest('GET', '/foo/bar');
-  // $controller is guaranteed to be a classname<BaseController>
-}
-```
-
 HTTP Exceptions
 ---------------
 
-Exception classes representing common situations in HTTP applications.
+Exception classes representing common situations in HTTP applications:
+ - `InternalServerError`
+ - `MethodNotAllowed`
+ - `NotFoundException`
+
+BaseRouter
+----------
+
+A simple typed request router, built on top of `nikic/fast-route`. Example:
+
+```Hack
+<?hh // strict
+/** TResponder can be whatever you want; in this case, it's a
+ * callable, but classname<MyWebControllerBase> is also a
+ * common choice.
+ */
+type TResponder = (function(ImmMap<string, string>):string);
+
+final class BaseRouterExample extends BaseRouter<TResponder> {
+  protected function getRoutes(
+  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
+    return ImmMap {
+      HttpMethod::GET => ImmMap {
+        '/' =>
+          ($_params) ==> 'Hello, world',
+        '/user/{user_name}' =>
+          ($params) ==> 'Hello, '.$params['user_name'],
+      },
+      HttpMethod::POST => ImmMap {
+        '/' => ($_params) ==> 'Hello, POST world',
+      },
+    };
+  }
+}
+```
+
+(see `examples/BaseRouterExample.php`)
