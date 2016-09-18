@@ -33,6 +33,10 @@ class UriPattern implements UriPatternPart {
     return implode('', $fragments);
   }
 
+  final public function getParts(): ImmVector<UriPatternPart> {
+    return $this->parts->immutable();
+  }
+
   final public function getParameters(): ImmVector<UriPatternParameter> {
     return $this->parts->filter(
       $x ==> $x instanceof UriPatternParameter
