@@ -47,7 +47,7 @@ final class BaseRouterExample extends BaseRouter<TResponder> {
 ```
 
 Simplified for conciseness - see
-[`examples/BaseRouterExample.php`](examples/BaseRouterExample.php)) for
+[`examples/BaseRouterExample.php`](examples/BaseRouterExample.php) for
 full executable example.
 
 UriPatterns
@@ -86,5 +86,5 @@ function main(): void {
 ```
 
 Simplified for conciseness - see
-[`examples/UriPatternsExample.php`](examples/UriPatternsExample.php)) for
+[`examples/UriPatternsExample.php`](examples/UriPatternsExample.php) for
 full executable example.
