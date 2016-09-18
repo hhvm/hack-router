@@ -46,4 +46,6 @@ final class BaseRouterExample extends BaseRouter<TResponder> {
 }
 ```
 
-(see [`examples/BaseRouterExample.php`](examples/BaseRouterExample.php))
+Namespaces removed for simplicity - see
+[`examples/BaseRouterExample.php`](examples/BaseRouterExample.php)) for
+full executable example.
