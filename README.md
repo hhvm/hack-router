@@ -46,6 +46,45 @@ final class BaseRouterExample extends BaseRouter<TResponder> {
 }
 ```
 
-Namespaces removed for simplicity - see
+Simplified for conciseness - see
 [`examples/BaseRouterExample.php`](examples/BaseRouterExample.php)) for
+full executable example.
+
+UriPatterns
+-----------
+
+Generate FastRoute fragments, URIs (for linking), and retrieve URI parameters
+in a consistent and type-safe way:
+
+```Hack
+<?hh // strict
+final class UserPageController extends WebController {
+  public static function getUriPattern(): UriPattern {
+    return (new UriPattern())
+      ->literal('/users/')
+      ->string('user_name');
+  }
+
+  public function getResponse(): string {
+    return 'Hello, '.$this->getUriParameters()->getString('user_name');
+  }
+}
+
+function main(): void {
+  $uri = UserPageController::getUriBuilder()
+    ->setString('user_name', 'Mr Hankey')
+    ->getPath();
+
+  $router = new UriPatternsExample();
+  list($controller, $params) = $router->routeRequest(
+    HttpMethod::GET,
+    $uri,
+  );
+  $response = (new $controller($params))->getResponse();
+  print($response."\n"); "// Hello, Mr Hankey"
+}
+```
+
+Simplified for conciseness - see
+[`examples/UriPatternsExample.php`](examples/UriPatternsExample.php)) for
 full executable example.
