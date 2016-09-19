@@ -1,8 +1,8 @@
-Nameless Hack Micro-Framework
-=============================
+Hack-Router
+===========
 
-**WARNING** still experimental and frequently breaking API BC, pin to a
-specific revision if you're crazy enough to use this.
+Type-safe request routing, parameter retrieval, and link generation built on
+top of `nikic/fast-route`
 
 Components
 ==========
