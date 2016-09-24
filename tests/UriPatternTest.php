@@ -78,7 +78,7 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
     (new UriPatternIntParameter('foo'))->assert($input);
   }
 
-  public function TestStringEnumParamFragment(): void {
+  public function testStringEnumParamFragment(): void {
     $pattern = (new UriPattern())
       ->literal('/foo/')
       ->enum(TestStringEnum::class, 'my_param')
@@ -89,7 +89,7 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-  public function TestStringEnumParamAssertSucceeds(): void {
+  public function testStringEnumParamAssertSucceeds(): void {
     $this->assertSame(
       TestStringEnum::FOO,
       (new UriPatternEnumParameter(TestStringEnum::class, 'param_name'))
@@ -97,10 +97,10 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-  public function TestIntEnumParamAssertSucceeds(): void {
+  public function testIntEnumParamAssertSucceeds(): void {
     $this->assertSame(
       TestIntEnum::FOO,
-      (new UriPatternEnumParameter(TestStringEnum::class, 'param_name'))
+      (new UriPatternEnumParameter(TestIntEnum::class, 'param_name'))
         ->assert((string) TestIntEnum::FOO),
     );
   }
