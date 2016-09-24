@@ -1,4 +1,4 @@
-Hack-Router
+Hack-Router ![build status](https://api.travis-ci.org/fredemmott/definition-finder.svg)
 ===========
 
 Type-safe request routing, parameter retrieval, and link generation built on
