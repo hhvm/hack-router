@@ -11,7 +11,8 @@
 
 namespace Facebook\HackRouter;
 
-use Facebook\HackRouter\Tests\TestRouter;
+use \Facebook\HackRouter\Tests\TestRouter;
+use \Zend\Diactoros\ServerRequest;
 
 final class CoreTest extends \PHPUnit_Framework_TestCase {
   public function expectedMatches(
@@ -38,6 +39,40 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals(
       $expected_data->toArray(),
       $actual_data->toArray(),
+    );
+  }
+
+  /**
+   * @dataProvider expectedMatches
+   */
+  public function testPsr7Support(
+    string $path,
+    string $_expected_responder,
+    ImmMap<string, string> $_expected_data,
+  ): void {
+    $router = $this->getRouter();
+    list($direct_responder, $direct_data) = $router->routeRequest(
+      HttpMethod::GET,
+      $path,
+    );
+
+    /* HH_FIXME[2049] no HHI for Diactoros */
+    $psr_request = new ServerRequest(
+      /* server = */ [],
+      /* file = */ [],
+      'http://example.com/'.$path,
+      'GET',
+      /* body = */ '/dev/null',
+      /* headers = */ [],
+    );
+    list($psr_responder, $psr_data) = $router->routePsr7Request($psr_request);
+    $this->assertSame(
+      $direct_responder,
+      $psr_responder,
+    );
+    $this->assertEquals(
+      $direct_data,
+      $psr_data,
     );
   }
 
