@@ -1,11 +1,13 @@
+language: php
 sudo: required
-language: generic
-services:
- - docker
-env:
- - HHVM_VERSION=3.15
- - HHVM_VERSION=3.12
-before_install:
- - docker build -t fredemmott/hack-router:HHVM-$HHVM_VERSION -f .unitDocker-HHVM-$HHVM_VERSION .
+dist: trusty
+group: edge
+php:
+ - hhvm
+ - hhvm-nightly
+ - hhvm-3.15
+ - hhvm-3.12
+install: composer install
 script:
- - docker run -t fredemmott/hack-router:HHVM-$HHVM_VERSION /var/test/.unitDocker-run.sh
+ - hh_client
+ - hhvm vendor/bin/phpunit

@@ -1,4 +1,0 @@
-FROM hhvm/hhvm:3.12-lts-latest
-
-ADD . /var/test
-RUN cd /var/test && ./.unitDocker-init.sh
