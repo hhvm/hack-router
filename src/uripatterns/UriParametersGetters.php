@@ -15,11 +15,11 @@ trait UriParametersGetters {
   require extends UriParametersBase;
 
   final public function getString(string $name): string {
-    return $this->getSimpleTyped(UriPatternStringParameter::class, $name);
+    return $this->getSimpleTyped(StringRequestParameter::class, $name);
   }
 
   final public function getInt(string $name): int {
-    return $this->getSimpleTyped(UriPatternIntParameter::class, $name);
+    return $this->getSimpleTyped(IntRequestParameter::class, $name);
   }
 
   final public function getEnum<TValue>(
@@ -28,7 +28,7 @@ trait UriParametersGetters {
     string $name,
   ): TValue {
     $spec = $this->getSpec(
-      UriPatternEnumParameter::class,
+      EnumRequestParameter::class,
       $name,
     );
     invariant(

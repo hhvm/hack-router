@@ -16,7 +16,7 @@ use \Facebook\HackRouter\Tests\TestStringEnum;
 
 final class UriParametersTest extends \PHPUnit_Framework_TestCase {
   public function testStringParam(): void {
-    $parts = [new UriPatternStringParameter('foo')];
+    $parts = [new StringRequestParameter('foo')];
     $data = ImmMap { 'foo' => 'bar' };
     $this->assertSame(
       'bar',
@@ -25,7 +25,7 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testIntParam(): void {
-    $parts = [new UriPatternIntParameter('foo')];
+    $parts = [new IntRequestParameter('foo')];
     $data = ImmMap { 'foo' => '123' };
     $this->assertSame(
       123,
@@ -37,13 +37,13 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
    * @expectedException \HH\InvariantException
    */
   public function testFetchingStringAsInt(): void {
-    $parts = [new UriPatternStringParameter('foo')];
+    $parts = [new StringRequestParameter('foo')];
     $data = ImmMap { 'foo' => 'bar' };
     (new UriParameters($parts, $data))->getInt('foo');
   }
 
   public function testEnumParam(): void {
-    $parts = [new UriPatternEnumParameter(TestIntEnum::class, 'foo')];
+    $parts = [new EnumRequestParameter(TestIntEnum::class, 'foo')];
     $data = ImmMap { 'foo' => (string) TestIntEnum::BAR };
     $value = (new UriParameters($parts, $data))->getEnum(
       TestIntEnum::class,
@@ -59,7 +59,7 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testEnumParamToUri(): void {
-    $part = (new UriPatternEnumParameter(TestIntEnum::class, 'foo'));
+    $part = (new EnumRequestParameter(TestIntEnum::class, 'foo'));
     $this->assertSame(
       (string) TestIntEnum::BAR,
       $part->getUriFragment(TestIntEnum::BAR),
@@ -70,7 +70,7 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
    * @expectedException UnexpectedValueException
    */
   public function testInvalidEnumParamToUri(): void {
-    $part = (new UriPatternEnumParameter(TestIntEnum::class, 'foo'));
+    $part = (new EnumRequestParameter(TestIntEnum::class, 'foo'));
     /* HH_IGNORE_ERROR[4110] intentionally doing the wrong thing */
     $_throws = $part->getUriFragment(TestStringEnum::BAR);
   }

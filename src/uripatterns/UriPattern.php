@@ -37,11 +37,11 @@ class UriPattern implements UriPatternPart {
     return $this->parts->immutable();
   }
 
-  final public function getParameters(): ImmVector<UriPatternParameter> {
+  final public function getParameters(): ImmVector<RequestParameter> {
     return $this->parts->filter(
-      $x ==> $x instanceof UriPatternParameter
+      $x ==> $x instanceof RequestParameter
     )->map(
-      $x ==> { assert($x instanceof UriPatternParameter); return $x; }
+      $x ==> { assert($x instanceof RequestParameter); return $x; }
     )->immutable();
   }
 
@@ -52,11 +52,11 @@ class UriPattern implements UriPatternPart {
   }
 
   final public function string(string $name): this {
-    return $this->appendPart(new UriPatternStringParameter($name));
+    return $this->appendPart(new StringRequestParameter($name));
   }
 
   final public function int(string $name): this {
-    return $this->appendPart(new UriPatternIntParameter($name));
+    return $this->appendPart(new IntRequestParameter($name));
   }
 
   final public function enum<T>(
@@ -65,7 +65,7 @@ class UriPattern implements UriPatternPart {
     string $name,
   ): this {
     return $this->appendPart(
-      new UriPatternEnumParameter($enum_class, $name),
+      new EnumRequestParameter($enum_class, $name),
     );
   }
 }

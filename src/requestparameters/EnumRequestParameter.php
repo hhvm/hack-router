@@ -11,8 +11,8 @@
 
 namespace Facebook\HackRouter;
 
-class UriPatternEnumParameter<T>
-extends UriPatternTypedParameter<T> {
+class EnumRequestParameter<T>
+extends TypedRequestParameter<T> {
   public function __construct(
     /* HH_FIXME[2053] */
     private classname<\HH\BuiltinEnum<T>> $enumClass,

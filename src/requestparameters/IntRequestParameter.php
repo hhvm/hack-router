@@ -11,15 +11,20 @@
 
 namespace Facebook\HackRouter;
 
-final class UriPatternStringParameter
-extends UriPatternTypedParameter<string> {
+final class IntRequestParameter
+extends TypedRequestParameter<int> {
   <<__Override>>
-  public function assert(string $input): string{
-    return $input;
+  public function assert(string $input): int {
+    invariant(
+      ctype_digit($input),
+      '`%s` is not a valid int',
+      $input,
+    );
+    return (int) $input;
   }
 
   <<__Override>>
   public function getRegExpFragment(): ?string {
-    return null;
+    return '\d+';
   }
 }
