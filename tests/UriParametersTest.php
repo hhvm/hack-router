@@ -14,13 +14,13 @@ namespace Facebook\HackRouter;
 use \Facebook\HackRouter\Tests\TestIntEnum;
 use \Facebook\HackRouter\Tests\TestStringEnum;
 
-final class UriParametersTest extends \PHPUnit_Framework_TestCase {
+final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
   public function testStringParam(): void {
     $parts = [new StringRequestParameter('foo')];
     $data = ImmMap { 'foo' => 'bar' };
     $this->assertSame(
       'bar',
-      (new UriParameters($parts, $data))->getString('foo'),
+      (new RequestParameters($parts, $data))->getString('foo'),
     );
   }
 
@@ -29,7 +29,7 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
     $data = ImmMap { 'foo' => '123' };
     $this->assertSame(
       123,
-      (new UriParameters($parts, $data))->getInt('foo'),
+      (new RequestParameters($parts, $data))->getInt('foo'),
     );
   }
 
@@ -39,13 +39,13 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
   public function testFetchingStringAsInt(): void {
     $parts = [new StringRequestParameter('foo')];
     $data = ImmMap { 'foo' => 'bar' };
-    (new UriParameters($parts, $data))->getInt('foo');
+    (new RequestParameters($parts, $data))->getInt('foo');
   }
 
   public function testEnumParam(): void {
     $parts = [new EnumRequestParameter(TestIntEnum::class, 'foo')];
     $data = ImmMap { 'foo' => (string) TestIntEnum::BAR };
-    $value = (new UriParameters($parts, $data))->getEnum(
+    $value = (new RequestParameters($parts, $data))->getEnum(
       TestIntEnum::class,
       'foo',
     );
@@ -89,7 +89,7 @@ final class UriParametersTest extends \PHPUnit_Framework_TestCase {
       'bar' => '123',
       'baz' => (string) TestIntEnum::FOO,
     };
-    $params = new UriParameters($parts, $data);
+    $params = new RequestParameters($parts, $data);
     $this->assertSame(
       'some string',
       $params->getString('foo'),

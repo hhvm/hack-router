@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-abstract class UriParametersBase {
+abstract class RequestParametersBase {
   private ImmMap<string, RequestParameter> $specs;
 
   public function __construct(

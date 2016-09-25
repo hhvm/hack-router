@@ -23,7 +23,7 @@ use Facebook\HackRouter\HttpMethod;
 use Facebook\HackRouter\UriBuilder;
 use Facebook\HackRouter\UriPattern;
 use Facebook\HackRouter\UriPatternDerivatives;
-use Facebook\HackRouter\UriParameters;
+use Facebook\HackRouter\RequestParameters;
 
 <<__ConsistentConstruct>>
 abstract class WebController implements HasUriPattern {
@@ -32,15 +32,15 @@ abstract class WebController implements HasUriPattern {
 
   abstract public function getResponse(): string;
 
-  private UriParameters $uriParameters;
-  final protected function getUriParameters(): UriParameters {
+  private RequestParameters $uriParameters;
+  final protected function getRequestParameters(): RequestParameters {
     return $this->uriParameters;
   }
 
   public function __construct(
     ImmMap<string, string> $uri_parameter_values,
   ) {
-    $this->uriParameters = new UriParameters(
+    $this->uriParameters = new RequestParameters(
       static::getUriPattern()->getParameters(),
       $uri_parameter_values,
     );
@@ -65,7 +65,7 @@ final class UserPageController extends WebController {
   }
 
   public function getResponse(): string {
-    return 'Hello, '.$this->getUriParameters()->getString('user_name');
+    return 'Hello, '.$this->getRequestParameters()->getString('user_name');
   }
 }
 

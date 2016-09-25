@@ -11,6 +11,6 @@
 
 namespace Facebook\HackRouter;
 
-final class UriParameters extends UriParametersBase {
-  use UriParametersGetters;
+final class RequestParameters extends RequestParametersBase {
+  use RequestParameterGetters;
 }
