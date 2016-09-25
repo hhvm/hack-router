@@ -11,7 +11,10 @@
 
 namespace Facebook\HackRouter;
 
-final class UriBuilder extends UriBuilderBase {
-  use UriBuilderSetters;
-  use UriBuilderGetPath;
+trait UriBuilderGetPath {
+  require extends UriBuilderBase;
+  
+  final public function getPath(): string {
+    return $this->getPathImpl();
+  }
 }
