@@ -11,16 +11,10 @@
 
 namespace Facebook\HackRouter;
 
-abstract class RequestParameter implements UriPatternPart {
-  /** Convert to T or throw an exception if failed. */
-  abstract public function assert(string $input): mixed;
-
-  public function __construct(
-    private string $name,
-  ) {
-  }
-
-  final public function getName(): string {
-    return $this->name;
+abstract class TypedUriParameter<T>
+extends UriParameter
+implements TypedRequestParameter<T> {
+  public function getUriFragment(T $value): string {
+    return (string) $value;
   }
 }

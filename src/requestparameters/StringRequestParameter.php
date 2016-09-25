@@ -12,7 +12,7 @@
 namespace Facebook\HackRouter;
 
 final class StringRequestParameter
-extends TypedRequestParameter<string> {
+extends TypedUriParameter<string> {
   <<__Override>>
   public function assert(string $input): string{
     return $input;

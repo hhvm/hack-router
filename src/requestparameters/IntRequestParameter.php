@@ -12,7 +12,7 @@
 namespace Facebook\HackRouter;
 
 final class IntRequestParameter
-extends TypedRequestParameter<int> {
+extends TypedUriParameter<int> {
   <<__Override>>
   public function assert(string $input): int {
     invariant(
