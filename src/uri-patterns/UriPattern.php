@@ -37,11 +37,11 @@ class UriPattern implements UriPatternPart {
     return $this->parts->immutable();
   }
 
-  final public function getParameters(): ImmVector<RequestParameter> {
+  final public function getParameters(): ImmVector<UriParameter> {
     return $this->parts->filter(
-      $x ==> $x instanceof RequestParameter
+      $x ==> $x instanceof UriParameter
     )->map(
-      $x ==> { assert($x instanceof RequestParameter); return $x; }
+      $x ==> { assert($x instanceof UriParameter); return $x; }
     )->immutable();
   }
 

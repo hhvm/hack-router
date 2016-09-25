@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-abstract class RequestParameter implements UriPatternPart {
+abstract class RequestParameter {
   /** Convert to T or throw an exception if failed. */
   abstract public function assert(string $input): mixed;
 
