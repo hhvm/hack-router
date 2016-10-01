@@ -11,14 +11,10 @@
 
 namespace Facebook\HackRouter;
 
-trait UriPatternDerivatives {
+trait GetUriBuilderFromUriPattern {
   require implements HasUriPattern;
 
   final public static function getUriBuilder(): UriBuilder {
     return (new UriBuilder(static::getUriPattern()->getParts()));
-  }
-
-  final public static function getFastRoutePattern(): string {
-    return static::getUriPattern()->getFastRouteFragment();
   }
 }

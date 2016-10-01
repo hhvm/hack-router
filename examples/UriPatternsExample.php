@@ -17,18 +17,21 @@ namespace Facebook\HackRouter\Examples\UrlPatternsExample;
 
 require_once('../vendor/autoload.php');
 
-use Facebook\HackRouter\BaseRouter;
-use Facebook\HackRouter\HasUriPattern;
-use Facebook\HackRouter\HttpMethod;
-use Facebook\HackRouter\UriBuilder;
-use Facebook\HackRouter\UriPattern;
-use Facebook\HackRouter\UriPatternDerivatives;
-use Facebook\HackRouter\RequestParameters;
+use Facebook\HackRouter\{
+  BaseRouter,
+  GetFastRoutePatternFromUriPattern,
+  GetUriBuilderFromUriPattern,
+  HasUriPattern,
+  HttpMethod,
+  RequestParameters,
+  UriBuilder,
+  UriPattern
+};
 
 <<__ConsistentConstruct>>
 abstract class WebController implements HasUriPattern {
-  // Provides getUriBuilder(), getFastRoutePattern()
-  use UriPatternDerivatives;
+  use GetFastRoutePatternFromUriPattern;
+  use GetUriBuilderFromUriPattern;
 
   abstract public function getResponse(): string;
 
