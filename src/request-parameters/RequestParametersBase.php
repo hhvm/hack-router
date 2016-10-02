@@ -12,24 +12,64 @@
 namespace Facebook\HackRouter;
 
 abstract class RequestParametersBase {
-  private ImmMap<string, RequestParameter> $specs;
+  private ImmMap<string, RequestParameter> $requiredSpecs;
+  private ImmMap<string, RequestParameter> $optionalSpecs;
 
   public function __construct(
-    Traversable<RequestParameter> $spec_vector,
+    Traversable<RequestParameter> $required_specs,
+    Traversable<RequestParameter> $optional_specs,
     protected ImmMap<string, string> $values,
   ) {
-    $specs = Map { };
-    foreach ($spec_vector as $spec) {
-      $specs[$spec->getName()] = $spec;
-    }
-    $this->specs = $specs->immutable();
+    $spec_vector_to_map = $specs ==> {
+      $map = Map { };
+      foreach ($specs as $spec) {
+        $map[$spec->getName()] = $spec;
+      }
+      return $map->immutable();
+    };
+
+    $this->requiredSpecs = $spec_vector_to_map($required_specs);
+    $this->optionalSpecs = $spec_vector_to_map($optional_specs);
   }
 
-  final protected function getSpec<T as RequestParameter>(
+  final protected function getRequiredSpec<T as RequestParameter>(
     classname<T> $class,
     string $name,
   ): T {
-    $spec = $this->specs->at($name);
+    invariant(
+      $this->requiredSpecs->containsKey($name),
+      '%s is not a required parameter',
+      $name,
+    );
+    return self::getSpec(
+      $this->requiredSpecs,
+      $class,
+      $name,
+    );
+  }
+
+  final protected function getOptionalSpec<T as RequestParameter>(
+    classname<T> $class,
+    string $name,
+  ): T {
+    invariant(
+      $this->optionalSpecs->containsKey($name),
+      '%s is not an optional parameter',
+      $name,
+    );
+    return self::getSpec(
+      $this->optionalSpecs,
+      $class,
+      $name,
+    );
+  }
+
+  final private static function getSpec<T as RequestParameter>(
+    ImmMap<string, RequestParameter> $specs,
+    classname<T> $class,
+    string $name,
+  ): T {
+    $spec = $specs->at($name);
     invariant(
       $spec instanceof $class,
       'Expected %s to be a %s, got %s',
@@ -44,7 +84,19 @@ abstract class RequestParametersBase {
     classname<TypedRequestParameter<T>> $class,
     string $name,
   ): T {
-    $spec = $this->getSpec($class, $name);
+    $spec = $this->getRequiredSpec($class, $name);
+    $value = $this->values->at($name);
+    return $spec->assert($value);
+  }
+
+  final protected function getSimpleTypedOptional<T>(
+    classname<TypedRequestParameter<T>> $class,
+    string $name,
+  ): ?T {
+    $spec = $this->getOptionalSpec($class, $name);
+    if (!$this->values->containsKey($name)) {
+      return null;
+    }
     $value = $this->values->at($name);
     return $spec->assert($value);
   }

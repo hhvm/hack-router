@@ -45,6 +45,7 @@ abstract class WebController implements HasUriPattern {
   ) {
     $this->uriParameters = new RequestParameters(
       static::getUriPattern()->getParameters(),
+      ImmVector { },
       $uri_parameter_values,
     );
   }

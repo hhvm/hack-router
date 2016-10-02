@@ -18,8 +18,16 @@ trait RequestParameterGetters {
     return $this->getSimpleTyped(StringRequestParameter::class, $name);
   }
 
+  final public function getOptionalString(string $name): ?string {
+    return $this->getSimpleTypedOptional(StringRequestParameter::class, $name);
+  }
+
   final public function getInt(string $name): int {
     return $this->getSimpleTyped(IntRequestParameter::class, $name);
+  }
+
+  final public function getOptionalInt(string $name): ?int {
+    return $this->getSimpleTypedOptional(IntRequestParameter::class, $name);
   }
 
   final public function getEnum<TValue>(
@@ -27,10 +35,38 @@ trait RequestParameterGetters {
     classname<\HH\BuiltinEnum<TValue>> $class,
     string $name,
   ): TValue {
-    $spec = $this->getSpec(
-      EnumRequestParameter::class,
+    $value = $this->getEnumImpl(
+      $this->getRequiredSpec(
+        EnumRequestParameter::class,
+        $name,
+      ),
+      $class,
       $name,
     );
+    return $class::assert($value);
+  }
+
+  final public function getOptionalEnum<TValue>(
+    /* HH_FIXME[2053] */
+    classname<\HH\BuiltinEnum<TValue>> $class,
+    string $name,
+  ): ?TValue {
+    return $this->getEnumImpl(
+      $this->getOptionalSpec(
+        EnumRequestParameter::class,
+        $name,
+      ),
+      $class,
+      $name,
+    );
+  }
+
+  final private function getEnumImpl<TValue>(
+    EnumRequestParameter<TValue> $spec,
+    /* HH_FIXME[2053] */
+    classname<\HH\BuiltinEnum<TValue>> $class,
+    string $name,
+  ): ?TValue {
     invariant(
       $spec->getEnumName() === $class,
       'Expected %s to be a %s, actually a %s',
@@ -38,6 +74,9 @@ trait RequestParameterGetters {
       $class,
       $spec->getEnumName(),
     );
+    if (!$this->values->containsKey($name)) {
+      return null;
+    }
     return $spec->assert($this->values->at($name));
   }
 }
