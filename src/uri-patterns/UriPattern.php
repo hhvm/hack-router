@@ -13,15 +13,10 @@ namespace Facebook\HackRouter;
 
 // Non-final so you can extend it with additional convenience
 // methods.
-class UriPattern implements UriPatternPart {
+class UriPattern implements HasFastRouteFragment {
   private Vector<UriPatternPart> $parts = Vector { };
 
   final public function appendPart(UriPatternPart $part): this {
-    if ($part instanceof UriPattern) {
-      $this->parts->addAll($part->parts);
-      return $this;
-    }
-
     $this->parts[] = $part;
     return $this;
   }

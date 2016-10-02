@@ -11,5 +11,6 @@
 
 namespace Facebook\HackRouter;
 
-interface UriPatternPart extends HasFastRouteFragment {
-}
+interface HasFastRouteFragment {
+   public function getFastRouteFragment(): string;
+ }
