@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7072512ec5fdb6a210ad42589842207",
-    "content-hash": "8bd95f39c201430d22f5451823570b87",
+    "hash": "3fceb168eda03242701edb60518fce38",
+    "content-hash": "9eca4e8e878c4711331104ba59bff563",
     "packages": [
         {
             "name": "hack-psr/psr7-http-message-hhi",
@@ -44,16 +44,16 @@
         },
         {
             "name": "nikic/fast-route",
-            "version": "v0.7.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/FastRoute.git",
-                "reference": "8164b4a0d8afde4eae5f1bfc39084972ba23ad36"
+                "reference": "8ea928195fa9b907f0d6e48312d323c1a13cc2af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/8164b4a0d8afde4eae5f1bfc39084972ba23ad36",
-                "reference": "8164b4a0d8afde4eae5f1bfc39084972ba23ad36",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/8ea928195fa9b907f0d6e48312d323c1a13cc2af",
+                "reference": "8ea928195fa9b907f0d6e48312d323c1a13cc2af",
                 "shasum": ""
             },
             "require": {
@@ -83,7 +83,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-12-20 19:50:12"
+            "time": "2016-06-12 19:08:51"
         },
         {
             "name": "psr/http-message",
