@@ -19,17 +19,6 @@ abstract class BaseRouter<TResponder> {
     return null;
   }
 
-  protected function getException(
-    RouterExceptionType $type,
-  ): \Exception {
-    switch ($type) {
-      case RouterExceptionType::NOT_FOUND:
-        return new NotFoundException();
-      case RouterExceptionType::METHOD_NOT_ALLOWED:
-        return new MethodNotAllowedException();
-    }
-  }
-
   final public function routeRequest(
     HttpMethod $method,
     string $path,
@@ -40,9 +29,9 @@ abstract class BaseRouter<TResponder> {
     );
     switch ($route[0]) {
       case \FastRoute\Dispatcher::NOT_FOUND:
-        throw $this->getException(RouterExceptionType::NOT_FOUND);
+        throw new NotFoundException();
       case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        throw $this->getException(RouterExceptionType::METHOD_NOT_ALLOWED);
+        throw new MethodNotAllowedException();
       case \FastRoute\Dispatcher::FOUND:
         return tuple(
           $route[1],

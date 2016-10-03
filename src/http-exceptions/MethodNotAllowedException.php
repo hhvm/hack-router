@@ -11,5 +11,5 @@
 
 namespace Facebook\HackRouter;
 
-final class MethodNotAllowedException extends HttpException {
+class MethodNotAllowedException extends HTTPException {
 }
