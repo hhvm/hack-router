@@ -38,9 +38,20 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
     $this->assertSame('/~{username}', $pattern);
   }
 
+  public function testStringWithSlashesParamFragment(): void {
+    $pattern = (new UriPattern())
+      ->literal('/~')
+      ->stringWithSlashes('username')
+      ->getFastRouteFragment();
+    $this->assertSame('/~{username:.+}', $pattern);
+  }
+
   public function testStringParamAssertSucceeds(): void {
     $this->assertSame(
-      (new StringRequestParameter('foo'))->assert('foo'),
+      (new StringRequestParameter(
+        StringRequestParameterSlashes::WITHOUT_SLASHES,
+        'foo',
+      ))->assert('foo'),
       'foo',
     );
   }
