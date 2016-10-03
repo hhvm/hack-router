@@ -1,4 +1,4 @@
-<?hh // strict
+<?hh //strict
 /*
  *  Copyright (c) 2015, Facebook, Inc.
  *  All rights reserved.
@@ -9,7 +9,9 @@
  *
  */
 
-namespace Facebook\HackRouter;
+ namespace Facebook\HackRouter;
 
-class InternalServerErrorException extends HTTPException {
-}
+ enum RouterExceptionType: string {
+   NOT_FOUND = 'not found';
+   METHOD_NOT_ALLOWED = 'method not allowed';
+ }
