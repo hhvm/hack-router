@@ -46,6 +46,10 @@ class UriPattern implements HasFastRouteFragment {
     return $this->appendPart(new UriPatternLiteral($part));
   }
 
+  final public function slash(): this {
+    return $this->literal('/');
+  }
+
   final public function string(string $name): this {
     return $this->appendPart(new StringRequestParameter(
       StringRequestParameterSlashes::WITHOUT_SLASHES,
