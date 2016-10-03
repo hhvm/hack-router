@@ -11,5 +11,5 @@
 
 namespace Facebook\HackRouter;
 
-class NotFoundException extends HTTPException {
+class NotFoundException extends HttpException {
 }

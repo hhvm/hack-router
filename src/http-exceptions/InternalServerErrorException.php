@@ -11,5 +11,5 @@
 
 namespace Facebook\HackRouter;
 
-class InternalServerErrorException extends HTTPException {
+class InternalServerErrorException extends HttpException {
 }
