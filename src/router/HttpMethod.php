@@ -12,6 +12,7 @@
 namespace Facebook\HackRouter;
 
 enum HttpMethod: string {
+  HEAD = 'HEAD';
   GET = 'GET';
   POST = 'POST';
 }
