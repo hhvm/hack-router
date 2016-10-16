@@ -5,7 +5,7 @@
   "homepage": "https://github.com/fredemmott/hack-router",
   "require": {
     "nikic/fast-route": "^1.0.0 || >0.7 <1.0",
-    "hack-psr/psr7-http-message-hhi": "^0.2.0"
+    "hack-psr/psr7-http-message-hhi": "^0.2.0|^1.0.0"
   },
   "autoload": {
     "classmap": [ "src/" ]

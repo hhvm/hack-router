@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3fceb168eda03242701edb60518fce38",
-    "content-hash": "9eca4e8e878c4711331104ba59bff563",
+    "hash": "5801d47dbd8e545b1defe6776b12b3ac",
+    "content-hash": "3259560b24cac71011f448105ec15844",
     "packages": [
         {
             "name": "hack-psr/psr7-http-message-hhi",
-            "version": "v0.2",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fredemmott/psr7-http-message-hhi.git",
-                "reference": "31422ed7c566dd1cd481d95fd1d7e65798944fc9"
+                "reference": "6635714788172c17961a7c157168cc4d90a8884f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fredemmott/psr7-http-message-hhi/zipball/31422ed7c566dd1cd481d95fd1d7e65798944fc9",
-                "reference": "31422ed7c566dd1cd481d95fd1d7e65798944fc9",
+                "url": "https://api.github.com/repos/fredemmott/psr7-http-message-hhi/zipball/6635714788172c17961a7c157168cc4d90a8884f",
+                "reference": "6635714788172c17961a7c157168cc4d90a8884f",
                 "shasum": ""
             },
             "require": {
@@ -40,7 +40,7 @@
                 "psr-7",
                 "psr7"
             ],
-            "time": "2015-11-02 23:49:05"
+            "time": "2016-09-22 15:18:26"
         },
         {
             "name": "nikic/fast-route",
