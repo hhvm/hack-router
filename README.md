@@ -2,7 +2,7 @@ Hack-Router ![build status](https://api.travis-ci.org/fredemmott/hack-router.svg
 ===========
 
 Type-safe request routing, parameter retrieval, and link generation built on
-top of `nikic/fast-route`
+top of `nikic/fast-route`, with PSR-7 support.
 
 Components
 ==========
