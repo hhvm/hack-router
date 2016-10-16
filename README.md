@@ -64,27 +64,39 @@ final class UserPageController extends WebController {
       ->literal('/users/')
       ->string('user_name');
   }
+```
 
+Parameters can be retrevied, with types checked at runtime both against the
+values, and the definition:
+
+```Hack
   public function getResponse(): string {
     return 'Hello, '.$this->getUriParameters()->getString('user_name');
   }
 }
-
-function main(): void {
-  $uri = UserPageController::getUriBuilder()
-    ->setString('user_name', 'Mr Hankey')
-    ->getPath();
-
-  $router = new UriPatternsExample();
-  list($controller, $params) = $router->routeRequest(
-    HttpMethod::GET,
-    $uri,
-  );
-  $response = (new $controller($params))->getResponse();
-  print($response."\n"); "// Hello, Mr Hankey"
-}
 ```
 
-Simplified for conciseness - see
+You can also generate links to controllers:
+
+```Hack
+$link = UserPageController::getUriBuilder()
+  ->setString('user_name', 'Mr Hankey')
+  ->getPath();
+```
+
+These examples are simplified for conciseness - see
 [`examples/UriPatternsExample.php`](examples/UriPatternsExample.php) for
 full executable example.
+
+Codegen
+-------
+
+The [fredemmott/hack-router-codegen](https://github.com/fredemmott/hack-router-codegen)
+project builds on top of of this project to automatically generate:
+
+ - Full request routing objects and URI maps based on UriPatterns defined in the
+   controllers
+ - Per-controller parameter classes, allowing `$params->getFoo()` instead of
+   `$params->getString('Foo')`; this allows the typechecker to catch more
+   errors, and IDE autocomplete functionality to support parameters.
+ - Per-controller UriBuilder classes, with similar benefits
