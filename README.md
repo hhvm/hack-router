@@ -64,15 +64,16 @@ final class UserPageController extends WebController {
       ->literal('/users/')
       ->string('user_name');
   }
+  // ...
+}
 ```
 
 Parameters can be retrevied, with types checked at runtime both against the
 values, and the definition:
 
 ```Hack
-  public function getResponse(): string {
-    return 'Hello, '.$this->getUriParameters()->getString('user_name');
-  }
+public function getResponse(): string {
+  return 'Hello, '.$this->getUriParameters()->getString('user_name');
 }
 ```
 
