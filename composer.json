@@ -13,6 +13,11 @@
   "autoload-dev": {
     "classmap": [ "tests/" ]
   },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.x-dev"
+    }
+  },
   "require-dev": {
     "phpunit/phpunit": "^5.1",
     "91carriage/phpunit-hhi": "^5.1",
