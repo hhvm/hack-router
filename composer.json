@@ -1,8 +1,8 @@
 {
-  "name": "fredemmott/hack-router",
+  "name": "facebook/hack-router",
   "description": "URI routing for Hack",
   "keywords": ["hack", "router", "routing", "hhvm"],
-  "homepage": "https://github.com/fredemmott/hack-router",
+  "homepage": "https://github.com/hhvm/hack-router",
   "require": {
     "nikic/fast-route": "^1.0.0 || >0.7 <1.0",
     "hack-psr/psr7-http-message-hhi": "^0.2.0|^1.0.0"
