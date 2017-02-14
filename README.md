@@ -101,3 +101,13 @@ project builds on top of of this project to automatically generate:
    `$params->getString('Foo')`; this allows the typechecker to catch more
    errors, and IDE autocomplete functionality to support parameters.
  - Per-controller UriBuilder classes, with similar benefits
+
+Contributing
+============
+
+We welcome GitHub issues and pull requests - please see CONTRIBUTING.md for details.
+
+License
+=======
+
+hack-router is BSD-licensed. We also provide an additional patent grant.
