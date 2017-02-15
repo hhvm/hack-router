@@ -71,6 +71,7 @@ abstract class RequestParametersBase {
   ): T {
     $spec = $specs->at($name);
     invariant(
+      /* HH_FIXME[4162] instanceof is too restrictive on classname*/
       $spec instanceof $class,
       'Expected %s to be a %s, got %s',
       $name,
