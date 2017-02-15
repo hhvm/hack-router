@@ -1,4 +1,4 @@
-Hack-Router ![build status](https://api.travis-ci.org/fredemmott/hack-router.svg)
+Hack-Router [![Build Status](https://travis-ci.org/hhvm/hack-router.svg?branch=master)](https://travis-ci.org/hhvm/hack-router)
 ===========
 
 Type-safe request routing, parameter retrieval, and link generation built on
@@ -92,7 +92,7 @@ full executable example.
 Codegen
 -------
 
-The [fredemmott/hack-router-codegen](https://github.com/fredemmott/hack-router-codegen)
+The [hhvm/hack-router-codegen](https://github.com/hhvm/hack-router-codegen)
 project builds on top of of this project to automatically generate:
 
  - Full request routing objects and URI maps based on UriPatterns defined in the
