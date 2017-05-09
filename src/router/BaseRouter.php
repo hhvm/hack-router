@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-abstract class BaseRouter<TResponder> {
+abstract class BaseRouter<+TResponder> {
   abstract protected function getRoutes(
   ): ImmMap<HttpMethod, ImmMap<string, TResponder>>;
 
