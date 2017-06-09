@@ -89,6 +89,13 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
   public function testMethodNotAllowed(): void {
     $this->getRouter()->routeRequest(HttpMethod::POST, '/foo');
   }
+  
+  public function testCovariantTResponder(): void {
+    $router = $this->getRouter();
+    $this->_testCovariantTResponder($router, $router);
+  }
+  
+  public function _testCovariantTResponder(BaseRouter<arraykey> $_, BaseRouter<string> $_): void {}
 
   <<__Memoize>>
   private function getRouter(): TestRouter<string> {
