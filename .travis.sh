@@ -8,5 +8,9 @@ curl https://getcomposer.org/installer | hhvm --php -- /dev/stdin --install-dir=
 
 cd /var/source
 hhvm /usr/local/bin/composer install
+
 hh_server --check $(pwd)
 hhvm vendor/bin/phpunit tests/
+if [ $(hhvm --php -r 'echo HHVM_VERSION_ID;' 2>/dev/null) -ge 32002 ]; then
+  hhvm -d hhvm.php7.all=1 vendor/bin/phpunit tests/
+fi
