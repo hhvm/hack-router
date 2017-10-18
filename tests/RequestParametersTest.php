@@ -20,7 +20,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       StringRequestParameterSlashes::WITHOUT_SLASHES,
       'foo',
     )];
-    $data = ImmMap { 'foo' => 'bar' };
+    $data = dict['foo' => 'bar'];
     $this->assertSame(
       'bar',
       (new RequestParameters($parts, [], $data))->getString('foo'),
@@ -29,7 +29,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
 
   public function testIntParam(): void {
     $parts = [new IntRequestParameter('foo')];
-    $data = ImmMap { 'foo' => '123' };
+    $data = dict['foo' => '123'];
     $this->assertSame(
       123,
       (new RequestParameters($parts, [], $data))->getInt('foo'),
@@ -44,13 +44,13 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       StringRequestParameterSlashes::WITHOUT_SLASHES,
       'foo',
     )];
-    $data = ImmMap { 'foo' => 'bar' };
+    $data = dict['foo' => 'bar'];
     (new RequestParameters($parts, [], $data))->getInt('foo');
   }
 
   public function testEnumParam(): void {
     $parts = [new EnumRequestParameter(TestIntEnum::class, 'foo')];
-    $data = ImmMap { 'foo' => (string) TestIntEnum::BAR };
+    $data = dict['foo' => (string) TestIntEnum::BAR];
     $value = (new RequestParameters($parts, [], $data))->getEnum(
       TestIntEnum::class,
       'foo',
@@ -90,11 +90,11 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       ->literal('/')
       ->enum(TestIntEnum::class, 'baz')
       ->getParameters();
-    $data = ImmMap {
+    $data = dict[
       'foo' => 'some string',
       'bar' => '123',
       'baz' => (string) TestIntEnum::FOO,
-    };
+    ];
     $params = new RequestParameters($parts, [], $data);
     $this->assertSame(
       'some string',
@@ -117,7 +117,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
         StringRequestParameterSlashes::WITHOUT_SLASHES,
         'foo',
       )],
-      ImmMap { 'foo' => 'bar' },
+      dict['foo' => 'bar'],
     );
     $this->assertSame(
       'bar',
@@ -132,7 +132,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
         StringRequestParameterSlashes::WITHOUT_SLASHES,
         'foo',
       )],
-      ImmMap {},
+      dict[],
     );
     $this->assertSame(
       null,
@@ -150,7 +150,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
         StringRequestParameterSlashes::WITHOUT_SLASHES,
         'foo'
       )],
-      ImmMap { 'foo' => 'bar' },
+      dict['foo' => 'bar'],
     );
     $params->getString('foo');
   }
@@ -165,7 +165,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
         'foo',
       )],
       [],
-      ImmMap { 'foo' => 'bar' },
+      dict['foo' => 'bar'],
     );
     $params->getOptionalString('foo');
   }

@@ -13,7 +13,7 @@ namespace Facebook\HackRouter;
 
 abstract class BaseRouter<+TResponder> {
   abstract protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>>;
+  ): dict<HttpMethod, dict<string, TResponder>>;
 
   protected function getCacheFilePath(): ?string {
     return null;
@@ -22,18 +22,17 @@ abstract class BaseRouter<+TResponder> {
   final public function routeRequest(
     HttpMethod $method,
     string $path,
-  ): (TResponder, ImmMap<string, string>) {
+  ): (TResponder, dict<string, string>) {
     $resolver = $this->getResolver();
-    list($responder, $params) = $resolver->resolve(
+    return $this->getResolver()->resolve(
       $method,
       $path,
     );
-    return tuple($responder, new ImmMap($params));
   }
 
   final public function routePsr7Request(
     \Psr\Http\Message\RequestInterface $request,
-  ): (TResponder, ImmMap<string, string>) {
+  ): (TResponder, dict<string, string>) {
     $method = HttpMethod::coerce($request->getMethod());
     if ($method === null) {
       throw new MethodNotAllowedException();

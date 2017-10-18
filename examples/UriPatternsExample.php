@@ -41,7 +41,7 @@ abstract class WebController implements HasUriPattern {
   }
 
   public function __construct(
-    ImmMap<string, string> $uri_parameter_values,
+    dict<string, string> $uri_parameter_values,
   ) {
     $this->uriParameters = new RequestParameters(
       static::getUriPattern()->getParameters(),
@@ -85,15 +85,15 @@ final class UriPatternsExample extends BaseRouter<TResponder> {
 
   <<__Override>>
   public function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
-    $urls_to_controllers = Map { };
+  ): dict<HttpMethod, dict<string, TResponder>> {
+    $urls_to_controllers = dict[];
     foreach (self::getControllers() as $controller) {
       $pattern = $controller::getFastRoutePattern();
       $urls_to_controllers[$pattern] = $controller;
     }
-    return ImmMap {
-      HttpMethod::GET => $urls_to_controllers->immutable(),
-    };
+    return dict[
+      HttpMethod::GET => $urls_to_controllers,
+    ];
   }
 }
 

@@ -16,15 +16,15 @@ use Facebook\HackRouter\HttpMethod;
 
 final class TestRouter<T> extends BaseRouter<T> {
   public function __construct(
-    private ImmMap<string, T> $routes,
+    private dict<string, T> $routes,
   ) {
   }
 
   <<__Override>>
   protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, T>> {
-    return ImmMap {
+  ): dict<HttpMethod, dict<string, T>> {
+    return dict[
       HttpMethod::GET => $this->routes,
-    };
+    ];
   }
 }

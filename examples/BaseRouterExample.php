@@ -24,22 +24,22 @@ use Facebook\HackRouter\HttpMethod;
  * callable, but classname<MyWebControllerBase> is also a
  * common choice.
  */
-type TResponder = (function(ImmMap<string, string>):string);
+type TResponder = (function(dict<string, string>):string);
 
 final class BaseRouterExample extends BaseRouter<TResponder> {
   protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
-    return ImmMap {
-      HttpMethod::GET => ImmMap {
+  ): dict<HttpMethod, dict<string, TResponder>> {
+    return dict[
+      HttpMethod::GET => dict[
         '/' =>
           ($_params) ==> 'Hello, world',
         '/user/{user_name}' =>
           ($params) ==> 'Hello, '.$params['user_name'],
-      },
-      HttpMethod::POST => ImmMap {
+      ],
+      HttpMethod::POST => dict[
         '/' => ($_params) ==> 'Hello, POST world',
-      },
-    };
+      ],
+    ];
   }
 }
 

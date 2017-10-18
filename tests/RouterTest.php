@@ -16,12 +16,12 @@ use \Zend\Diactoros\ServerRequest;
 
 final class CoreTest extends \PHPUnit_Framework_TestCase {
   public function expectedMatches(
-  ): array<(string, string, ImmMap<string, string>)> {
+  ): array<(string, string, dict<string, string>)> {
     return [
-      tuple('/foo', 'root file', ImmMap {}),
-      tuple('/foo/', 'root dir', ImmMap {}),
-      tuple('/foo/bar', 'subfile', ImmMap {}),
-      tuple('/foo/herp', 'param subfile', ImmMap { 'bar' => 'herp'}),
+      tuple('/foo', 'root file', dict[]),
+      tuple('/foo/', 'root dir', dict[]),
+      tuple('/foo/bar', 'subfile', dict[]),
+      tuple('/foo/herp', 'param subfile', dict['bar' => 'herp']),
     ];
   }
 
@@ -31,14 +31,14 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
   public function testMatchesPattern(
     string $in,
     string $expected_responder,
-    ImmMap<string, string> $expected_data,
+    dict<string, string> $expected_data,
   ): void {
     list($actual_responder, $actual_data) =
       $this->getRouter()->routeRequest(HttpMethod::GET, $in);
     $this->assertSame($expected_responder, $actual_responder);
     $this->assertEquals(
-      $expected_data->toArray(),
-      $actual_data->toArray(),
+      $expected_data,
+      $actual_data,
     );
   }
 
@@ -48,7 +48,7 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
   public function testPsr7Support(
     string $path,
     string $_expected_responder,
-    ImmMap<string, string> $_expected_data,
+    dict<string, string> $_expected_data,
   ): void {
     $router = $this->getRouter();
     list($direct_responder, $direct_data) = $router->routeRequest(
@@ -89,23 +89,23 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
   public function testMethodNotAllowed(): void {
     $this->getRouter()->routeRequest(HttpMethod::POST, '/foo');
   }
-  
+
   public function testCovariantTResponder(): void {
     $router = $this->getRouter();
     $this->_testCovariantTResponder($router, $router);
   }
-  
+
   public function _testCovariantTResponder(BaseRouter<arraykey> $_, BaseRouter<string> $_): void {}
 
   <<__Memoize>>
   private function getRouter(): TestRouter<string> {
     return new TestRouter(
-      ImmMap {
+      dict[
         '/foo' => 'root file',
         '/foo/' => 'root dir',
         '/foo/bar' => 'subfile',
         '/foo/{bar}' => 'param subfile',
-      },
+      ],
     );
   }
 }

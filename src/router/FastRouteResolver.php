@@ -17,7 +17,7 @@ final class FastRouteResolver<+TResponder> implements IResolver<TResponder>{
   private \FastRoute\Dispatcher $impl;
 
   public function __construct(
-    ImmMap<HttpMethod, ImmMap<string, TResponder>> $map,
+    dict<HttpMethod, dict<string, TResponder>> $map,
     ?string $cache_file,
   ) {
     if ($cache_file !== null) {
@@ -65,7 +65,7 @@ final class FastRouteResolver<+TResponder> implements IResolver<TResponder>{
   }
 
   private static function addRoutesToCollector(
-    ImmMap<HttpMethod, ImmMap<string, TResponder>> $map,
+    dict<HttpMethod, dict<string, TResponder>> $map,
     \FastRoute\RouteCollector $r,
   ): void {
     foreach ($map as $method => $routes) {

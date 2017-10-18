@@ -11,22 +11,22 @@
 
 namespace Facebook\HackRouter;
 
+use namespace HH\Lib\{C, Dict};
+
 abstract class RequestParametersBase {
-  private ImmMap<string, RequestParameter> $requiredSpecs;
-  private ImmMap<string, RequestParameter> $optionalSpecs;
+  private dict<string, RequestParameter> $requiredSpecs;
+  private dict<string, RequestParameter> $optionalSpecs;
 
   public function __construct(
     Traversable<RequestParameter> $required_specs,
     Traversable<RequestParameter> $optional_specs,
-    protected ImmMap<string, string> $values,
+    protected dict<string, string> $values,
   ) {
-    $spec_vector_to_map = $specs ==> {
-      $map = Map { };
-      foreach ($specs as $spec) {
-        $map[$spec->getName()] = $spec;
-      }
-      return $map->immutable();
-    };
+    $spec_vector_to_map = $specs ==> Dict\pull(
+      $specs,
+      $it ==> $it,
+      $it ==> $it->getName(),
+    );
 
     $this->requiredSpecs = $spec_vector_to_map($required_specs);
     $this->optionalSpecs = $spec_vector_to_map($optional_specs);
@@ -37,7 +37,7 @@ abstract class RequestParametersBase {
     string $name,
   ): T {
     invariant(
-      $this->requiredSpecs->containsKey($name),
+      C\contains_key($this->requiredSpecs, $name),
       '%s is not a required parameter',
       $name,
     );
@@ -53,7 +53,7 @@ abstract class RequestParametersBase {
     string $name,
   ): T {
     invariant(
-      $this->optionalSpecs->containsKey($name),
+      C\contains_key($this->optionalSpecs, $name),
       '%s is not an optional parameter',
       $name,
     );
@@ -65,11 +65,11 @@ abstract class RequestParametersBase {
   }
 
   final private static function getSpec<T as RequestParameter>(
-    ImmMap<string, RequestParameter> $specs,
+    dict<string, RequestParameter> $specs,
     classname<T> $class,
     string $name,
   ): T {
-    $spec = $specs->at($name);
+    $spec = $specs[$name];
     invariant(
       /* HH_FIXME[4162] instanceof is too restrictive on classname*/
       $spec instanceof $class,
@@ -86,7 +86,7 @@ abstract class RequestParametersBase {
     string $name,
   ): T {
     $spec = $this->getRequiredSpec($class, $name);
-    $value = $this->values->at($name);
+    $value = $this->values[$name];
     return $spec->assert($value);
   }
 
@@ -95,10 +95,10 @@ abstract class RequestParametersBase {
     string $name,
   ): ?T {
     $spec = $this->getOptionalSpec($class, $name);
-    if (!$this->values->containsKey($name)) {
+    if (!C\contains_key($this->values, $name)) {
       return null;
     }
-    $value = $this->values->at($name);
+    $value = $this->values[$name];
     return $spec->assert($value);
   }
 }

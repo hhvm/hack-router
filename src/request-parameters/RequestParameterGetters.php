@@ -11,6 +11,8 @@
 
 namespace Facebook\HackRouter;
 
+use namespace HH\Lib\C;
+
 trait RequestParameterGetters {
   require extends RequestParametersBase;
 
@@ -74,9 +76,9 @@ trait RequestParameterGetters {
       $class,
       $spec->getEnumName(),
     );
-    if (!$this->values->containsKey($name)) {
+    if (!C\contains_key($this->values, $name)) {
       return null;
     }
-    return $spec->assert($this->values->at($name));
+    return $spec->assert($this->values[$name]);
   }
 }
