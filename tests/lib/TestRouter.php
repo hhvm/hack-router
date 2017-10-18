@@ -11,12 +11,16 @@
 
 namespace Facebook\HackRouter\Tests;
 
-use Facebook\HackRouter\BaseRouter;
-use Facebook\HackRouter\HttpMethod;
+use type Facebook\HackRouter\{
+  BaseRouter,
+  HttpMethod,
+  IResolver,
+};
 
 final class TestRouter<T> extends BaseRouter<T> {
   public function __construct(
     private dict<string, T> $routes,
+    private ?IResolver<T> $resolver = null,
   ) {
   }
 
@@ -26,5 +30,14 @@ final class TestRouter<T> extends BaseRouter<T> {
     return dict[
       HttpMethod::GET => $this->routes,
     ];
+  }
+
+  <<__Override>>
+  protected function getResolver(): IResolver<T> {
+    $r = $this->resolver;
+    if ($r === null) {
+      return parent::getResolver();
+    }
+    return $r;
   }
 }

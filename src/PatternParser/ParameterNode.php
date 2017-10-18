@@ -40,4 +40,16 @@ final class ParameterNode implements Node {
       $this->getRegexp(),
     );
   }
+
+  public function asRegexp(string $delimiter): string {
+    $re = $this->getRegexp();
+    if ($re === null) {
+      $re = '[^/]+';
+    }
+    return '(?<'.preg_quote($this->getName(), $delimiter).'>'.$re.')';
+  }
+
+  public function getParameterNames(): keyset<string> {
+    return keyset[$this->getName()];
+  }
 }

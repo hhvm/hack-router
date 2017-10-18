@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter\PatternParser;
 
-use namespace HH\Lib\{Str, Vec};
+use namespace HH\Lib\{Keyset, Str, Vec};
 
 final class PatternNode implements Node {
   public function __construct(
@@ -28,5 +28,17 @@ final class PatternNode implements Node {
      |> Vec\map($$, $child ==> $child->_toStringForDebug())
      |> Str\join($$, ', ')
      |> '['.$$.']';
+  }
+
+  public function asRegexp(string $delimiter): string {
+    return $this->children
+      |> Vec\map($$, $child ==> $child->asRegexp($delimiter))
+      |> Str\join($$, '');
+  }
+
+  public function getParameterNames(): keyset<string> {
+    return $this->children
+     |> Vec\map($$, $child ==> $child->getParameterNames())
+     |> Keyset\flatten($$);
   }
 }

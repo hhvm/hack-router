@@ -24,4 +24,12 @@ final class LiteralNode implements Node {
   public function _toStringForDebug(): string {
     return var_export($this->getText(), true);
   }
+
+  public function asRegexp(string $delimiter): string {
+    return preg_quote($this->getText(), $delimiter);
+  }
+
+  public function getParameterNames(): keyset<string> {
+    return keyset[];
+  }
 }

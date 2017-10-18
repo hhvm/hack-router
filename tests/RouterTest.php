@@ -13,8 +13,16 @@ namespace Facebook\HackRouter;
 
 use \Facebook\HackRouter\Tests\TestRouter;
 use \Zend\Diactoros\ServerRequest;
+use function Facebook\FBExpect\expect;
 
-final class CoreTest extends \PHPUnit_Framework_TestCase {
+final class RouterTest extends \PHPUnit_Framework_TestCase {
+  const dict<string, string> MAP = dict[
+    '/foo' => 'root file',
+    '/foo/' => 'root dir',
+    '/foo/bar' => 'subfile',
+    '/foo/{bar}' => 'param subfile',
+  ];
+
   public function expectedMatches(
   ): array<(string, string, dict<string, string>)> {
     return [
@@ -23,6 +31,24 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
       tuple('/foo/bar', 'subfile', dict[]),
       tuple('/foo/herp', 'param subfile', dict['bar' => 'herp']),
     ];
+  }
+
+  public function expectedMatchesWithResolvers(
+  ): array<(string, IResolver<string>, string, string, dict<string, string>)> {
+    $map = dict[HttpMethod::GET => self::MAP];
+    $resolvers = dict[
+      'fastroute' => new FastRouteResolver($map, null),
+      'simple regexp' => new SimpleRegexpResolver($map),
+    ];
+
+    $out = [];
+    $examples = $this->expectedMatches();
+    foreach ($resolvers as $name => $resolver) {
+      foreach ($examples as $ex) {
+        $out[] = tuple($name, $resolver, $ex[0], $ex[1], $ex[2]);
+      }
+    }
+    return $out;
   }
 
   /**
@@ -35,11 +61,23 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
   ): void {
     list($actual_responder, $actual_data) =
       $this->getRouter()->routeRequest(HttpMethod::GET, $in);
-    $this->assertSame($expected_responder, $actual_responder);
-    $this->assertEquals(
-      $expected_data,
-      $actual_data,
-    );
+    expect($actual_responder)->toBeSame($expected_responder);
+    expect($actual_data)->toBeSame($expected_data);
+  }
+
+  /**
+   * @dataProvider expectedMatchesWithResolvers
+   */
+  public function testAllResolvers(
+    string $resolver_name,
+    IResolver<string> $resolver,
+    string $in,
+    string $expected_responder,
+    dict<string, string> $expected_data,
+  ): void {
+    list($responder, $data) = $resolver->resolve(HttpMethod::GET, $in);
+    expect($responder)->toBeSame($expected_responder);
+    expect($data)->toBeSame($expected_data);
   }
 
   /**
@@ -97,15 +135,9 @@ final class CoreTest extends \PHPUnit_Framework_TestCase {
 
   public function _testCovariantTResponder(BaseRouter<arraykey> $_, BaseRouter<string> $_): void {}
 
-  <<__Memoize>>
-  private function getRouter(): TestRouter<string> {
-    return new TestRouter(
-      dict[
-        '/foo' => 'root file',
-        '/foo/' => 'root dir',
-        '/foo/bar' => 'subfile',
-        '/foo/{bar}' => 'param subfile',
-      ],
-    );
+
+  private function getRouter(
+  ): TestRouter<string> {
+    return new TestRouter(self::MAP);
   }
 }
