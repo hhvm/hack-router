@@ -48,8 +48,4 @@ final class ParameterNode implements Node {
     }
     return '(?<'.preg_quote($this->getName(), $delimiter).'>'.$re.')';
   }
-
-  public function getParameterNames(): keyset<string> {
-    return keyset[$this->getName()];
-  }
 }

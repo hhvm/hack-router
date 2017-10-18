@@ -35,10 +35,4 @@ final class PatternNode implements Node {
       |> Vec\map($$, $child ==> $child->asRegexp($delimiter))
       |> Str\join($$, '');
   }
-
-  public function getParameterNames(): keyset<string> {
-    return $this->children
-     |> Vec\map($$, $child ==> $child->getParameterNames())
-     |> Keyset\flatten($$);
-  }
 }
