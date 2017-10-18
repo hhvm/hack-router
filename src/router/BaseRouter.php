@@ -15,10 +15,6 @@ abstract class BaseRouter<+TResponder> {
   abstract protected function getRoutes(
   ): dict<HttpMethod, dict<string, TResponder>>;
 
-  protected function getCacheFilePath(): ?string {
-    return null;
-  }
-
   final public function routeRequest(
     HttpMethod $method,
     string $path,
@@ -46,7 +42,7 @@ abstract class BaseRouter<+TResponder> {
   protected function getResolver(): IResolver<TResponder> {
     return new FastRouteResolver(
       $this->getRoutes(),
-      $this->getCacheFilePath(),
+      null,
     );
   }
 }
