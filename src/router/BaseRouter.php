@@ -23,25 +23,12 @@ abstract class BaseRouter<+TResponder> {
     HttpMethod $method,
     string $path,
   ): (TResponder, ImmMap<string, string>) {
-    $route = $this->getDispatcher()->dispatch(
-      (string) $method,
+    $resolver = $this->getResolver();
+    list($responder, $params) = $resolver->resolve(
+      $method,
       $path,
     );
-    switch ($route[0]) {
-      case \FastRoute\Dispatcher::NOT_FOUND:
-        throw new NotFoundException();
-      case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        throw new MethodNotAllowedException();
-      case \FastRoute\Dispatcher::FOUND:
-        return tuple(
-          $route[1],
-          (new Map($route[2]))
-            ->map($encoded ==> urldecode($encoded))
-            ->toImmMap(),
-        );
-    }
-
-    throw new UnknownRouterException($route);
+    return tuple($responder, new ImmMap($params));
   }
 
   final public function routePsr7Request(
@@ -57,32 +44,10 @@ abstract class BaseRouter<+TResponder> {
     );
   }
 
-  final private function getDispatcher(): \FastRoute\Dispatcher {
-    $cache_file = $this->getCacheFilePath();
-    if ($cache_file !== null) {
-      $factory = fun('\FastRoute\cachedDispatcher');
-      $options = shape(
-        'cacheFile' => $cache_file,
-        'cacheDisabled' => false,
-      );
-    } else {
-      $factory = fun('\FastRoute\simpleDispatcher');
-      $options = shape();
-    }
-
-    return $factory(
-      $rc ==> $this->addRoutesToCollector($rc),
-      $options,
+  protected function getResolver(): IResolver<TResponder> {
+    return new FastRouteResolver(
+      $this->getRoutes(),
+      $this->getCacheFilePath(),
     );
-  }
-
-  final private function addRoutesToCollector(
-    \FastRoute\RouteCollector $r,
-  ): void {
-    foreach ($this->getRoutes() as $method => $routes) {
-      foreach ($routes as $route => $responder) {
-        $r->addRoute($method, $route, $responder);
-      }
-    }
   }
 }
