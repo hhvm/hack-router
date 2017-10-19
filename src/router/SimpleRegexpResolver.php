@@ -13,11 +13,9 @@ namespace Facebook\HackRouter;
 
 use namespace HH\Lib\{C, Dict};
 
-final class SimpleRegexpResolver<+TResponder> implements IResolver<TResponder>{
+final class SimpleRegexpResolver<+TResponder> implements IResolver<TResponder> {
   private dict<HttpMethod, dict<string, TResponder>> $map;
-  public function __construct(
-    dict<HttpMethod, dict<string, TResponder>> $map,
-  ) {
+  public function __construct(dict<HttpMethod, dict<string, TResponder>> $map) {
     $this->map = Dict\map(
       $map,
       $routes ==> Dict\map_keys(
@@ -40,21 +38,14 @@ final class SimpleRegexpResolver<+TResponder> implements IResolver<TResponder>{
       if (preg_match($regexp, $path, $matches) !== 1) {
         continue;
       }
-      $ret = tuple(
-        $responder,
-        Dict\filter_keys(
-          $matches,
-          $key ==> is_string($key),
-        ),
-      );
+      $ret =
+        tuple($responder, Dict\filter_keys($matches, $key ==> is_string($key)));
       return $ret;
     }
     throw new NotFoundException();
   }
 
-  private static function fastRouteToRegexp(
-    string $fastroute,
-  ): string {
+  private static function fastRouteToRegexp(string $fastroute): string {
     $pattern = PatternParser\Parser::parse($fastroute);
     return '#^'.$pattern->asRegexp('#').'$#';
   }

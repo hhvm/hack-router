@@ -11,8 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-class EnumRequestParameter<T>
-extends TypedUriParameter<T> {
+class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function __construct(
     /* HH_FIXME[2053] */
     private classname<\HH\BuiltinEnum<T>> $enumClass,
@@ -29,7 +28,7 @@ extends TypedUriParameter<T> {
   <<__Override>>
   final public function getUriFragment(T $value): string {
     $class = $this->enumClass;
-    return (string) $class::assert($value);
+    return (string)$class::assert($value);
   }
 
   <<__Override>>

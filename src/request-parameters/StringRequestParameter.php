@@ -11,13 +11,12 @@
 
 namespace Facebook\HackRouter;
 
-enum StringRequestParameterSlashes : string {
+enum StringRequestParameterSlashes: string {
   ALLOW_SLASHES = 'allow';
   WITHOUT_SLASHES = 'no_slashes';
 }
 
-final class StringRequestParameter
-extends TypedUriParameter<string> {
+final class StringRequestParameter extends TypedUriParameter<string> {
   public function __construct(
     private StringRequestParameterSlashes $slashes,
     string $name,
@@ -26,7 +25,7 @@ extends TypedUriParameter<string> {
   }
 
   <<__Override>>
-  public function assert(string $input): string{
+  public function assert(string $input): string {
     if ($this->slashes === StringRequestParameterSlashes::WITHOUT_SLASHES) {
       invariant(
         strpos($input, '/') === false,

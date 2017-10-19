@@ -11,10 +11,9 @@
 
 namespace Facebook\HackRouter;
 
-abstract class TypedUriParameter<T>
-extends UriParameter
-implements TypedRequestParameter<T> {
+abstract class TypedUriParameter<T> extends UriParameter
+  implements TypedRequestParameter<T> {
   public function getUriFragment(T $value): string {
-    return (string) $value;
+    return (string)$value;
   }
 }

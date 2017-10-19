@@ -14,10 +14,7 @@ namespace Facebook\HackRouter\PatternParser;
 use namespace HH\Lib\Str;
 
 final class ParameterNode implements Node {
-  public function __construct(
-    private string $name,
-    private ?string $regexp,
-  ) {
+  public function __construct(private string $name, private ?string $regexp) {
   }
 
   public function getName(): string {
@@ -34,11 +31,7 @@ final class ParameterNode implements Node {
       return '{'.$this->getName().'}';
     }
 
-    return sprintf(
-      '{%s: #%s#}',
-      $this->getName(),
-      $this->getRegexp(),
-    );
+    return sprintf('{%s: #%s#}', $this->getName(), $this->getRegexp());
   }
 
   public function asRegexp(string $delimiter): string {

@@ -15,19 +15,11 @@ trait UriBuilderSetters {
   require extends UriBuilderBase;
 
   final public function setString(string $name, string $value): this {
-    return $this->setValue(
-      StringRequestParameter::class,
-      $name,
-      $value,
-    );
+    return $this->setValue(StringRequestParameter::class, $name, $value);
   }
 
   final public function setInt(string $name, int $value): this {
-    return $this->setValue(
-      IntRequestParameter::class,
-      $name,
-      $value,
-    );
+    return $this->setValue(IntRequestParameter::class, $name, $value);
   }
 
   final public function setEnum<T>(

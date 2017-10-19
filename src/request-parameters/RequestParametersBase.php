@@ -22,11 +22,8 @@ abstract class RequestParametersBase {
     Traversable<RequestParameter> $optional_specs,
     protected dict<string, string> $values,
   ) {
-    $spec_vector_to_map = $specs ==> Dict\pull(
-      $specs,
-      $it ==> $it,
-      $it ==> $it->getName(),
-    );
+    $spec_vector_to_map = $specs ==>
+      Dict\pull($specs, $it ==> $it, $it ==> $it->getName());
 
     $this->requiredSpecs = $spec_vector_to_map($required_specs);
     $this->optionalSpecs = $spec_vector_to_map($optional_specs);
@@ -41,11 +38,7 @@ abstract class RequestParametersBase {
       '%s is not a required parameter',
       $name,
     );
-    return self::getSpec(
-      $this->requiredSpecs,
-      $class,
-      $name,
-    );
+    return self::getSpec($this->requiredSpecs, $class, $name);
   }
 
   final protected function getOptionalSpec<T as RequestParameter>(
@@ -57,11 +50,7 @@ abstract class RequestParametersBase {
       '%s is not an optional parameter',
       $name,
     );
-    return self::getSpec(
-      $this->optionalSpecs,
-      $class,
-      $name,
-    );
+    return self::getSpec($this->optionalSpecs, $class, $name);
   }
 
   final private static function getSpec<T as RequestParameter>(

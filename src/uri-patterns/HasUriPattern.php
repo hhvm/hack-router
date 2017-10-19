@@ -9,8 +9,8 @@
  *
  */
 
- namespace Facebook\HackRouter;
+namespace Facebook\HackRouter;
 
- interface HasUriPattern {
-   public static function getUriPattern(): UriPattern;
- }
+interface HasUriPattern {
+  public static function getUriPattern(): UriPattern;
+}

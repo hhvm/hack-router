@@ -14,7 +14,8 @@ namespace Facebook\HackRouter;
 use namespace HH\Lib\{C, Dict, Str};
 use type Facebook\HackRouter\PrefixMatching\PrefixMap;
 
-final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder> {
+final class PrefixMatchingResolver<+TResponder>
+  implements IResolver<TResponder> {
   public function __construct(
     private dict<HttpMethod, PrefixMap<TResponder>> $map,
   ) {
@@ -23,10 +24,7 @@ final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder>
   public static function fromFlatMap(
     dict<HttpMethod, dict<string, TResponder>> $map,
   ): PrefixMatchingResolver<TResponder> {
-    $map = Dict\map(
-      $map,
-      $flat_map ==> PrefixMap::fromFlatMap($flat_map),
-    );
+    $map = Dict\map($map, $flat_map ==> PrefixMap::fromFlatMap($flat_map));
     return new self($map);
   }
 
@@ -83,10 +81,8 @@ final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder>
         continue;
       }
       try {
-        list($responder, $sub_data) = $this->resolveWithMap(
-          $remaining,
-          $sub->getMap(),
-        );
+        list($responder, $sub_data) =
+          $this->resolveWithMap($remaining, $sub->getMap());
       } catch (NotFoundException $_) {
         continue;
       }

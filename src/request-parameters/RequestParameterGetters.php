@@ -38,10 +38,7 @@ trait RequestParameterGetters {
     string $name,
   ): TValue {
     $value = $this->getEnumImpl(
-      $this->getRequiredSpec(
-        EnumRequestParameter::class,
-        $name,
-      ),
+      $this->getRequiredSpec(EnumRequestParameter::class, $name),
       $class,
       $name,
     );
@@ -54,10 +51,7 @@ trait RequestParameterGetters {
     string $name,
   ): ?TValue {
     return $this->getEnumImpl(
-      $this->getOptionalSpec(
-        EnumRequestParameter::class,
-        $name,
-      ),
+      $this->getOptionalSpec(EnumRequestParameter::class, $name),
       $class,
       $name,
     );

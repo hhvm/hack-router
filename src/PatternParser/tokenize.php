@@ -28,8 +28,5 @@ function tokenize(string $pattern): vec<Token> {
   if ($buffer !== '') {
     $tokens[] = tuple(TokenType::STRING, $buffer);
   }
-  return Vec\filter(
-    $tokens,
-    $t ==> $t !== tuple(TokenType::STRING, ''),
-  );
+  return Vec\filter($tokens, $t ==> $t !== tuple(TokenType::STRING, ''));
 }

@@ -11,11 +11,7 @@
 
 namespace Facebook\HackRouter\PrefixMatching;
 
-use type Facebook\HackRouter\PatternParser\{
-  LiteralNode,
-  Node,
-  Parser,
-};
+use type Facebook\HackRouter\PatternParser\{LiteralNode, Node, Parser};
 use namespace HH\Lib\{C, Dict, Keyset, Str, Vec};
 
 final class PrefixMap<T> {
@@ -38,15 +34,11 @@ final class PrefixMap<T> {
     return $this->regexps;
   }
 
-  public static function fromFlatMap(
-    dict<string, T> $map,
-  ): PrefixMap<T> {
+  public static function fromFlatMap(dict<string, T> $map): PrefixMap<T> {
     $entries = Vec\map_with_key(
       $map,
-      ($pattern, $responder) ==> tuple(
-        Parser::parse($pattern)->getChildren(),
-        $responder,
-      ),
+      ($pattern, $responder) ==>
+        tuple(Parser::parse($pattern)->getChildren(), $responder),
     );
 
     return self::fromFlatMapImpl($entries);
@@ -91,28 +83,24 @@ final class PrefixMap<T> {
             }
             $suffix = Str\strip_prefix($text, $prefix);
             return tuple(
-              Vec\concat(
-                vec[new LiteralNode($suffix)],
-                $nodes,
-              ),
+              Vec\concat(vec[new LiteralNode($suffix)], $nodes),
               $responder,
             );
-          }
-        )
-      ) |> Vec\flatten($$) |> self::fromFlatMapImpl($$)
+          },
+        ),
+      )
+        |> Vec\flatten($$)
+        |> self::fromFlatMapImpl($$),
     );
 
     $by_first = Dict\group_by($regexps, $entry ==> $entry[0]);
     $regexps = Dict\map(
       $by_first,
       $entries ==> $entries
-        |> Vec\map(
-          $$,
-          $entry ==> tuple($entry[1], $entry[2]),
-        )
+        |> Vec\map($$, $entry ==> tuple($entry[1], $entry[2]))
         |> (C\count($$) === 1 && C\is_empty(C\firstx($$)[0]))
           ? new PrefixMapOrResponder(null, C\onlyx($$)[1])
-          : new PrefixMapOrResponder(self::fromFlatMapImpl($$), null)
+          : new PrefixMapOrResponder(self::fromFlatMapImpl($$), null),
     );
 
     return new self($literals, $prefixes, $regexps);
@@ -126,10 +114,7 @@ final class PrefixMap<T> {
     }
     $lens = Vec\map($keys, $key ==> Str\length($key));
     $min = min($lens);
-    invariant(
-      $min !== 0,
-      "Shouldn't have 0-length prefixes",
-    );
+    invariant($min !== 0, "Shouldn't have 0-length prefixes");
     return $keys
       |> Dict\group_by($$, $key ==> Str\slice($key, 0, $min))
       |> Dict\map($$, $vec ==> keyset($vec));
@@ -140,6 +125,7 @@ final class PrefixMap<T> {
       'literals' => $this->literals,
       'prefixes' => Dict\map($this->prefixes, $it ==> $it->getSerializable()),
       'regexps' => Dict\map($this->regexps, $it ==> $it->getSerializable()),
-    ] |> Dict\filter($$, $it ==> !C\is_empty($it));
+    ]
+      |> Dict\filter($$, $it ==> !C\is_empty($it));
   }
 }

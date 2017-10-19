@@ -64,10 +64,7 @@ abstract final class Parser {
       }
 
       if ($type === TokenType::CLOSE_BRACKET) {
-        $tokens = Vec\concat(
-          vec[tuple($type, $text)],
-          $tokens,
-        );
+        $tokens = Vec\concat(vec[tuple($type, $text)], $tokens);
         return tuple(new PatternNode($nodes), $tokens);
       }
 
@@ -97,10 +94,7 @@ abstract final class Parser {
 
     list($type, $text) = C\firstx($tokens);
     if ($type === TokenType::CLOSE_BRACE) {
-      return tuple(
-        new ParameterNode($name, null),
-        $tokens,
-      );
+      return tuple(new ParameterNode($name, null), $tokens);
     }
 
     invariant(
@@ -134,9 +128,6 @@ abstract final class Parser {
       TokenType::CLOSE_BRACE,
     );
 
-    return tuple(
-      new ParameterNode($name, $regexp),
-      $tokens,
-    );
+    return tuple(new ParameterNode($name, $regexp), $tokens);
   }
 }

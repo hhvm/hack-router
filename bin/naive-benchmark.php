@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-require_once(__DIR__.'/../vendor/hh_autoload.php');
+require_once (__DIR__.'/../vendor/hh_autoload.php');
 
 use namespace HH\Lib\{C, Dict, Keyset, Math, Str, Vec};
 
@@ -20,9 +20,7 @@ final class NaiveBenchmark {
     printf(
       "Map has %d entries and %d URIs\n",
       C\count(self::getMap()),
-      self::getMap()
-        |> Vec\map($$, $row ==> C\count($row[1]))
-        |> Math\sum($$),
+      self::getMap() |> Vec\map($$, $row ==> C\count($row[1])) |> Math\sum($$),
     );
     $impls = self::getImplementations();
     self::testImplementations('Cold', $impls);
@@ -30,11 +28,12 @@ final class NaiveBenchmark {
   }
   private static function testImplementations(
     string $run_name,
-    dict<string, (function():IResolver<string>)> $impls,
+    dict<string, (function(): IResolver<string>)> $impls,
   ): void {
     foreach ($impls as $name => $impl) {
       printf("%s run for %s...\n", $run_name, $name);
-      list($init, $lookup, $lookup_per_item) = self::testImplementation($name, $impl);
+      list($init, $lookup, $lookup_per_item) =
+        self::testImplementation($name, $impl);
       printf(
         "... done (init: %0.02fms, lookups: %0.02fms, ".
         "per lookup: %0.02fms, estimated total per request: %0.02fms)\n",
@@ -48,7 +47,7 @@ final class NaiveBenchmark {
 
   private static function testImplementation(
     string $name,
-    (function():IResolver<string>) $impl,
+    (function(): IResolver<string>) $impl,
   ): (float, float, float) {
     $create_start = microtime(true);
     $impl = $impl();
@@ -114,7 +113,7 @@ final class NaiveBenchmark {
   }
 
   private static function getImplementations(
-  ): dict<string, (function():IResolver<string>)> {
+  ): dict<string, (function(): IResolver<string>)> {
     $fast_route_cache = tempnam(sys_get_temp_dir(), 'frcache');
     unlink($fast_route_cache);
 
@@ -123,21 +122,17 @@ final class NaiveBenchmark {
     ];
 
     return dict[
-      'simple regexp' =>
-        () ==> new SimpleRegexpResolver($map),
-      'uncached fastroute' =>
-        () ==> new FastRouteResolver($map, null),
-      'cached fastroute' =>
-        () ==> new FastRouteResolver($map, $fast_route_cache),
-      'uncached prefix match' =>
-        () ==> PrefixMatchingResolver::fromFlatMap($map),
+      'simple regexp' => () ==> new SimpleRegexpResolver($map),
+      'uncached fastroute' => () ==> new FastRouteResolver($map, null),
+      'cached fastroute' => () ==>
+        new FastRouteResolver($map, $fast_route_cache),
+      'uncached prefix match' => () ==>
+        PrefixMatchingResolver::fromFlatMap($map),
       'cached prefix map' => () ==> {
         $prefix_map = apc_fetch(__FUNCTION__);
         if ($prefix_map === false) {
-          $prefix_map = Dict\map(
-            $map,
-            $v ==> PrefixMatching\PrefixMap::fromFlatMap($v),
-          );
+          $prefix_map =
+            Dict\map($map, $v ==> PrefixMatching\PrefixMap::fromFlatMap($v));
           apc_store(__FUNCTION__, $prefix_map);
         }
         return new PrefixMatchingResolver($prefix_map);

@@ -13,7 +13,7 @@ namespace Facebook\HackRouter;
 
 use namespace HH\Lib\Dict;
 
-final class FastRouteResolver<+TResponder> implements IResolver<TResponder>{
+final class FastRouteResolver<+TResponder> implements IResolver<TResponder> {
   private \FastRoute\Dispatcher $impl;
 
   public function __construct(
@@ -31,21 +31,16 @@ final class FastRouteResolver<+TResponder> implements IResolver<TResponder>{
       $options = shape();
     }
 
-    $this->impl = $factory(
-      $rc ==> self::addRoutesToCollector($map, $rc),
-      $options,
-    );
+    $this->impl =
+      $factory($rc ==> self::addRoutesToCollector($map, $rc), $options);
   }
 
   public function resolve(
     HttpMethod $method,
     string $path,
   ): (TResponder, dict<string, string>) {
-    $impl= $this->impl;
-    $route = $impl->dispatch(
-      (string) $method,
-      $path,
-    );
+    $impl = $this->impl;
+    $route = $impl->dispatch((string)$method, $path);
     switch ($route[0]) {
       case \FastRoute\Dispatcher::NOT_FOUND:
         throw new NotFoundException();
@@ -54,10 +49,7 @@ final class FastRouteResolver<+TResponder> implements IResolver<TResponder>{
       case \FastRoute\Dispatcher::FOUND:
         return tuple(
           $route[1],
-          Dict\map(
-            $route[2],
-            $encoded ==> urldecode($encoded),
-          ),
+          Dict\map($route[2], $encoded ==> urldecode($encoded)),
         );
     }
 

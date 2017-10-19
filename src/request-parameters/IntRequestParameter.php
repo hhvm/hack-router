@@ -11,16 +11,11 @@
 
 namespace Facebook\HackRouter;
 
-final class IntRequestParameter
-extends TypedUriParameter<int> {
+final class IntRequestParameter extends TypedUriParameter<int> {
   <<__Override>>
   public function assert(string $input): int {
-    invariant(
-      ctype_digit($input),
-      '`%s` is not a valid int',
-      $input,
-    );
-    return (int) $input;
+    invariant(ctype_digit($input), '`%s` is not a valid int', $input);
+    return (int)$input;
   }
 
   <<__Override>>

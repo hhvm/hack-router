@@ -14,7 +14,7 @@ namespace Facebook\HackRouter;
 // Non-final so you can extend it with additional convenience
 // methods.
 class UriPattern implements HasFastRouteFragment {
-  private Vector<UriPatternPart> $parts = Vector { };
+  private Vector<UriPatternPart> $parts = Vector {};
 
   final public function appendPart(UriPatternPart $part): this {
     $this->parts[] = $part;
@@ -22,9 +22,7 @@ class UriPattern implements HasFastRouteFragment {
   }
 
   final public function getFastRouteFragment(): string {
-    $fragments = $this->parts->map(
-      $part ==> $part->getFastRouteFragment()
-    );
+    $fragments = $this->parts->map($part ==> $part->getFastRouteFragment());
     return implode('', $fragments);
   }
 
@@ -33,11 +31,16 @@ class UriPattern implements HasFastRouteFragment {
   }
 
   final public function getParameters(): ImmVector<UriParameter> {
-    return $this->parts->filter(
-      $x ==> $x instanceof UriParameter
-    )->map(
-      $x ==> { assert($x instanceof UriParameter); return $x; }
-    )->immutable();
+    return $this
+      ->parts
+      ->filter($x ==> $x instanceof UriParameter)
+      ->map(
+        $x ==> {
+          assert($x instanceof UriParameter);
+          return $x;
+        },
+      )
+      ->immutable();
   }
 
   ///// Convenience Methods /////
@@ -73,8 +76,6 @@ class UriPattern implements HasFastRouteFragment {
     classname<\HH\BuiltinEnum<T>> $enum_class,
     string $name,
   ): this {
-    return $this->appendPart(
-      new EnumRequestParameter($enum_class, $name),
-    );
+    return $this->appendPart(new EnumRequestParameter($enum_class, $name));
   }
 }

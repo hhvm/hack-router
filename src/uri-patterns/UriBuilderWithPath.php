@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-interface UriBuilderWithPath  {
+interface UriBuilderWithPath {
   require extends UriBuilderBase;
 
   public function getPath(): string;

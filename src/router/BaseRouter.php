@@ -20,10 +20,7 @@ abstract class BaseRouter<+TResponder> {
     string $path,
   ): (TResponder, dict<string, string>) {
     $resolver = $this->getResolver();
-    return $this->getResolver()->resolve(
-      $method,
-      $path,
-    );
+    return $this->getResolver()->resolve($method, $path);
   }
 
   final public function routePsr7Request(
@@ -33,16 +30,10 @@ abstract class BaseRouter<+TResponder> {
     if ($method === null) {
       throw new MethodNotAllowedException();
     }
-    return $this->routeRequest(
-      $method,
-      $request->getUri()->getPath(),
-    );
+    return $this->routeRequest($method, $request->getUri()->getPath());
   }
 
   protected function getResolver(): IResolver<TResponder> {
-    return new FastRouteResolver(
-      $this->getRoutes(),
-      null,
-    );
+    return new FastRouteResolver($this->getRoutes(), null);
   }
 }

@@ -14,13 +14,11 @@ namespace Facebook\HackRouter;
 abstract class UriBuilderBase {
   protected ImmVector<UriPatternPart> $parts;
   protected ImmMap<string, RequestParameter> $parameters;
-  private Map<string, string> $values = Map { };
+  private Map<string, string> $values = Map {};
 
-  public function __construct(
-    Traversable<UriPatternPart> $parts,
-  ) {
+  public function __construct(Traversable<UriPatternPart> $parts) {
     $this->parts = new ImmVector($parts);
-    $parameters = Map { };
+    $parameters = Map {};
     foreach ($parts as $part) {
       if (!$part instanceof RequestParameter) {
         continue;
@@ -74,10 +72,7 @@ abstract class UriBuilderBase {
       $part !== null,
       "%s is not a valid parameter - expected one of [%s]",
       $name,
-      implode(
-        ', ',
-        $this->parameters->keys()->map($x ==> "'".$x."'"),
-      ),
+      implode(', ', $this->parameters->keys()->map($x ==> "'".$x."'")),
     );
     invariant(
       $part instanceof $parameter_type,

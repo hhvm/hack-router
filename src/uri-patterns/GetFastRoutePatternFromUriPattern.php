@@ -11,7 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-trait GetFastRoutePatternFromUriPattern{
+trait GetFastRoutePatternFromUriPattern {
   require implements HasUriPattern;
 
   final public static function getFastRoutePattern(): string {

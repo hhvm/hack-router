@@ -12,9 +12,7 @@
 namespace Facebook\HackRouter\PatternParser;
 
 final class OptionalNode implements Node {
-  public function __construct(
-    private PatternNode $pattern,
-  ) {
+  public function __construct(private PatternNode $pattern) {
   }
 
   public function getPattern(): PatternNode {

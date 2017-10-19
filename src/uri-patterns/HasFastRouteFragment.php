@@ -12,5 +12,5 @@
 namespace Facebook\HackRouter;
 
 interface HasFastRouteFragment {
-   public function getFastRouteFragment(): string;
- }
+  public function getFastRouteFragment(): string;
+}

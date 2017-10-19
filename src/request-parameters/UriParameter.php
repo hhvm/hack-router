@@ -11,9 +11,7 @@
 
 namespace Facebook\HackRouter;
 
-abstract class UriParameter
-extends RequestParameter
-implements UriPatternPart {
+abstract class UriParameter extends RequestParameter implements UriPatternPart {
   abstract public function getRegExpFragment(): ?string;
 
   final public function getFastRouteFragment(): string {

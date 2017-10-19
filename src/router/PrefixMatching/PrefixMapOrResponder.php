@@ -20,7 +20,7 @@ final class PrefixMapOrResponder<T> {
   ) {
     invariant(
       ($map === null) ^ ($responder === null),
-      'Must specify map *or* responder'
+      'Must specify map *or* responder',
     );
   }
 
@@ -34,19 +34,13 @@ final class PrefixMapOrResponder<T> {
 
   public function getMap(): PrefixMap<T> {
     $map = $this->map;
-    invariant(
-      $map !== null,
-      'Called getMap() when !isMap()',
-    );
+    invariant($map !== null, 'Called getMap() when !isMap()');
     return $map;
   }
 
   public function getResponder(): T {
     $responder = $this->responder;
-    invariant(
-      $responder !== null,
-      'Called getResponder() when !isResponder',
-    );
+    invariant($responder !== null, 'Called getResponder() when !isResponder');
     return $responder;
   }
 
