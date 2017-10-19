@@ -15,6 +15,7 @@ final class LiteralNode implements Node {
   public function __construct(
     private string $text,
   ) {
+    invariant($text !== '', 'No empty literal nodes');
   }
 
   public function getText(): string {

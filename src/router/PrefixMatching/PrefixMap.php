@@ -47,11 +47,7 @@ final class PrefixMap<T> {
     $prefixes = vec[];
     $regexps = vec[];
     foreach ($entries as list($nodes, $responder)) {
-      $node = C\first($nodes);
-      if ($node === null) {
-        $literals[''] = $responder;
-        continue;
-      }
+      $node = C\firstx($nodes);
       $nodes = Vec\drop($nodes, 1);
       if ($node instanceof LiteralNode) {
         if (C\is_empty($nodes)) {
@@ -62,22 +58,6 @@ final class PrefixMap<T> {
       } else {
         $regexps[] = tuple('#'.$node->asRegexp('#').'#', $nodes, $responder);
       }
-    }
-
-    $by_first = $literals;
-    $grouped = self::groupByCommonPrefix(Keyset\keys($literals));
-    $literals = dict[];
-    foreach ($grouped as $prefix => $keys) {
-      if (C\count($keys) === 1) {
-        $key = C\onlyx($keys);
-        $literals[$key] = $by_first[$key];
-        continue;
-      }
-
-      $prefixes = Vec\concat(
-        $prefixes,
-        Vec\map($keys, $key ==> tuple($key, vec[], $by_first[$key])),
-      );
     }
 
     $by_first = Dict\group_by($prefixes, $entry ==> $entry[0]);
@@ -122,46 +102,18 @@ final class PrefixMap<T> {
     return new self($literals, $prefixes, $regexps);
   }
 
-  const int MIN_PREFIX_LENGTH = 2;
-
   public static function groupByCommonPrefix(
     keyset<string> $keys,
   ): dict<string, keyset<string>> {
-    $by_prefix = $keys
-      |> Dict\group_by(
-        $$,
-        $key ==> Str\slice($key, 0, self::MIN_PREFIX_LENGTH),
-      )
-      |> Dict\map(
-        $$,
-        $keys ==> keyset($keys),
-      );
-    foreach ($by_prefix as $prefix => $keys) {
-      if (C\count($keys) === 1) {
-        unset($by_prefix[$prefix]);
-        $key = C\onlyx($keys);
-        $by_prefix[$key] = $keys;
-        continue;
-      }
-      $max_len = Vec\map($keys, $k ==> Str\length($k)) |> max($$);
-      $new_prefix = null;
-      for ($len = self::MIN_PREFIX_LENGTH + 1; $len < $max_len - 1; ++$len) {
-        $new_prefixes = Keyset\map(
-          $keys,
-          $key ==> Str\slice($key, 0, $len),
-        );
-        if (C\count($new_prefixes) > 1) {
-          break;
-        }
-        $new_prefix = C\onlyx($new_prefixes);
-      }
-      if ($new_prefix === null) {
-        continue;
-      }
-      unset($by_prefix[$prefix]);
-      $by_prefix[$new_prefix] = $keys;
-    }
-    return $by_prefix;
+    $lens = Vec\map($keys, $key ==> Str\length($key));
+    $min = min($lens);
+    invariant(
+      $min !== 0,
+      "Shouldn't have 0-length prefixes",
+    );
+    return $keys
+      |> Dict\group_by($$, $key ==> Str\slice($key, 0, $min))
+      |> Dict\map($$, $vec ==> keyset($vec));
   }
 
   public function getSerializable(): mixed where T as string {
