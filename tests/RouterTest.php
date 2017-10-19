@@ -14,13 +14,17 @@ namespace Facebook\HackRouter;
 use \Facebook\HackRouter\Tests\TestRouter;
 use \Zend\Diactoros\ServerRequest;
 use function Facebook\FBExpect\expect;
+use namespace HH\Lib\{C, Str};
 
 final class RouterTest extends \PHPUnit_Framework_TestCase {
   const dict<string, string> MAP = dict[
     '/foo' => 'root file',
     '/foo/' => 'root dir',
     '/foo/bar' => 'subfile',
+    '/foo/bar/{baz}' => 'prefix param subfile',
     '/foo/{bar}' => 'param subfile',
+    '/foo/{bar}/baz' => 'subfile under param',
+    '/foo/{bar}{baz:.+}' => 'subparam',
   ];
 
   public function expectedMatches(
@@ -29,8 +33,15 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/foo', 'root file', dict[]),
       tuple('/foo/', 'root dir', dict[]),
       tuple('/foo/bar', 'subfile', dict[]),
+      tuple('/foo/bar/herp', 'prefix param subfile', dict['baz' => 'herp']),
       tuple('/foo/herp', 'param subfile', dict['bar' => 'herp']),
+      tuple('/foo/herp/baz', 'subfile under param', dict['bar' => 'herp']),
+      tuple('/foo/herp/derp', 'subparam', dict['bar' => 'herp', 'baz' => '/derp']),
     ];
+  }
+
+  public function testCanGetExpatchedMatchesWithResolvers(): void {
+    $_ = $this->expectedMatchesWithResolvers();
   }
 
   public function expectedMatchesWithResolvers(

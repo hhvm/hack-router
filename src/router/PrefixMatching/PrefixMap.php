@@ -59,6 +59,10 @@ final class PrefixMap<T> {
     $prefixes = vec[];
     $regexps = vec[];
     foreach ($entries as list($nodes, $responder)) {
+      if (C\is_empty($nodes)) {
+        $literals[''] = $responder;
+        continue;
+      }
       $node = C\firstx($nodes);
       $nodes = Vec\drop($nodes, 1);
       if ($node instanceof LiteralNode) {
