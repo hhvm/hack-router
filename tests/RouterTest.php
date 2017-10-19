@@ -17,26 +17,28 @@ use function Facebook\FBExpect\expect;
 use namespace HH\Lib\{C, Str};
 
 final class RouterTest extends \PHPUnit_Framework_TestCase {
-  const dict<string, string> MAP = dict[
-    '/foo' => 'root file',
-    '/foo/' => 'root dir',
-    '/foo/bar' => 'subfile',
-    '/foo/bar/{baz}' => 'prefix param subfile',
-    '/foo/{bar}' => 'param subfile',
-    '/foo/{bar}/baz' => 'subfile under param',
-    '/foo/{bar}{baz:.+}' => 'subparam',
+  const keyset<string> MAP = keyset[
+    '/foo',
+    '/foo/',
+    '/foo/bar',
+    '/foo/bar/{baz}',
+    '/foo/{bar}',
+    '/foo/{bar}/baz',
+    '/foo/{bar}{baz:.+}',
+    '/food/{noms}',
   ];
 
   public function expectedMatches(
   ): array<(string, string, dict<string, string>)> {
     return [
-      tuple('/foo', 'root file', dict[]),
-      tuple('/foo/', 'root dir', dict[]),
-      tuple('/foo/bar', 'subfile', dict[]),
-      tuple('/foo/bar/herp', 'prefix param subfile', dict['baz' => 'herp']),
-      tuple('/foo/herp', 'param subfile', dict['bar' => 'herp']),
-      tuple('/foo/herp/baz', 'subfile under param', dict['bar' => 'herp']),
-      tuple('/foo/herp/derp', 'subparam', dict['bar' => 'herp', 'baz' => '/derp']),
+      tuple('/foo', '/foo', dict[]),
+      tuple('/foo/', '/foo/', dict[]),
+      tuple('/foo/bar', '/foo/bar', dict[]),
+      tuple('/foo/bar/herp', '/foo/bar/{baz}', dict['baz' => 'herp']),
+      tuple('/foo/herp', '/foo/{bar}', dict['bar' => 'herp']),
+      tuple('/foo/herp/baz', '/foo/{bar}/baz', dict['bar' => 'herp']),
+      tuple('/foo/herp/derp', '/foo/{bar}{baz:.+}', dict['bar' => 'herp', 'baz' => '/derp']),
+      tuple('/food/burger', '/food/{noms}', dict['noms' => 'burger']),
     ];
   }
 
@@ -46,7 +48,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
 
   public function expectedMatchesWithResolvers(
   ): array<(string, IResolver<string>, string, string, dict<string, string>)> {
-    $map = dict[HttpMethod::GET => self::MAP];
+    $map = dict[HttpMethod::GET => dict(self::MAP)];
     $resolvers = dict[
       'fastroute' => new FastRouteResolver($map, null),
       'simple regexp' => new SimpleRegexpResolver($map),
@@ -150,6 +152,6 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
 
   private function getRouter(
   ): TestRouter<string> {
-    return new TestRouter(self::MAP);
+    return new TestRouter(dict(self::MAP));
   }
 }
