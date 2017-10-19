@@ -26,6 +26,8 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     '/foo/{bar}/baz',
     '/foo/{bar}{baz:.+}',
     '/food/{noms}',
+    '/bar/{herp:\\d+}',
+    '/bar/{herp}',
   ];
 
   public function expectedMatches(
@@ -39,6 +41,9 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/foo/herp/baz', '/foo/{bar}/baz', dict['bar' => 'herp']),
       tuple('/foo/herp/derp', '/foo/{bar}{baz:.+}', dict['bar' => 'herp', 'baz' => '/derp']),
       tuple('/food/burger', '/food/{noms}', dict['noms' => 'burger']),
+      tuple('/bar/123', '/bar/{herp:\\d+}', dict['herp' => '123']),
+      tuple('/bar/derp', '/bar/{herp}', dict['herp' => 'derp']),
+      tuple('/bar/1derp', '/bar/{herp}', dict['herp' => '1derp']),
     ];
   }
 

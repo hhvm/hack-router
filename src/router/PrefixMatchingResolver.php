@@ -67,14 +67,24 @@ final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder>
       }
       $data = Dict\filter_keys($matches, $key ==> is_string($key));
       $sub = $regexps[$regexp];
-      if ($sub->isResponder()) {
-        return tuple($sub->getResponder(), $data);
-      }
+
       $matched = $matches[0];
-      list($responder, $sub_data) = $this->resolveWithMap(
-        Str\strip_prefix($path, $matched),
-        $sub->getMap(),
-      );
+      $remaining = Str\strip_prefix($path, $matched);
+
+      if ($sub->isResponder()) {
+        if ($remaining === '') {
+          return tuple($sub->getResponder(), $data);
+        }
+        continue;
+      }
+      try {
+        list($responder, $sub_data) = $this->resolveWithMap(
+          $remaining,
+          $sub->getMap(),
+        );
+      } catch (NotFoundException $_) {
+        continue;
+      }
       return tuple($responder, Dict\merge($data, $sub_data));
     }
 

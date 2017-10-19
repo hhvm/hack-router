@@ -1,3 +1,4 @@
 tests/ export-ignore
 examples/ export-ignore
+data/ export-ignore
 .hhconfig export-ignore
