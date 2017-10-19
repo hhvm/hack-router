@@ -20,7 +20,25 @@ abstract class BaseRouter<+TResponder> {
     string $path,
   ): (TResponder, dict<string, string>) {
     $resolver = $this->getResolver();
-    return $this->getResolver()->resolve($method, $path);
+    try {
+      return $resolver->resolve($method, $path);
+    } catch (NotFoundException $e) {
+      foreach (HttpMethod::getValues() as $next) {
+        if ($next === $method) {
+          continue;
+        }
+        try {
+          $result = $resolver->resolve($next, $path);
+          if ($method === HttpMethod::HEAD && $next === HttpMethod::GET) {
+            return $result;
+          }
+          throw new MethodNotAllowedException();
+        } catch (NotFoundException $_) {
+          continue;
+        }
+      }
+      throw $e;
+    }
   }
 
   final public function routePsr7Request(
