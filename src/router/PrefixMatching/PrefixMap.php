@@ -26,6 +26,18 @@ final class PrefixMap<T> {
   ) {
   }
 
+  public function getLiterals(): dict<string, T> {
+    return $this->literals;
+  }
+
+  public function getPrefixes(): dict<string, PrefixMap<T>> {
+    return $this->prefixes;
+  }
+
+  public function getRegexps(): dict<string, PrefixMapOrResponder<T>> {
+    return $this->regexps;
+  }
+
   public static function fromFlatMap(
     dict<string, T> $map,
   ): PrefixMap<T> {
@@ -56,7 +68,7 @@ final class PrefixMap<T> {
           $prefixes[] = tuple($node->getText(), $nodes, $responder);
         }
       } else {
-        $regexps[] = tuple('#'.$node->asRegexp('#').'#', $nodes, $responder);
+        $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
       }
     }
 
@@ -102,9 +114,12 @@ final class PrefixMap<T> {
     return new self($literals, $prefixes, $regexps);
   }
 
-  public static function groupByCommonPrefix(
+  private static function groupByCommonPrefix(
     keyset<string> $keys,
   ): dict<string, keyset<string>> {
+    if (C\is_empty($keys)) {
+      return dict[];
+    }
     $lens = Vec\map($keys, $key ==> Str\length($key));
     $min = min($lens);
     invariant(

@@ -11,18 +11,73 @@
 
 namespace Facebook\HackRouter;
 
-use namespace HH\Lib\{C, Dict};
+use namespace HH\Lib\{C, Dict, Str};
+use type Facebook\HackRouter\PrefixMatching\PrefixMap;
 
-final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder>{
+final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder> {
+  private dict<HttpMethod, PrefixMap<TResponder>> $map;
   public function __construct(
     dict<HttpMethod, dict<string, TResponder>> $map,
   ) {
+    $this->map = Dict\map(
+      $map,
+      $flat_map ==> PrefixMap::fromFlatMap($flat_map),
+    );
   }
 
   public function resolve(
     HttpMethod $method,
     string $path,
   ): (TResponder, dict<string, string>) {
+    $map = $this->map[$method] ?? null;
+    if ($map === null) {
+      throw new NotFoundException();
+    }
+
+    return $this->resolveWithMap($path, $map);
+  }
+
+  private function resolveWithMap(
+    string $path,
+    PrefixMap<TResponder> $map,
+  ): (TResponder, dict<string, string>) {
+    $literals = $map->getLiterals();
+    if (C\contains_key($literals, $path)) {
+      return tuple($literals[$path], dict[]);
+    }
+
+    $prefixes = $map->getPrefixes();
+    if (!C\is_empty($prefixes)) {
+      $prefix_len = Str\length(C\first_keyx($prefixes));
+      $prefix = Str\slice($path, 0, $prefix_len);
+      if (C\contains_key($prefixes, $prefix)) {
+        return $this->resolveWithMap(
+          Str\strip_prefix($path, $prefix),
+          $prefixes[$prefix],
+        );
+      }
+    }
+
+    $regexps = $map->getRegexps();
+    foreach ($regexps as $regexp => $sub_map) {
+      $pattern = '#^'.$regexp.'#';
+      $matches = [];
+      if (preg_match($pattern, $path, $matches) !== 1) {
+        continue;
+      }
+      $data = Dict\filter_keys($matches, $key ==> is_string($key));
+      $sub = $regexps[$regexp];
+      if ($sub->isResponder()) {
+        return tuple($sub->getResponder(), $data);
+      }
+      $matched = $matches[0];
+      list($responder, $sub_data) = $this->resolveWithMap(
+        Str\strip_prefix($path, $matched),
+        $sub->getMap(),
+      );
+      return tuple($responder, Dict\merge($data, $sub_data));
+    }
+
     throw new NotFoundException();
   }
 }

@@ -39,6 +39,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     $resolvers = dict[
       'fastroute' => new FastRouteResolver($map, null),
       'simple regexp' => new SimpleRegexpResolver($map),
+      'prefix matching' => new PrefixMatchingResolver($map),
     ];
 
     $out = [];
