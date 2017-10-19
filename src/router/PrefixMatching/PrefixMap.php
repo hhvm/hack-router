@@ -110,7 +110,7 @@ final class PrefixMap<T> {
           $$,
           $entry ==> tuple($entry[1], $entry[2]),
         )
-        |> C\count($$) === 1
+        |> (C\count($$) === 1 && C\is_empty(C\firstx($$)[0]))
           ? new PrefixMapOrResponder(null, C\onlyx($$)[1])
           : new PrefixMapOrResponder(self::fromFlatMapImpl($$), null)
     );

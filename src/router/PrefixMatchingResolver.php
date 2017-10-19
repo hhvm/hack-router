@@ -65,11 +65,11 @@ final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder>
       if (preg_match($pattern, $path, $matches) !== 1) {
         continue;
       }
-      $data = Dict\filter_keys($matches, $key ==> is_string($key));
-      $sub = $regexps[$regexp];
-
       $matched = $matches[0];
       $remaining = Str\strip_prefix($path, $matched);
+
+      $data = Dict\filter_keys($matches, $key ==> is_string($key));
+      $sub = $regexps[$regexp];
 
       if ($sub->isResponder()) {
         if ($remaining === '') {
