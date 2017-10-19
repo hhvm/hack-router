@@ -34,24 +34,31 @@ final class NaiveBenchmark {
   ): void {
     foreach ($impls as $name => $impl) {
       printf("%s run for %s...\n", $run_name, $name);
-      list($init, $lookup) = self::testImplementation($name, $impl);
-      printf("... done (init: %0.02f, lookup: %0.02f)\n", $init, $lookup);
+      list($init, $lookup, $lookup_per_item) = self::testImplementation($name, $impl);
+      printf(
+        "... done (init: %0.02fms, lookup: %0.02fms, per item: %0.02fms)\n",
+        $init * 1000,
+        $lookup * 1000,
+        $lookup_per_item * 1000,
+      );
     }
   }
 
   private static function testImplementation(
     string $name,
     (function():IResolver<string>) $impl,
-  ): (float, float) {
+  ): (float, float, float) {
     $create_start = microtime(true);
     $impl = $impl();
     $create_time = microtime(true) - $create_start;
 
     $map = self::getMap();
     $resolve_time = 0.0;
+    $lookups = 0;
     foreach ($map as $row) {
       list($expected_responder, $examples) = $row;
       foreach ($examples as $uri => $expected_data) {
+        ++$lookups;
         $resolve_start = microtime(true);
         try {
           list($responder, $data) = $impl->resolve(HttpMethod::GET, $uri);
@@ -90,7 +97,7 @@ final class NaiveBenchmark {
       }
     }
 
-    return tuple($create_time, $resolve_time);
+    return tuple($create_time, $resolve_time, $resolve_time / $lookups);
   }
 
   <<__Memoize>>
