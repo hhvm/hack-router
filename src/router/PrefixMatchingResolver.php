@@ -15,14 +15,19 @@ use namespace HH\Lib\{C, Dict, Str};
 use type Facebook\HackRouter\PrefixMatching\PrefixMap;
 
 final class PrefixMatchingResolver<+TResponder> implements IResolver<TResponder> {
-  private dict<HttpMethod, PrefixMap<TResponder>> $map;
   public function __construct(
-    dict<HttpMethod, dict<string, TResponder>> $map,
+    private dict<HttpMethod, PrefixMap<TResponder>> $map,
   ) {
-    $this->map = Dict\map(
+  }
+
+  public static function fromFlatMap(
+    dict<HttpMethod, dict<string, TResponder>> $map,
+  ): PrefixMatchingResolver<TResponder> {
+    $map = Dict\map(
       $map,
       $flat_map ==> PrefixMap::fromFlatMap($flat_map),
     );
+    return new self($map);
   }
 
   public function resolve(

@@ -36,10 +36,12 @@ final class NaiveBenchmark {
       printf("%s run for %s...\n", $run_name, $name);
       list($init, $lookup, $lookup_per_item) = self::testImplementation($name, $impl);
       printf(
-        "... done (init: %0.02fms, lookup: %0.02fms, per item: %0.02fms)\n",
+        "... done (init: %0.02fms, lookups: %0.02fms, ".
+        "per lookup: %0.02fms, estimated total per request: %0.02fms)\n",
         $init * 1000,
         $lookup * 1000,
         $lookup_per_item * 1000,
+        ($init + $lookup_per_item) * 1000,
       );
     }
   }
@@ -128,7 +130,18 @@ final class NaiveBenchmark {
       'cached fastroute' =>
         () ==> new FastRouteResolver($map, $fast_route_cache),
       'uncached prefix match' =>
-        () ==> new PrefixMatchingResolver($map),
+        () ==> PrefixMatchingResolver::fromFlatMap($map),
+      'cached prefix map' => () ==> {
+        $prefix_map = apc_fetch(__FUNCTION__);
+        if ($prefix_map === false) {
+          $prefix_map = Dict\map(
+            $map,
+            $v ==> PrefixMatching\PrefixMap::fromFlatMap($v),
+          );
+          apc_store(__FUNCTION__, $prefix_map);
+        }
+        return new PrefixMatchingResolver($prefix_map);
+      },
     ];
   }
 }
