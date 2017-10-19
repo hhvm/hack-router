@@ -52,6 +52,6 @@ abstract class BaseRouter<+TResponder> {
   }
 
   protected function getResolver(): IResolver<TResponder> {
-    return new FastRouteResolver($this->getRoutes(), null);
+    return PrefixMatchingResolver::fromFlatMap($this->getRoutes());
   }
 }
