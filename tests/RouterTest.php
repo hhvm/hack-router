@@ -29,6 +29,9 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     '/bar/{herp:\\d+}',
     '/bar/{herp}',
     '/unique/{foo}/bar',
+    '/optional_suffix_[foo]',
+    '/optional_suffix[/]',
+    '/optional_suffixes/[herp[/derp]]',
   ];
 
   public function expectedMatches(
@@ -46,6 +49,13 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/bar/derp', '/bar/{herp}', dict['herp' => 'derp']),
       tuple('/bar/1derp', '/bar/{herp}', dict['herp' => '1derp']),
       tuple('/unique/foo/bar', '/unique/{foo}/bar', dict['foo' => 'foo']),
+      tuple('/optional_suffix_', '/optional_suffix_[foo]', dict[]),
+      tuple('/optional_suffix_foo', '/optional_suffix_[foo]', dict[]),
+      tuple('/optional_suffix', '/optional_suffix[/]', dict[]),
+      tuple('/optional_suffix/', '/optional_suffix[/]', dict[]),
+      tuple('/optional_suffixes/', '/optional_suffixes/[herp[/derp]]', dict[]),
+      tuple('/optional_suffixes/herp', '/optional_suffixes/[herp[/derp]]', dict[]),
+      tuple('/optional_suffixes/herp/derp', '/optional_suffixes/[herp[/derp]]', dict[]),
     ];
   }
 
