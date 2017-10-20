@@ -12,6 +12,7 @@
 namespace Facebook\HackRouter;
 
 use namespace HH\Lib\Dict;
+use function Facebook\AutoloadMap\Generated\is_dev;
 
 abstract class BaseRouter<+TResponder> {
   abstract protected function getRoutes(
@@ -55,10 +56,34 @@ abstract class BaseRouter<+TResponder> {
   }
 
   protected function getResolver(): IResolver<TResponder> {
-    $routes = Dict\map(
-      $this->getRoutes(),
-      $method_routes ==> dict($method_routes),
-    );
-    return PrefixMatchingResolver::fromFlatMap($routes);
+    // Don't use <<__Memoize>> because that can be surprising with subclassing
+    static $resolver = null;
+    if ($resolver !== null) {
+      return $resolver;
+    }
+
+
+    if (is_dev()) {
+      $routes = null;
+    } else {
+      $routes = apc_fetch(__FILE__.'/cache');
+      if ($routes === false) {
+        $routes = null;
+      }
+    }
+
+    if ($routes === null) {
+      $routes = Dict\map(
+        $this->getRoutes(),
+        $method_routes ==> PrefixMatching\PrefixMap::fromFlatMap(
+          dict($method_routes),
+        ),
+      );
+
+      if (!is_dev()) {
+        apc_store(__FILE__.'/cache', $routes);
+      }
+    }
+    return new PrefixMatchingResolver($routes);
   }
 }
