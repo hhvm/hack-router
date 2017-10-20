@@ -83,7 +83,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     list($actual_responder, $actual_data) =
       $this->getRouter()->routeRequest(HttpMethod::GET, $in);
     expect($actual_responder)->toBeSame($expected_responder);
-    expect($actual_data)->toBeSame($expected_data);
+    expect(dict($actual_data))->toBeSame($expected_data);
   }
 
   /**
@@ -98,7 +98,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   ): void {
     list($responder, $data) = $resolver->resolve(HttpMethod::GET, $in);
     expect($responder)->toBeSame($expected_responder);
-    expect($data)->toBeSame($expected_data);
+    expect(dict($data))->toBeSame($expected_data);
   }
 
   /**

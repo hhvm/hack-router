@@ -28,18 +28,18 @@ type TResponder = (function(dict<string, string>):string);
 
 final class BaseRouterExample extends BaseRouter<TResponder> {
   protected function getRoutes(
-  ): dict<HttpMethod, dict<string, TResponder>> {
-    return dict[
-      HttpMethod::GET => dict[
+  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
+    return ImmMap {
+      HttpMethod::GET => ImmMap {
         '/' =>
           ($_params) ==> 'Hello, world',
         '/user/{user_name}' =>
           ($params) ==> 'Hello, '.$params['user_name'],
-      ],
-      HttpMethod::POST => dict[
+      },
+      HttpMethod::POST => ImmMap {
         '/' => ($_params) ==> 'Hello, POST world',
-      ],
-    ];
+      },
+    };
   }
 }
 
@@ -62,7 +62,7 @@ function main(): void {
       "%s %s\n\t%s\n",
       $method,
       $path,
-      $responder($params),
+      $responder(dict($params)),
     );
   }
 }

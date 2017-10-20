@@ -85,15 +85,15 @@ final class UriPatternsExample extends BaseRouter<TResponder> {
 
   <<__Override>>
   public function getRoutes(
-  ): dict<HttpMethod, dict<string, TResponder>> {
+  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
     $urls_to_controllers = dict[];
     foreach (self::getControllers() as $controller) {
       $pattern = $controller::getFastRoutePattern();
       $urls_to_controllers[$pattern] = $controller;
     }
-    return dict[
-      HttpMethod::GET => $urls_to_controllers,
-    ];
+    return ImmMap {
+      HttpMethod::GET => new ImmMap($urls_to_controllers),
+    };
   }
 }
 
@@ -116,7 +116,7 @@ function main(): void {
     printf(
       "GET %s\n\t%s\n",
       $path,
-      (new $controller($params))->getResponse(),
+      (new $controller(dict($params)))->getResponse(),
     );
   }
 }

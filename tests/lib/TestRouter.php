@@ -26,10 +26,10 @@ final class TestRouter<T> extends BaseRouter<T> {
 
   <<__Override>>
   protected function getRoutes(
-  ): dict<HttpMethod, dict<string, T>> {
-    return dict[
-      HttpMethod::GET => $this->routes,
-    ];
+  ): ImmMap<HttpMethod, ImmMap<string, T>> {
+    return ImmMap {
+      HttpMethod::GET => new ImmMap($this->routes),
+    };
   }
 
   <<__Override>>
