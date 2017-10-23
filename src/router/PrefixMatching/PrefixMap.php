@@ -115,14 +115,19 @@ final class PrefixMap<T> {
     );
 
     $by_first = Dict\group_by($regexps, $entry ==> $entry[0]);
-    $regexps = Dict\map(
-      $by_first,
-      $entries ==> $entries
-        |> Vec\map($$, $entry ==> tuple($entry[1], $entry[2]))
-        |> (C\count($$) === 1 && C\is_empty(C\firstx($$)[0]))
-          ? new PrefixMapOrResponder(null, C\onlyx($$)[1])
-          : new PrefixMapOrResponder(self::fromFlatMapImpl($$), null),
-    );
+    $regexps = dict[];
+    foreach ($by_first as $first => $entries) {
+      if (C\count($entries) === 1) {
+        list($_, $nodes, $responder) = C\onlyx($entries);
+        $rest = Str\join(Vec\map($nodes, $n ==> $n->asRegexp('#')), '');
+        $regexps[$first.$rest] = new PrefixMapOrResponder(null, $responder);
+        continue;
+      }
+      $regexps[$first] = new PrefixMapOrResponder(
+        self::fromFlatMapImpl(Vec\map($entries, $e ==> tuple($e[1], $e[2]))),
+        null,
+      );
+    }
 
     return new self($literals, $prefixes, $regexps);
   }
