@@ -157,8 +157,18 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     dict<string, string> $expected_data,
   ): void {
     list($responder, $data) = $this->getRouter()->setResolver(
-      $resolver
+      $resolver,
     )->routeRequest(HttpMethod::GET, $in);
+    expect($responder)->toBeSame($expected_responder);
+    expect(dict($data))->toBeSame($expected_data);
+
+    list($responder, $data) = $resolver->resolve(HttpMethod::GET, $in);
+    expect($responder)->toBeSame($expected_responder);
+    expect($data)->toBeSame(dict($data));
+
+    list($responder, $data) = $this->getRouter()->setResolver(
+      $resolver,
+    )->routeRequest(HttpMethod::HEAD, $in);
     expect($responder)->toBeSame($expected_responder);
     expect(dict($data))->toBeSame($expected_data);
   }

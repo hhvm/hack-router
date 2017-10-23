@@ -35,6 +35,7 @@ abstract class BaseRouter<+TResponder> {
         try {
           list($responder, $data) = $resolver->resolve($next, $path);
           if ($method === HttpMethod::HEAD && $next === HttpMethod::GET) {
+            $data = Dict\map($data, $value ==> urldecode($value));
             return tuple($responder, new ImmMap($data));
           }
           throw new MethodNotAllowedException();
