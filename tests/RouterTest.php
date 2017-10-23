@@ -78,7 +78,6 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   public function getAllResolvers(
   ): array<(string, (function(dict<HttpMethod, dict<string, string>>): IResolver<string>))> {
     return [
-      tuple('fastroute', $map ==> new FastRouteResolver($map, null)),
       tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
       tuple('prefix matching', $map ==> PrefixMatchingResolver::fromFlatMap($map)),
     ];

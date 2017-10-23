@@ -123,9 +123,6 @@ final class NaiveBenchmark {
 
     return dict[
       'simple regexp' => () ==> new SimpleRegexpResolver($map),
-      'uncached fastroute' => () ==> new FastRouteResolver($map, null),
-      'cached fastroute' => () ==>
-        new FastRouteResolver($map, $fast_route_cache),
       'uncached prefix match' => () ==>
         PrefixMatchingResolver::fromFlatMap($map),
       'cached prefix map' => () ==> {

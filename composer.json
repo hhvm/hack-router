@@ -4,9 +4,8 @@
   "keywords": ["hack", "router", "routing", "hhvm"],
   "homepage": "https://github.com/hhvm/hack-router",
   "require": {
-    "nikic/fast-route": "^1.0.0 || >0.7 <1.0",
     "hack-psr/psr7-http-message-hhi": "^0.2.0|^1.0.0",
-    "hhvm/hsl": "^0.7",
+    "hhvm/hsl": "^1.0.0rc1|^1.0.0",
     "hhvm/hhvm-autoload": "^1.5.3"
   },
   "autoload": {
