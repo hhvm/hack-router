@@ -32,6 +32,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     '/optional_suffix_[foo]',
     '/optional_suffix[/]',
     '/optional_suffixes/[herp[/derp]]',
+    '/manual/en/{LegacyID}.php',
   ];
 
   public function expectedMatches(
@@ -56,6 +57,16 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/optional_suffixes/', '/optional_suffixes/[herp[/derp]]', dict[]),
       tuple('/optional_suffixes/herp', '/optional_suffixes/[herp[/derp]]', dict[]),
       tuple('/optional_suffixes/herp/derp', '/optional_suffixes/[herp[/derp]]', dict[]),
+      tuple(
+        '/manual/en/foo.php',
+        '/manual/en/{LegacyID}.php',
+        dict['LegacyID' => 'foo'],
+      ),
+      tuple(
+        '/manual/en/foo.bar.php',
+        '/manual/en/{LegacyID}.php',
+        dict['LegacyID' => 'foo.bar'],
+      ),
     ];
   }
 

@@ -11,7 +11,12 @@
 
 namespace Facebook\HackRouter\PrefixMatching;
 
-use type Facebook\HackRouter\PatternParser\{LiteralNode, Node, Parser};
+use type Facebook\HackRouter\PatternParser\{
+  LiteralNode,
+  Node,
+  Parser,
+  ParameterNode,
+};
 use namespace HH\Lib\{C, Dict, Keyset, Str, Vec};
 
 final class PrefixMap<T> {
@@ -63,9 +68,25 @@ final class PrefixMap<T> {
         } else {
           $prefixes[] = tuple($node->getText(), $nodes, $responder);
         }
-      } else {
-        $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
+        continue;
       }
+
+      if ($node instanceof ParameterNode && $node->getRegexp() === null) {
+        $next = C\first($nodes);
+        if (
+          $next instanceof LiteralNode && Str\starts_with($next->getText(), '/')
+        ) {
+          $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
+          continue;
+        }
+      }
+      $regexps[] = tuple(
+        Vec\concat(vec[$node], $nodes)
+        |> Vec\map($$, $n ==> $n->asRegexp('#'))
+        |> Str\join($$, ''),
+        vec[],
+        $responder,
+      );
     }
 
     $by_first = Dict\group_by($prefixes, $entry ==> $entry[0]);

@@ -36,7 +36,6 @@ abstract class BaseRouter<+TResponder> {
           if ($method === HttpMethod::HEAD && $next === HttpMethod::GET) {
             return tuple($responder, new ImmMap($data));
           }
-          var_dump(['matched', $method, $next]);
           throw new MethodNotAllowedException();
         } catch (NotFoundException $_) {
           continue;
