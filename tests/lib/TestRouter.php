@@ -32,6 +32,11 @@ final class TestRouter<T> extends BaseRouter<T> {
     };
   }
 
+  public function setResolver(IResolver<T> $resolver): this {
+    $this->resolver = $resolver;
+    return $this;
+  }
+
   <<__Override>>
   protected function getResolver(): IResolver<T> {
     $r = $this->resolver;

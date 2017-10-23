@@ -14,7 +14,7 @@ namespace Facebook\HackRouter;
 use \Facebook\HackRouter\Tests\TestRouter;
 use \Zend\Diactoros\ServerRequest;
 use function Facebook\FBExpect\expect;
-use namespace HH\Lib\{C, Str};
+use namespace HH\Lib\{C, Dict, Str};
 
 final class RouterTest extends \PHPUnit_Framework_TestCase {
   const keyset<string> MAP = keyset[
@@ -63,23 +63,61 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     $_ = $this->expectedMatchesWithResolvers();
   }
 
+  public function getAllResolvers(
+  ): array<(string, (function(dict<HttpMethod, dict<string, string>>): IResolver<string>))> {
+    return [
+      tuple('fastroute', $map ==> new FastRouteResolver($map, null)),
+      tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
+      tuple('prefix matching', $map ==> PrefixMatchingResolver::fromFlatMap($map)),
+    ];
+  }
+
   public function expectedMatchesWithResolvers(
   ): array<(string, IResolver<string>, string, string, dict<string, string>)> {
     $map = dict[HttpMethod::GET => dict(self::MAP)];
-    $resolvers = dict[
-      'fastroute' => new FastRouteResolver($map, null),
-      'simple regexp' => new SimpleRegexpResolver($map),
-      'prefix matching' => PrefixMatchingResolver::fromFlatMap($map),
-    ];
+    $resolvers = Dict\from_entries($this->getAllResolvers());
 
     $out = [];
     $examples = $this->expectedMatches();
     foreach ($resolvers as $name => $resolver) {
+      $resolver = $resolver($map);
       foreach ($examples as $ex) {
         $out[] = tuple($name, $resolver, $ex[0], $ex[1], $ex[2]);
       }
     }
     return $out;
+  }
+
+  /** @dataProvider getAllResolvers */
+  public function testMethodNotAllowedResponses(
+    string $name,
+    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory
+  ): void {
+    $map = dict[
+      HttpMethod::GET => dict[
+        'getonly' => 'getonly',
+      ],
+      HttpMethod::HEAD => dict[
+        'headonly' => 'headonly',
+      ],
+      HttpMethod::POST => dict[
+        'postonly' => 'postonly',
+      ],
+    ];
+
+    $router = $this->getRouter()->setResolver($factory($map));
+
+    list($responder, $_data) = $router->routeRequest(HttpMethod::HEAD, 'getonly');
+    expect($responder)->toBeSame('getonly');
+    expect(
+      () ==> $router->routeRequest(HttpMethod::GET, 'headonly')
+    )->toThrow(MethodNotAllowedException::class);
+    expect(
+      () ==> $router->routeRequest(HttpMethod::HEAD, 'postonly'),
+    )->toThrow(MethodNotAllowedException::class);
+    expect(
+      () ==> $router->routeRequest(HttpMethod::GET, 'postonly'),
+    )->toThrow(MethodNotAllowedException::class);
   }
 
   /**
