@@ -8,12 +8,6 @@
     "hhvm/hsl": "^1.0.0rc1|^1.0.0",
     "hhvm/hhvm-autoload": "^1.5.3"
   },
-  "autoload": {
-    "classmap": [ "src/" ]
-  },
-  "autoload-dev": {
-    "classmap": [ "tests/" ]
-  },
   "extra": {
     "branch-alias": {
       "dev-master": "1.x-dev"
