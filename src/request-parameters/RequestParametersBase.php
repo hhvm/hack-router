@@ -17,11 +17,14 @@ abstract class RequestParametersBase {
   private dict<string, RequestParameter> $requiredSpecs;
   private dict<string, RequestParameter> $optionalSpecs;
 
+  protected ImmMap<string, string> $values;
+
   public function __construct(
     Traversable<RequestParameter> $required_specs,
     Traversable<RequestParameter> $optional_specs,
-    protected dict<string, string> $values,
+    KeyedTraversable<string, string> $values,
   ) {
+    $this->values = new ImmMap($values);
     $spec_vector_to_map = $specs ==>
       Dict\pull($specs, $it ==> $it, $it ==> $it->getName());
 

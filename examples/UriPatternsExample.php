@@ -41,7 +41,7 @@ abstract class WebController implements HasUriPattern {
   }
 
   public function __construct(
-    dict<string, string> $uri_parameter_values,
+    ImmMap<string, string> $uri_parameter_values,
   ) {
     $this->uriParameters = new RequestParameters(
       static::getUriPattern()->getParameters(),
@@ -116,7 +116,7 @@ function main(): void {
     printf(
       "GET %s\n\t%s\n",
       $path,
-      (new $controller(dict($params)))->getResponse(),
+      (new $controller($params))->getResponse(),
     );
   }
 }
