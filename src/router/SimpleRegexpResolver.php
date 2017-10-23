@@ -30,7 +30,7 @@ final class SimpleRegexpResolver<+TResponder> implements IResolver<TResponder> {
     string $path,
   ): (TResponder, dict<string, string>) {
     if (!C\contains_key($this->map, $method)) {
-      throw new MethodNotAllowedException();
+      throw new NotFoundException();
     }
     $map = $this->map[$method];
     foreach ($map as $regexp => $responder) {

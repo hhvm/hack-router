@@ -184,10 +184,23 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * @expectedException \Facebook\HackRouter\NotFoundException
+   * @dataProvider getAllResolvers
    */
-  public function testNotFound(): void {
-    $this->getRouter()->routeRequest(HttpMethod::GET, '/__404');
+  public function testNotFound(
+    string $_resolver_name,
+    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory,
+   ): void {
+    $router = $this->getRouter()->setResolver($factory(dict[]));
+    expect(
+      () ==> $router->routeRequest(HttpMethod::GET, '/__404'),
+     )->toThrow(NotFoundException::class);
+
+    $router = $this->getRouter()->setResolver($factory(dict[
+      HttpMethod::GET => dict['/foo' => '/foo'],
+    ]));
+    expect(
+      () ==> $router->routeRequest(HttpMethod::GET, '/__404'),
+     )->toThrow(NotFoundException::class);
   }
 
   /**
