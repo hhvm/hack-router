@@ -49,7 +49,7 @@ final class FastRouteResolver<+TResponder> implements IResolver<TResponder> {
       case \FastRoute\Dispatcher::FOUND:
         return tuple(
           $route[1],
-          Dict\map($route[2], $encoded ==> urldecode($encoded)),
+          $route[2],
         );
     }
 

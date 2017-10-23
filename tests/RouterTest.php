@@ -43,6 +43,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/foo/bar', '/foo/bar', dict[]),
       tuple('/foo/bar/herp', '/foo/bar/{baz}', dict['baz' => 'herp']),
       tuple('/foo/herp', '/foo/{bar}', dict['bar' => 'herp']),
+      tuple('/foo/=%3Efoo', '/foo/{bar}', dict['bar' => '=>foo']),
       tuple('/foo/herp/baz', '/foo/{bar}/baz', dict['bar' => 'herp']),
       tuple('/foo/herp/derp', '/foo/{bar}{baz:.+}', dict['bar' => 'herp', 'baz' => '/derp']),
       tuple('/food/burger', '/food/{noms}', dict['noms' => 'burger']),
@@ -155,7 +156,9 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     string $expected_responder,
     dict<string, string> $expected_data,
   ): void {
-    list($responder, $data) = $resolver->resolve(HttpMethod::GET, $in);
+    list($responder, $data) = $this->getRouter()->setResolver(
+      $resolver
+    )->routeRequest(HttpMethod::GET, $in);
     expect($responder)->toBeSame($expected_responder);
     expect(dict($data))->toBeSame($expected_data);
   }
