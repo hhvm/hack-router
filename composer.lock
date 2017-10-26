@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "12aafb3a51d646c4f12219f6afcf8e9e",
+    "content-hash": "71720f557a6fcd3dc35eeffad187a014",
     "packages": [
         {
             "name": "facebook/definition-finder",
@@ -172,16 +172,16 @@
         },
         {
             "name": "hhvm/hsl",
-            "version": "v1.0.0rc1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hsl.git",
-                "reference": "547d41e54d5a997333b871a8016fc51d153ed748"
+                "reference": "99ed4bce2170d12e38654f8502482fcac5b80352"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hsl/zipball/547d41e54d5a997333b871a8016fc51d153ed748",
-                "reference": "547d41e54d5a997333b871a8016fc51d153ed748",
+                "url": "https://api.github.com/repos/hhvm/hsl/zipball/99ed4bce2170d12e38654f8502482fcac5b80352",
+                "reference": "99ed4bce2170d12e38654f8502482fcac5b80352",
                 "shasum": ""
             },
             "require": {
@@ -197,7 +197,7 @@
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "description": "The Hack Standard Library",
-            "time": "2017-10-23T19:23:47+00:00"
+            "time": "2017-10-26T18:38:35+00:00"
         },
         {
             "name": "psr/http-message",
@@ -1703,9 +1703,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "hhvm/hsl": 5
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
