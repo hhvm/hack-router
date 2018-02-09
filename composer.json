@@ -7,8 +7,7 @@
     "hhvm": "^3.23.0",
     "hack-psr/psr7-http-message-hhi": "^0.2.0|^1.0.0",
     "hhvm/hsl": "^1.0.0",
-    "hhvm/hhvm-autoload": "^1.5.3",
-    "hhvm/hhast": "^1.0"
+    "hhvm/hhvm-autoload": "^1.5.3"
   },
   "extra": {
     "branch-alias": {
@@ -19,6 +18,7 @@
     "phpunit/phpunit": "^5.1",
     "91carriage/phpunit-hhi": "^5.1",
     "zendframework/zend-diactoros": "^1.3",
-    "facebook/fbexpect": "^0.4.0"
+    "facebook/fbexpect": "^0.4.0",
+    "hhvm/hhast": "^1.0"
   }
 }
