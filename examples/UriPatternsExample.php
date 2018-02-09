@@ -15,7 +15,7 @@
 
 namespace Facebook\HackRouter\Examples\UrlPatternsExample;
 
-require_once('../vendor/autoload.php');
+require_once(__DIR__.'/../vendor/hh_autoload.php');
 
 use Facebook\HackRouter\{
   BaseRouter,
@@ -52,22 +52,26 @@ abstract class WebController implements HasUriPattern {
 }
 
 final class HomePageController extends WebController {
+  <<__Override>>
   public static function getUriPattern(): UriPattern {
     return (new UriPattern())->literal('/');
   }
 
+  <<__Override>>
   public function getResponse(): string {
     return 'Hello, world';
   }
 }
 
 final class UserPageController extends WebController {
+  <<__Override>>
   public static function getUriPattern(): UriPattern {
     return (new UriPattern())
       ->literal('/users/')
       ->string('user_name');
   }
 
+  <<__Override>>
   public function getResponse(): string {
     return 'Hello, '.$this->getRequestParameters()->getString('user_name');
   }

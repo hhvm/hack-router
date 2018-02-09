@@ -47,7 +47,7 @@ final class ParserTest extends \PHPUnit_Framework_TestCase {
    * @dataProvider getExamplePatterns
    */
   public function testPattern(string $pattern, string $expected): void {
-    expect(PatternParser\Parser::parse($pattern)->_toStringForDebug())
+    expect(PatternParser\Parser::parse($pattern)->toStringForDebug())
       ->toBeSame($expected);
   }
 }

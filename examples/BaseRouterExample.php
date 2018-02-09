@@ -15,7 +15,7 @@
 
 namespace Facebook\HackRouter\Examples\BaseRouterExample;
 
-require_once('../vendor/autoload.php');
+require_once(__DIR__.'/../vendor/hh_autoload.php');
 
 use Facebook\HackRouter\BaseRouter;
 use Facebook\HackRouter\HttpMethod;
@@ -27,6 +27,7 @@ use Facebook\HackRouter\HttpMethod;
 type TResponder = (function(dict<string, string>):string);
 
 final class BaseRouterExample extends BaseRouter<TResponder> {
+  <<__Override>>
   protected function getRoutes(
   ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
     return ImmMap {

@@ -19,8 +19,8 @@ final class OptionalNode implements Node {
     return $this->pattern;
   }
 
-  public function _toStringForDebug(): string {
-    return '?'.$this->pattern->_toStringForDebug();
+  public function toStringForDebug(): string {
+    return '?'.$this->pattern->toStringForDebug();
   }
 
   public function asRegexp(string $delimiter): string {

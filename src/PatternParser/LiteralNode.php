@@ -20,7 +20,7 @@ final class LiteralNode implements Node {
     return $this->text;
   }
 
-  public function _toStringForDebug(): string {
+  public function toStringForDebug(): string {
     return \var_export($this->getText(), true);
   }
 

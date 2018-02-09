@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e5c7426697148c0a6101682db652352",
+    "content-hash": "63432440f57aeb40257fe450b3b9fcc1",
     "packages": [
         {
             "name": "fredemmott/hack-error-suppressor",
@@ -77,6 +77,39 @@
                 "psr7"
             ],
             "time": "2018-02-09T20:54:15+00:00"
+        },
+        {
+            "name": "hhvm/hhast",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hhvm/hhast.git",
+                "reference": "ddd9ec394375922e609d8c88a83142fd3cc89de2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hhvm/hhast/zipball/ddd9ec394375922e609d8c88a83142fd3cc89de2",
+                "reference": "ddd9ec394375922e609d8c88a83142fd3cc89de2",
+                "shasum": ""
+            },
+            "require": {
+                "hhvm": "^3.24.0",
+                "hhvm/hsl": "^1.0.0",
+                "hhvm/type-assert": "^3.1"
+            },
+            "require-dev": {
+                "91carriage/phpunit-hhi": "^5.7",
+                "facebook/fbexpect": "^0.4.0",
+                "facebook/hack-codegen": "~3.0.3",
+                "hhvm/hhvm-autoload": "^1.5",
+                "phpunit/phpunit": "^5.7"
+            },
+            "bin": [
+                "bin/hhast-lint"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2018-02-09T18:24:19+00:00"
         },
         {
             "name": "hhvm/hhvm-autoload",
@@ -155,6 +188,39 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "The Hack Standard Library",
             "time": "2018-02-05T22:10:31+00:00"
+        },
+        {
+            "name": "hhvm/type-assert",
+            "version": "v3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hhvm/type-assert.git",
+                "reference": "8f70814c8268f50e2fa728893d3ad9cad73df398"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hhvm/type-assert/zipball/8f70814c8268f50e2fa728893d3ad9cad73df398",
+                "reference": "8f70814c8268f50e2fa728893d3ad9cad73df398",
+                "shasum": ""
+            },
+            "require": {
+                "hhvm": "^3.23.0",
+                "hhvm/hhvm-autoload": "^1.4",
+                "hhvm/hsl": "^1.0"
+            },
+            "require-dev": {
+                "91carriage/phpunit-hhi": "~5.1",
+                "facebook/fbexpect": "^0.2.0 | ^0.3.0 | ^0.4.0",
+                "phpunit/phpunit": "~5.1"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Convert untyped data to typed data",
+            "keywords": [
+                "TypeAssert",
+                "hack"
+            ],
+            "time": "2018-02-09T17:05:23+00:00"
         },
         {
             "name": "psr/http-message",

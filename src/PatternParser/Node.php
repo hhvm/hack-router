@@ -12,6 +12,6 @@
 namespace Facebook\HackRouter\PatternParser;
 
 interface Node {
-  public function _toStringForDebug(): string;
+  public function toStringForDebug(): string;
   public function asRegexp(string $delimiter): string;
 }

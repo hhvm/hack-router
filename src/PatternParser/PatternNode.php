@@ -21,9 +21,9 @@ final class PatternNode implements Node {
     return $this->children;
   }
 
-  public function _toStringForDebug(): string {
+  public function toStringForDebug(): string {
     return $this->children
-      |> Vec\map($$, $child ==> $child->_toStringForDebug())
+      |> Vec\map($$, $child ==> $child->toStringForDebug())
       |> Str\join($$, ', ')
       |> '['.$$.']';
   }

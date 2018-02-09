@@ -235,10 +235,13 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
 
   public function testCovariantTResponder(): void {
     $router = $this->getRouter();
-    $this->_testCovariantTResponder($router, $router);
+    $this->typecheckCovariantTResponder($router, $router);
   }
 
-  public function _testCovariantTResponder(BaseRouter<arraykey> $_, BaseRouter<string> $_): void {}
+  private function typecheckCovariantTResponder(
+    BaseRouter<arraykey> $_,
+    BaseRouter<string> $_,
+  ): void {}
 
 
   private function getRouter(

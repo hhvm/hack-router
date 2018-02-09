@@ -25,7 +25,7 @@ final class ParameterNode implements Node {
     return $this->regexp;
   }
 
-  public function _toStringForDebug(): string {
+  public function toStringForDebug(): string {
     $re = $this->getRegexp();
     if ($re === null) {
       return '{'.$this->getName().'}';
