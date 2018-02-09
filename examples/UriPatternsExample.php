@@ -113,7 +113,7 @@ function main(): void {
       HttpMethod::GET,
       $path,
     );
-    printf(
+    \printf(
       "GET %s\n\t%s\n",
       $path,
       (new $controller($params))->getResponse(),

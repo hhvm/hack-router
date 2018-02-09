@@ -19,7 +19,7 @@ final class UriPatternLiteral implements UriPatternPart {
     $value = $this->value;
     // No escaping required :)
     invariant(
-      strpos($value, '{') === false,
+      \strpos($value, '{') === false,
       '{ is not valid in a URI - see nikic/FastRoute#6',
     );
     return $value;

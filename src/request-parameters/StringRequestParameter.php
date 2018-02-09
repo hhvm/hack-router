@@ -28,7 +28,7 @@ final class StringRequestParameter extends TypedUriParameter<string> {
   public function assert(string $input): string {
     if ($this->slashes === StringRequestParameterSlashes::WITHOUT_SLASHES) {
       invariant(
-        strpos($input, '/') === false,
+        \strpos($input, '/') === false,
         'Parameter %s contains slashes',
         $this->getName(),
       );

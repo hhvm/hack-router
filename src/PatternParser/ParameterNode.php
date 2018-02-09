@@ -31,7 +31,7 @@ final class ParameterNode implements Node {
       return '{'.$this->getName().'}';
     }
 
-    return sprintf('{%s: #%s#}', $this->getName(), $this->getRegexp());
+    return \sprintf('{%s: #%s#}', $this->getName(), $this->getRegexp());
   }
 
   public function asRegexp(string $delimiter): string {
@@ -39,6 +39,6 @@ final class ParameterNode implements Node {
     if ($re === null) {
       $re = '[^/]+';
     }
-    return '(?<'.preg_quote($this->getName(), $delimiter).'>'.$re.')';
+    return '(?<'.\preg_quote($this->getName(), $delimiter).'>'.$re.')';
   }
 }

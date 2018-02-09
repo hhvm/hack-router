@@ -39,7 +39,7 @@ abstract class UriBuilderBase {
       invariant(
         $part instanceof RequestParameter,
         'expecting all UriPatternParts to be literals or parameters, got %s',
-        get_class($part),
+        \get_class($part),
       );
 
       if ($uri === '') {
@@ -55,7 +55,7 @@ abstract class UriBuilderBase {
       $uri .= $this->values->at($name);
     }
     invariant(
-      substr($uri, 0, 1) === '/',
+      \substr($uri, 0, 1) === '/',
       "Path '%s' does not start with '/'",
       $uri,
     );
@@ -72,14 +72,14 @@ abstract class UriBuilderBase {
       $part !== null,
       "%s is not a valid parameter - expected one of [%s]",
       $name,
-      implode(', ', $this->parameters->keys()->map($x ==> "'".$x."'")),
+      \implode(', ', $this->parameters->keys()->map($x ==> "'".$x."'")),
     );
     invariant(
       $part instanceof $parameter_type,
       'Expected %s to be a %s, got a %s',
       $name,
       $parameter_type,
-      get_class($part),
+      \get_class($part),
     );
     invariant(
       !$this->values->containsKey($name),

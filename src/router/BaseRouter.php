@@ -25,7 +25,7 @@ abstract class BaseRouter<+TResponder> {
     $resolver = $this->getResolver();
     try {
       list($responder, $data) = $resolver->resolve($method, $path);
-      $data = Dict\map($data, $value ==> urldecode($value));
+      $data = Dict\map($data, $value ==> \urldecode($value));
       return tuple($responder, new ImmMap($data));
     } catch (NotFoundException $e) {
       foreach (HttpMethod::getValues() as $next) {
@@ -35,7 +35,7 @@ abstract class BaseRouter<+TResponder> {
         try {
           list($responder, $data) = $resolver->resolve($next, $path);
           if ($method === HttpMethod::HEAD && $next === HttpMethod::GET) {
-            $data = Dict\map($data, $value ==> urldecode($value));
+            $data = Dict\map($data, $value ==> \urldecode($value));
             return tuple($responder, new ImmMap($data));
           }
           throw new MethodNotAllowedException();
@@ -67,7 +67,7 @@ abstract class BaseRouter<+TResponder> {
     if (is_dev()) {
       $routes = null;
     } else {
-      $routes = apc_fetch(__FILE__.'/cache');
+      $routes = \apc_fetch(__FILE__.'/cache');
       if ($routes === false) {
         $routes = null;
       }
@@ -82,7 +82,7 @@ abstract class BaseRouter<+TResponder> {
       );
 
       if (!is_dev()) {
-        apc_store(__FILE__.'/cache', $routes);
+        \apc_store(__FILE__.'/cache', $routes);
       }
     }
     return new PrefixMatchingResolver($routes);

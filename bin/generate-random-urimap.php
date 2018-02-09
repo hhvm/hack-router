@@ -29,20 +29,20 @@ final class RandomUriMapGenerator {
       |> Vec\flatten($$)
       |> Vec\filter($$, $row ==> !Str\starts_with($row[0], '/{'))
       |> Vec\sort_by($$, $row ==> $row[0]);
-    print (json_encode($map, JSON_PRETTY_PRINT)."\n");
+    print (\json_encode($map, \JSON_PRETTY_PRINT)."\n");
   }
 
   private static function generateExampleInner(
     int $depth,
   ): vec<self::TGeneratedExample> {
     $base = self::generateExampleComponent();
-    $child_free = random_int(0, 5) <= $depth;
+    $child_free = \random_int(0, 5) <= $depth;
     if ($child_free) {
       return vec[$base];
     }
 
     $children = Vec\map(
-      Vec\range(2, random_int(2, max(2, intdiv(10, $depth + 1)))),
+      Vec\range(2, \random_int(2, \max(2, \intdiv(10, $depth + 1)))),
       $_ ==> self::generateExampleInner($depth + 1),
     )
       |> Vec\flatten($$)
@@ -81,10 +81,10 @@ final class RandomUriMapGenerator {
   ): string {
     $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
     $alphabet_max = Str\length($alphabet) - 1;
-    $len = random_int($min_length, $max_length);
+    $len = \random_int($min_length, $max_length);
     $out = '';
     for ($i = 0; $i < $len; ++$i) {
-      $out .= $alphabet[random_int(0, $alphabet_max)];
+      $out .= $alphabet[\random_int(0, $alphabet_max)];
     }
     return $out;
   }
@@ -94,13 +94,13 @@ final class RandomUriMapGenerator {
   const string DEFAULT_REGEXP_PREFIX = 'b_';
 
   private static function generateExampleComponent(): self::TGeneratedExample {
-    switch (random_int(0, 10)) {
+    switch (\random_int(0, 10)) {
       // Component with default regexp
       case 0:
         $name = self::DEFAULT_REGEXP_PREFIX.self::randomAlnum(5, 15);
         return tuple(
           '/{'.$name.'}/',
-          Vec\fill(random_int(1, 5), '')
+          Vec\fill(\random_int(1, 5), '')
           |> Keyset\map($$, $_ ==> self::randomAlnum(5, 15))
           |> Dict\pull($$, $v ==> dict[$name => $v], $v ==> '/'.$v.'/'),
         );
@@ -109,8 +109,8 @@ final class RandomUriMapGenerator {
         $name = self::INT_REGEXP_PREFIX.self::randomAlnum(5, 15);
         return tuple(
           '/{'.$name.':\\d+}/',
-          Vec\fill(random_int(1, 5), '')
-          |> Keyset\map($$, $_ ==> (string)random_int(1, PHP_INT_MAX))
+          Vec\fill(\random_int(1, 5), '')
+          |> Keyset\map($$, $_ ==> (string)\random_int(1, \PHP_INT_MAX))
           |> Dict\pull($$, $v ==> dict[$name => $v], $v ==> '/'.$v.'/'),
         );
       // Literal

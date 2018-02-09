@@ -139,7 +139,7 @@ final class PrefixMap<T> {
       return dict[];
     }
     $lens = Vec\map($keys, $key ==> Str\length($key));
-    $min = min($lens);
+    $min = \min($lens);
     invariant($min !== 0, "Shouldn't have 0-length prefixes");
     return $keys
       |> Dict\group_by($$, $key ==> Str\slice($key, 0, $min))

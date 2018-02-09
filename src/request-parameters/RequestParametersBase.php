@@ -68,7 +68,7 @@ abstract class RequestParametersBase {
       'Expected %s to be a %s, got %s',
       $name,
       $class,
-      get_class($spec),
+      \get_class($spec),
     );
     return $spec;
   }

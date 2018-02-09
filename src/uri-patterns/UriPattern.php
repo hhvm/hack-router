@@ -23,7 +23,7 @@ class UriPattern implements HasFastRouteFragment {
 
   final public function getFastRouteFragment(): string {
     $fragments = $this->parts->map($part ==> $part->getFastRouteFragment());
-    return implode('', $fragments);
+    return \implode('', $fragments);
   }
 
   final public function getParts(): ImmVector<UriPatternPart> {

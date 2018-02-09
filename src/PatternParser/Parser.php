@@ -21,7 +21,7 @@ abstract final class Parser {
     invariant(
       C\is_empty($tokens),
       'Tokens remaining at end of expression: %s',
-      var_export($tokens, true),
+      \var_export($tokens, true),
     );
     return $node;
   }

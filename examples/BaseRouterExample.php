@@ -58,7 +58,7 @@ function main(): void {
     list($method, $path) = $input;
 
     list($responder, $params) = $router->routeRequest($method, $path);
-    printf(
+    \printf(
       "%s %s\n\t%s\n",
       $method,
       $path,
