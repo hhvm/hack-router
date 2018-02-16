@@ -1,8 +1,7 @@
 Hack-Router [![Build Status](https://travis-ci.org/hhvm/hack-router.svg?branch=master)](https://travis-ci.org/hhvm/hack-router)
 ===========
 
-Type-safe request routing, parameter retrieval, and link generation built on
-top of `nikic/fast-route`, with PSR-7 support.
+Fast, type-safe request routing, parameter retrieval, and link generation, with PSR-7 support.
 
 Components
 ==========
@@ -18,7 +17,7 @@ Exception classes representing common situations in HTTP applications:
 BaseRouter
 ----------
 
-A simple typed request router, built on top of `nikic/fast-route`. Example:
+A simple typed request router. Example:
 
 ```Hack
 <?hh // strict
