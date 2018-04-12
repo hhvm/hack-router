@@ -109,4 +109,4 @@ We welcome GitHub issues and pull requests - please see CONTRIBUTING.md for deta
 License
 =======
 
-hack-router is BSD-licensed. We also provide an additional patent grant.
+hack-router is MIT-licensed.
