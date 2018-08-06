@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "a5b69254705e2c582287bf930b35c356",
@@ -350,40 +350,73 @@
             "time": "2018-05-09T17:30:06+00:00"
         },
         {
-            "name": "hhvm/hhast",
-            "version": "v3.26.0",
+            "name": "facebook/hh-clilib",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hhvm/hhast.git",
-                "reference": "a34b2650c0b982dac81bca318fa845fbed571063"
+                "url": "https://github.com/hhvm/hh-clilib.git",
+                "reference": "2772c82a8f5fc715d5a2fbe801563f36fdda9943"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hhast/zipball/a34b2650c0b982dac81bca318fa845fbed571063",
-                "reference": "a34b2650c0b982dac81bca318fa845fbed571063",
+                "url": "https://api.github.com/repos/hhvm/hh-clilib/zipball/2772c82a8f5fc715d5a2fbe801563f36fdda9943",
+                "reference": "2772c82a8f5fc715d5a2fbe801563f36fdda9943",
                 "shasum": ""
             },
             "require": {
+                "hhvm/hsl": "^3.26",
+                "hhvm/type-assert": "^3.2"
+            },
+            "require-dev": {
+                "91carriage/phpunit-hhi": "^5.7",
+                "facebook/fbexpect": "^1.1.0",
+                "hhvm/hhast": "^3.27.0",
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "time": "2018-06-20T03:25:12+00:00"
+        },
+        {
+            "name": "hhvm/hhast",
+            "version": "v3.27.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hhvm/hhast.git",
+                "reference": "986f489c1bd3caddb27797c45abb6227c3d39366"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hhvm/hhast/zipball/986f489c1bd3caddb27797c45abb6227c3d39366",
+                "reference": "986f489c1bd3caddb27797c45abb6227c3d39366",
+                "shasum": ""
+            },
+            "require": {
+                "facebook/hh-clilib": "^1.1.1",
                 "hhvm": "^3.26.0",
                 "hhvm/hsl": "^1.0.0|^3.26.0",
                 "hhvm/type-assert": "^3.1"
             },
             "require-dev": {
                 "91carriage/phpunit-hhi": "^5.7",
-                "facebook/fbexpect": "^0.4.0|^1.0.0",
+                "facebook/fbexpect": "^1.1.0",
                 "facebook/hack-codegen": "~3.0.3",
                 "hhvm/hhvm-autoload": "^1.5",
                 "phpunit/phpunit": "^5.7"
             },
             "bin": [
-                "bin/hhast-lint"
+                "bin/hhast-lint",
+                "bin/hhast-inspect"
             ],
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "time": "2018-05-10T19:54:22+00:00"
+            "time": "2018-08-02T21:19:25+00:00"
         },
         {
             "name": "hhvm/type-assert",

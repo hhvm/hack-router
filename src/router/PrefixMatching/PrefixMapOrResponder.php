@@ -18,7 +18,7 @@ final class PrefixMapOrResponder<T> {
     private ?T $responder,
   ) {
     invariant(
-      ($map === null) ^ ($responder === null),
+      ($map === null) !== ($responder === null),
       'Must specify map *or* responder',
     );
   }
