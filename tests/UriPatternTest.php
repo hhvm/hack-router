@@ -10,8 +10,8 @@
 
 namespace Facebook\HackRouter;
 
-use \Facebook\HackRouter\Tests\TestStringEnum;
-use \Facebook\HackRouter\Tests\TestIntEnum;
+use type Facebook\HackRouter\Tests\TestStringEnum;
+use type Facebook\HackRouter\Tests\TestIntEnum;
 
 final class UriPatternTest extends \PHPUnit_Framework_TestCase {
   public function testLiteral(): void {

@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
  *  All rights reserved.
@@ -16,14 +16,13 @@ namespace Facebook\HackRouter\Examples\UrlPatternsExample;
 
 require_once(__DIR__.'/../vendor/hh_autoload.php');
 
-use Facebook\HackRouter\{
+use   type Facebook\HackRouter\{
   BaseRouter,
   GetFastRoutePatternFromUriPattern,
   GetUriBuilderFromUriPattern,
   HasUriPattern,
   HttpMethod,
   RequestParameters,
-  UriBuilder,
   UriPattern
 };
 
@@ -124,4 +123,5 @@ function main(): void {
   }
 }
 
+/* HH_IGNORE_ERROR[1002] top-level statement in strict file */
 main();

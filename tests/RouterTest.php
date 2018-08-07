@@ -10,10 +10,10 @@
 
 namespace Facebook\HackRouter;
 
-use \Facebook\HackRouter\Tests\TestRouter;
-use \Zend\Diactoros\ServerRequest;
+use type Facebook\HackRouter\Tests\TestRouter;
+use type Zend\Diactoros\ServerRequest;
 use function Facebook\FBExpect\expect;
-use namespace HH\Lib\{C, Dict, Str};
+use namespace HH\Lib\Dict;
 
 final class RouterTest extends \PHPUnit_Framework_TestCase {
   const keyset<string> MAP = keyset[
@@ -100,7 +100,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
 
   /** @dataProvider getAllResolvers */
   public function testMethodNotAllowedResponses(
-    string $name,
+    string $_name,
     (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory
   ): void {
     $map = dict[
@@ -148,7 +148,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
    * @dataProvider expectedMatchesWithResolvers
    */
   public function testAllResolvers(
-    string $resolver_name,
+    string $_resolver_name,
     IResolver<string> $resolver,
     string $in,
     string $expected_responder,

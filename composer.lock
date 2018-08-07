@@ -382,16 +382,16 @@
         },
         {
             "name": "hhvm/hhast",
-            "version": "v3.27.3",
+            "version": "v3.27.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hhast.git",
-                "reference": "986f489c1bd3caddb27797c45abb6227c3d39366"
+                "reference": "6427a690f8436bf697972dd88e91705cbdce7fbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hhast/zipball/986f489c1bd3caddb27797c45abb6227c3d39366",
-                "reference": "986f489c1bd3caddb27797c45abb6227c3d39366",
+                "url": "https://api.github.com/repos/hhvm/hhast/zipball/6427a690f8436bf697972dd88e91705cbdce7fbd",
+                "reference": "6427a690f8436bf697972dd88e91705cbdce7fbd",
                 "shasum": ""
             },
             "require": {
@@ -416,7 +416,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2018-08-02T21:19:25+00:00"
+            "time": "2018-08-06T23:04:30+00:00"
         },
         {
             "name": "hhvm/type-assert",

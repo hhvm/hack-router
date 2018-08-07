@@ -1,4 +1,4 @@
-<?hh //strict
+<?hh // strict
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,7 +10,6 @@
 
 namespace Facebook\HackRouter\PatternParser;
 
-use namespace HH\Lib\Str;
 
 final class ParameterNode implements Node {
   public function __construct(private string $name, private ?string $regexp) {

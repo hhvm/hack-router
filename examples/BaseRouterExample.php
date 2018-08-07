@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
  *  All rights reserved.
@@ -16,8 +16,8 @@ namespace Facebook\HackRouter\Examples\BaseRouterExample;
 
 require_once(__DIR__.'/../vendor/hh_autoload.php');
 
-use Facebook\HackRouter\BaseRouter;
-use Facebook\HackRouter\HttpMethod;
+use type Facebook\HackRouter\BaseRouter;
+use type Facebook\HackRouter\HttpMethod;
 
 /** This can be whatever you want; in this case, it's a
  * callable, but classname<MyWebControllerBase> is also a
@@ -67,4 +67,5 @@ function main(): void {
   }
 }
 
+/* HH_IGNORE_ERROR[1002] top-level statement in strict file */
 main();

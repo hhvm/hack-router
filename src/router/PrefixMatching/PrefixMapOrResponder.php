@@ -1,4 +1,4 @@
-<?hh //strict
+<?hh // strict
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,7 +10,6 @@
 
 namespace Facebook\HackRouter\PrefixMatching;
 
-use namespace Facebook\TypeAssert;
 
 final class PrefixMapOrResponder<T> {
   public function __construct(

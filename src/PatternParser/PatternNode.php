@@ -1,4 +1,4 @@
-<?hh //strict
+<?hh // strict
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,7 +10,7 @@
 
 namespace Facebook\HackRouter\PatternParser;
 
-use namespace HH\Lib\{Keyset, Str, Vec};
+use namespace HH\Lib\{Str, Vec};
 
 final class PatternNode implements Node {
   public function __construct(private vec<Node> $children) {
