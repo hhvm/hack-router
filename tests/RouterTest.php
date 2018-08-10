@@ -16,23 +16,24 @@ use function Facebook\FBExpect\expect;
 use namespace HH\Lib\Dict;
 
 final class RouterTest extends \PHPUnit_Framework_TestCase {
-  const keyset<string> MAP = keyset[
-    '/foo',
-    '/foo/',
-    '/foo/bar',
-    '/foo/bar/{baz}',
-    '/foo/{bar}',
-    '/foo/{bar}/baz',
-    '/foo/{bar}{baz:.+}',
-    '/food/{noms}',
-    '/bar/{herp:\\d+}',
-    '/bar/{herp}',
-    '/unique/{foo}/bar',
-    '/optional_suffix_[foo]',
-    '/optional_suffix[/]',
-    '/optional_suffixes/[herp[/derp]]',
-    '/manual/en/{LegacyID}.php',
-  ];
+  const keyset<string>
+    MAP = keyset[
+      '/foo',
+      '/foo/',
+      '/foo/bar',
+      '/foo/bar/{baz}',
+      '/foo/{bar}',
+      '/foo/{bar}/baz',
+      '/foo/{bar}{baz:.+}',
+      '/food/{noms}',
+      '/bar/{herp:\\d+}',
+      '/bar/{herp}',
+      '/unique/{foo}/bar',
+      '/optional_suffix_[foo]',
+      '/optional_suffix[/]',
+      '/optional_suffixes/[herp[/derp]]',
+      '/manual/en/{LegacyID}.php',
+    ];
 
   public function expectedMatches(
   ): array<(string, string, dict<string, string>)> {
@@ -44,7 +45,11 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/foo/herp', '/foo/{bar}', dict['bar' => 'herp']),
       tuple('/foo/=%3Efoo', '/foo/{bar}', dict['bar' => '=>foo']),
       tuple('/foo/herp/baz', '/foo/{bar}/baz', dict['bar' => 'herp']),
-      tuple('/foo/herp/derp', '/foo/{bar}{baz:.+}', dict['bar' => 'herp', 'baz' => '/derp']),
+      tuple(
+        '/foo/herp/derp',
+        '/foo/{bar}{baz:.+}',
+        dict['bar' => 'herp', 'baz' => '/derp'],
+      ),
       tuple('/food/burger', '/food/{noms}', dict['noms' => 'burger']),
       tuple('/bar/123', '/bar/{herp:\\d+}', dict['herp' => '123']),
       tuple('/bar/derp', '/bar/{herp}', dict['herp' => 'derp']),
@@ -55,8 +60,16 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       tuple('/optional_suffix', '/optional_suffix[/]', dict[]),
       tuple('/optional_suffix/', '/optional_suffix[/]', dict[]),
       tuple('/optional_suffixes/', '/optional_suffixes/[herp[/derp]]', dict[]),
-      tuple('/optional_suffixes/herp', '/optional_suffixes/[herp[/derp]]', dict[]),
-      tuple('/optional_suffixes/herp/derp', '/optional_suffixes/[herp[/derp]]', dict[]),
+      tuple(
+        '/optional_suffixes/herp',
+        '/optional_suffixes/[herp[/derp]]',
+        dict[],
+      ),
+      tuple(
+        '/optional_suffixes/herp/derp',
+        '/optional_suffixes/[herp[/derp]]',
+        dict[],
+      ),
       tuple(
         '/manual/en/foo.php',
         '/manual/en/{LegacyID}.php',
@@ -78,7 +91,10 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   ): array<(string, (function(dict<HttpMethod, dict<string, string>>): IResolver<string>))> {
     return [
       tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
-      tuple('prefix matching', $map ==> PrefixMatchingResolver::fromFlatMap($map)),
+      tuple(
+        'prefix matching',
+        $map ==> PrefixMatchingResolver::fromFlatMap($map),
+      ),
     ];
   }
 
@@ -101,7 +117,8 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   /** @dataProvider getAllResolvers */
   public function testMethodNotAllowedResponses(
     string $_name,
-    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory
+    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>)
+      $factory,
   ): void {
     $map = dict[
       HttpMethod::GET => dict[
@@ -117,17 +134,18 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
 
     $router = $this->getRouter()->setResolver($factory($map));
 
-    list($responder, $_data) = $router->routeRequest(HttpMethod::HEAD, 'getonly');
+    list($responder, $_data) =
+      $router->routeRequest(HttpMethod::HEAD, 'getonly');
     expect($responder)->toBeSame('getonly');
-    expect(
-      () ==> $router->routeRequest(HttpMethod::GET, 'headonly')
-    )->toThrow(MethodNotAllowedException::class);
-    expect(
-      () ==> $router->routeRequest(HttpMethod::HEAD, 'postonly'),
-    )->toThrow(MethodNotAllowedException::class);
-    expect(
-      () ==> $router->routeRequest(HttpMethod::GET, 'postonly'),
-    )->toThrow(MethodNotAllowedException::class);
+    expect(() ==> $router->routeRequest(HttpMethod::GET, 'headonly'))->toThrow(
+      MethodNotAllowedException::class,
+    );
+    expect(() ==> $router->routeRequest(HttpMethod::HEAD, 'postonly'))->toThrow(
+      MethodNotAllowedException::class,
+    );
+    expect(() ==> $router->routeRequest(HttpMethod::GET, 'postonly'))->toThrow(
+      MethodNotAllowedException::class,
+    );
   }
 
   /**
@@ -154,9 +172,9 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     string $expected_responder,
     dict<string, string> $expected_data,
   ): void {
-    list($responder, $data) = $this->getRouter()->setResolver(
-      $resolver,
-    )->routeRequest(HttpMethod::GET, $in);
+    list($responder, $data) = $this->getRouter()
+      ->setResolver($resolver)
+      ->routeRequest(HttpMethod::GET, $in);
     expect($responder)->toBeSame($expected_responder);
     expect(dict($data))->toBeSame($expected_data);
 
@@ -164,9 +182,9 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     expect($responder)->toBeSame($expected_responder);
     expect($data)->toBeSame(dict($data));
 
-    list($responder, $data) = $this->getRouter()->setResolver(
-      $resolver,
-    )->routeRequest(HttpMethod::HEAD, $in);
+    list($responder, $data) = $this->getRouter()
+      ->setResolver($resolver)
+      ->routeRequest(HttpMethod::HEAD, $in);
     expect($responder)->toBeSame($expected_responder);
     expect(dict($data))->toBeSame($expected_data);
   }
@@ -180,10 +198,8 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     dict<string, string> $_expected_data,
   ): void {
     $router = $this->getRouter();
-    list($direct_responder, $direct_data) = $router->routeRequest(
-      HttpMethod::GET,
-      $path,
-    );
+    list($direct_responder, $direct_data) =
+      $router->routeRequest(HttpMethod::GET, $path);
 
     /* HH_FIXME[2049] no HHI for Diactoros */
     $psr_request = new ServerRequest(
@@ -195,14 +211,8 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       /* headers = */ [],
     );
     list($psr_responder, $psr_data) = $router->routePsr7Request($psr_request);
-    $this->assertSame(
-      $direct_responder,
-      $psr_responder,
-    );
-    $this->assertEquals(
-      $direct_data,
-      $psr_data,
-    );
+    expect($psr_responder)->toBeSame($direct_responder);
+    expect($psr_data)->toBePHPEqual($direct_data);
   }
 
   /**
@@ -211,18 +221,19 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   public function testNotFound(
     string $_resolver_name,
     (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory,
-   ): void {
+  ): void {
     $router = $this->getRouter()->setResolver($factory(dict[]));
-    expect(
-      () ==> $router->routeRequest(HttpMethod::GET, '/__404'),
-     )->toThrow(NotFoundException::class);
+    expect(() ==> $router->routeRequest(HttpMethod::GET, '/__404'))->toThrow(
+      NotFoundException::class,
+    );
 
-    $router = $this->getRouter()->setResolver($factory(dict[
-      HttpMethod::GET => dict['/foo' => '/foo'],
-    ]));
-    expect(
-      () ==> $router->routeRequest(HttpMethod::GET, '/__404'),
-     )->toThrow(NotFoundException::class);
+    $router = $this->getRouter()
+      ->setResolver($factory(dict[
+        HttpMethod::GET => dict['/foo' => '/foo'],
+      ]));
+    expect(() ==> $router->routeRequest(HttpMethod::GET, '/__404'))->toThrow(
+      NotFoundException::class,
+    );
   }
 
   /**
@@ -243,8 +254,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
   ): void {}
 
 
-  private function getRouter(
-  ): TestRouter<string> {
+  private function getRouter(): TestRouter<string> {
     return new TestRouter(dict(self::MAP));
   }
 }

@@ -11,6 +11,7 @@
 namespace Facebook\HackRouter;
 
 use type Facebook\HackRouter\Tests\TestIntEnum;
+use function Facebook\FBExpect\expect;
 use type Facebook\HackRouter\Tests\TestStringEnum;
 
 final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
@@ -20,18 +21,15 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       'foo',
     )];
     $data = dict['foo' => 'bar'];
-    $this->assertSame(
-      'bar',
-      (new RequestParameters($parts, [], $data))->getString('foo'),
-    );
+    expect((new RequestParameters($parts, [], $data))->getString('foo'))
+      ->toBeSame('bar');
   }
 
   public function testIntParam(): void {
     $parts = [new IntRequestParameter('foo')];
     $data = dict['foo' => '123'];
-    $this->assertSame(
+    expect((new RequestParameters($parts, [], $data))->getInt('foo'))->toBeSame(
       123,
-      (new RequestParameters($parts, [], $data))->getInt('foo'),
     );
   }
 
@@ -49,15 +47,12 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
 
   public function testEnumParam(): void {
     $parts = [new EnumRequestParameter(TestIntEnum::class, 'foo')];
-    $data = dict['foo' => (string) TestIntEnum::BAR];
+    $data = dict['foo' => (string)TestIntEnum::BAR];
     $value = (new RequestParameters($parts, [], $data))->getEnum(
       TestIntEnum::class,
       'foo',
     );
-    $this->assertSame(
-      TestIntEnum::BAR,
-      $value,
-    );
+    expect($value)->toBeSame(TestIntEnum::BAR);
 
     $typechecker_test = (TestIntEnum $x) ==> {};
     $typechecker_test($value);
@@ -65,9 +60,8 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
 
   public function testEnumParamToUri(): void {
     $part = (new EnumRequestParameter(TestIntEnum::class, 'foo'));
-    $this->assertSame(
-      (string) TestIntEnum::BAR,
-      $part->getUriFragment(TestIntEnum::BAR),
+    expect($part->getUriFragment(TestIntEnum::BAR))->toBeSame(
+      (string)TestIntEnum::BAR,
     );
   }
 
@@ -92,20 +86,13 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
     $data = dict[
       'foo' => 'some string',
       'bar' => '123',
-      'baz' => (string) TestIntEnum::FOO,
+      'baz' => (string)TestIntEnum::FOO,
     ];
     $params = new RequestParameters($parts, [], $data);
-    $this->assertSame(
-      'some string',
-      $params->getString('foo'),
-    );
-    $this->assertSame(
-      123,
-      $params->getInt('bar'),
-    );
-    $this->assertSame(
+    expect($params->getString('foo'))->toBeSame('some string');
+    expect($params->getInt('bar'))->toBeSame(123);
+    expect($params->getEnum(TestIntEnum::class, 'baz'))->toBeSame(
       TestIntEnum::FOO,
-      $params->getEnum(TestIntEnum::class, 'baz'),
     );
   }
 
@@ -118,10 +105,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       )],
       dict['foo' => 'bar'],
     );
-    $this->assertSame(
-      'bar',
-      $params->getOptionalString('foo'),
-    );
+    expect($params->getOptionalString('foo'))->toBeSame('bar');
   }
 
   public function testGetMissingOptional(): void {
@@ -133,10 +117,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       )],
       dict[],
     );
-    $this->assertSame(
-      null,
-      $params->getOptionalString('foo'),
-    );
+    expect($params->getOptionalString('foo'))->toBeSame(null);
   }
 
   /**
@@ -147,7 +128,7 @@ final class RequestParametersTest extends \PHPUnit_Framework_TestCase {
       [],
       [new StringRequestParameter(
         StringRequestParameterSlashes::WITHOUT_SLASHES,
-        'foo'
+        'foo',
       )],
       dict['foo' => 'bar'],
     );
