@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5b69254705e2c582287bf930b35c356",
+    "content-hash": "8ddced8de0a2857bef80673a2847f78c",
     "packages": [
         {
             "name": "hack-psr/psr7-http-message-hhi",
@@ -224,6 +224,7 @@
                 "phpunit",
                 "testing"
             ],
+            "abandoned": "hhvm/hacktest",
             "time": "2018-08-15T10:19:54+00:00"
         },
         {
@@ -281,6 +282,40 @@
             "time": "2017-07-22T11:58:36+00:00"
         },
         {
+            "name": "facebook/difflib",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hhvm/difflib.git",
+                "reference": "09505c7d66224fa7e5a8f775825bd70f05e57b01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hhvm/difflib/zipball/09505c7d66224fa7e5a8f775825bd70f05e57b01",
+                "reference": "09505c7d66224fa7e5a8f775825bd70f05e57b01",
+                "shasum": ""
+            },
+            "require": {
+                "hhvm/hsl": "^3.28"
+            },
+            "require-dev": {
+                "facebook/fbexpect": "^2.1.2",
+                "hhvm/hacktest": "^1.0",
+                "hhvm/hhast": "^3.28"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "time": "2018-09-24T22:01:02+00:00"
+        },
+        {
             "name": "facebook/fbexpect",
             "version": "v1.1.0",
             "source": {
@@ -318,16 +353,16 @@
         },
         {
             "name": "facebook/hh-clilib",
-            "version": "v1.1.2",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hh-clilib.git",
-                "reference": "2772c82a8f5fc715d5a2fbe801563f36fdda9943"
+                "reference": "12542c339972c6fd77b2037a41b8f9b53212adcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hh-clilib/zipball/2772c82a8f5fc715d5a2fbe801563f36fdda9943",
-                "reference": "2772c82a8f5fc715d5a2fbe801563f36fdda9943",
+                "url": "https://api.github.com/repos/hhvm/hh-clilib/zipball/12542c339972c6fd77b2037a41b8f9b53212adcf",
+                "reference": "12542c339972c6fd77b2037a41b8f9b53212adcf",
                 "shasum": ""
             },
             "require": {
@@ -335,55 +370,64 @@
                 "hhvm/type-assert": "^3.2"
             },
             "require-dev": {
-                "91carriage/phpunit-hhi": "^5.7",
-                "facebook/fbexpect": "^1.1.0",
-                "hhvm/hhast": "^3.27.0",
-                "phpunit/phpunit": "^5.7"
+                "facebook/fbexpect": "^2.1.0",
+                "hhvm/hacktest": "^0.2.0",
+                "hhvm/hhast": "~3.28.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "time": "2018-06-20T03:25:12+00:00"
+            "time": "2018-09-14T20:36:22+00:00"
         },
         {
             "name": "hhvm/hhast",
-            "version": "v3.27.4",
+            "version": "v3.28.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hhast.git",
-                "reference": "6427a690f8436bf697972dd88e91705cbdce7fbd"
+                "reference": "81a4812cc67ea60ea46c010163218d2149652057"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hhast/zipball/6427a690f8436bf697972dd88e91705cbdce7fbd",
-                "reference": "6427a690f8436bf697972dd88e91705cbdce7fbd",
+                "url": "https://api.github.com/repos/hhvm/hhast/zipball/81a4812cc67ea60ea46c010163218d2149652057",
+                "reference": "81a4812cc67ea60ea46c010163218d2149652057",
                 "shasum": ""
             },
             "require": {
+                "facebook/difflib": "^1.0.0",
                 "facebook/hh-clilib": "^1.1.1",
-                "hhvm": "^3.26.0",
+                "hhvm": "^3.28.0",
                 "hhvm/hsl": "^1.0.0|^3.26.0",
                 "hhvm/type-assert": "^3.1"
             },
             "require-dev": {
-                "91carriage/phpunit-hhi": "^5.7",
-                "facebook/fbexpect": "^1.1.0",
-                "facebook/hack-codegen": "~3.0.3",
-                "hhvm/hhvm-autoload": "^1.5",
-                "phpunit/phpunit": "^5.7"
+                "facebook/fbexpect": "^2.1.1",
+                "facebook/hack-codegen": "~3.2.1",
+                "hhvm/hacktest": "^1.0",
+                "hhvm/hhvm-autoload": "^1.5"
             },
             "bin": [
                 "bin/hhast-lint",
                 "bin/hhast-inspect"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "time": "2018-08-06T23:04:30+00:00"
+            "time": "2018-10-05T16:46:16+00:00"
         },
         {
             "name": "hhvm/type-assert",
@@ -1653,16 +1697,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.1.3",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "46bc69aa91fc4ab78a96ce67873a6b0c148fd48c"
+                "reference": "367e689b2fdc19965be435337b50bc8adf2746c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/46bc69aa91fc4ab78a96ce67873a6b0c148fd48c",
-                "reference": "46bc69aa91fc4ab78a96ce67873a6b0c148fd48c",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/367e689b2fdc19965be435337b50bc8adf2746c9",
+                "reference": "367e689b2fdc19965be435337b50bc8adf2746c9",
                 "shasum": ""
             },
             "require": {
@@ -1708,7 +1752,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-07-26T11:24:31+00:00"
+            "time": "2018-10-02T16:36:10+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1762,16 +1806,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.5",
+            "version": "1.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "3e4edb822c942f37ade0d09579cfbab11e2fee87"
+                "reference": "20da13beba0dde8fb648be3cc19765732790f46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/3e4edb822c942f37ade0d09579cfbab11e2fee87",
-                "reference": "3e4edb822c942f37ade0d09579cfbab11e2fee87",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/20da13beba0dde8fb648be3cc19765732790f46e",
+                "reference": "20da13beba0dde8fb648be3cc19765732790f46e",
                 "shasum": ""
             },
             "require": {
@@ -1784,6 +1828,7 @@
             "require-dev": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
+                "php-http/psr7-integration-tests": "dev-master",
                 "phpunit/phpunit": "^5.7.16 || ^6.0.8 || ^7.2.7",
                 "zendframework/zend-coding-standard": "~1.0"
             },
@@ -1821,7 +1866,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-08-10T14:16:32+00:00"
+            "time": "2018-09-05T19:29:37+00:00"
         }
     ],
     "aliases": [],
@@ -1830,7 +1875,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "hhvm": "^3.26.0"
+        "hhvm": "^3.28.0"
     },
     "platform-dev": []
 }
