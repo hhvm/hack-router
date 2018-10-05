@@ -11,14 +11,15 @@
 namespace Facebook\HackRouter;
 
 use type Facebook\HackRouter\Tests\TestStringEnum;
+use function Facebook\FBExpect\expect;
 use type Facebook\HackRouter\Tests\TestIntEnum;
 
-final class UriPatternTest extends \PHPUnit_Framework_TestCase {
+final class UriPatternTest extends \Facebook\HackTest\HackTest {
   public function testLiteral(): void {
     $pattern = (new UriPattern())
       ->literal('/foo')
       ->getFastRouteFragment();
-    $this->assertSame('/foo', $pattern);
+    expect($pattern)->toBeSame('/foo');
   }
 
   public function testMultipleLiterals(): void {
@@ -26,7 +27,7 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
       ->literal('/foo')
       ->literal('/bar')
       ->getFastRouteFragment();
-    $this->assertSame('/foo/bar', $pattern);
+    expect($pattern)->toBeSame('/foo/bar');
   }
 
   public function testStringParamFragment(): void {
@@ -34,7 +35,7 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
       ->literal('/~')
       ->string('username')
       ->getFastRouteFragment();
-    $this->assertSame('/~{username}', $pattern);
+    expect($pattern)->toBeSame('/~{username}');
   }
 
   public function testStringWithSlashesParamFragment(): void {
@@ -42,16 +43,17 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
       ->literal('/~')
       ->stringWithSlashes('username')
       ->getFastRouteFragment();
-    $this->assertSame('/~{username:.+}', $pattern);
+    expect($pattern)->toBeSame('/~{username:.+}');
   }
 
   public function testStringParamAssertSucceeds(): void {
-    $this->assertSame(
-      (new StringRequestParameter(
-        StringRequestParameterSlashes::WITHOUT_SLASHES,
-        'foo',
-      ))->assert('foo'),
-      'foo',
+    expect('foo')->toBeSame(
+      (
+        new StringRequestParameter(
+          StringRequestParameterSlashes::WITHOUT_SLASHES,
+          'foo',
+        )
+      )->assert('foo'),
     );
   }
 
@@ -60,32 +62,24 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
       ->literal('/blog/')
       ->int('post_id')
       ->getFastRouteFragment();
-    $this->assertSame('/blog/{post_id:\d+}', $pattern);
+    expect($pattern)->toBeSame('/blog/{post_id:\d+}');
   }
 
   public function testIntParamAssertSucceeds(): void {
-    $this->assertSame(
-      (new IntRequestParameter('foo'))->assert('123'),
+    expect(
       123, // not a string
-    );
+    )->toBeSame((new IntRequestParameter('foo'))->assert('123'));
   }
 
   public function exampleInvalidInts(): array<array<string>> {
-    return [
-      ['foo'],
-      ['0123foo'],
-      ['0.123foo'],
-      ['0.123'],
-      ['0x1e3'],
-    ];
+    return [['foo'], ['0123foo'], ['0.123foo'], ['0.123'], ['0x1e3']];
   }
 
-  /**
-   * @dataProvider exampleInvalidInts
-   * @expectedException \HH\InvariantException
-   */
+  <<DataProvider('exampleInvalidInts')>>
   public function testIntParamAssertThrows(string $input): void {
-    (new IntRequestParameter('foo'))->assert($input);
+    expect(() ==> {
+      (new IntRequestParameter('foo'))->assert($input);
+    })->toThrow(InvariantException::class);
   }
 
   public function testStringEnumParamFragment(): void {
@@ -93,33 +87,27 @@ final class UriPatternTest extends \PHPUnit_Framework_TestCase {
       ->literal('/foo/')
       ->enum(TestStringEnum::class, 'my_param')
       ->getFastRouteFragment();
-    $this->assertSame(
-      '/foo/{my_param:(?:herp|derp)}',
-      $pattern,
-    );
+    expect($pattern)->toBeSame('/foo/{my_param:(?:herp|derp)}');
   }
 
   public function testStringEnumParamAssertSucceeds(): void {
-    $this->assertSame(
-      TestStringEnum::FOO,
+    expect(
       (new EnumRequestParameter(TestStringEnum::class, 'param_name'))
-        ->assert((string) TestStringEnum::FOO),
-    );
+        ->assert((string)TestStringEnum::FOO),
+    )->toBeSame(TestStringEnum::FOO);
   }
 
   public function testIntEnumParamAssertSucceeds(): void {
-    $this->assertSame(
-      TestIntEnum::FOO,
+    expect(
       (new EnumRequestParameter(TestIntEnum::class, 'param_name'))
-        ->assert((string) TestIntEnum::FOO),
-    );
+        ->assert((string)TestIntEnum::FOO),
+    )->toBeSame(TestIntEnum::FOO);
   }
 
-  /**
-   * @expectedException UnexpectedValueException
-   */
   public function testEnumParamAssertFails(): void {
-    (new EnumRequestParameter(TestStringEnum::class, 'param_name'))
-      ->assert('not a valid enum value');
+    expect(() ==> {
+      (new EnumRequestParameter(TestStringEnum::class, 'param_name'))
+        ->assert('not a valid enum value');
+    })->toThrow(\UnexpectedValueException::class);
   }
 }

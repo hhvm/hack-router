@@ -11,17 +11,17 @@
 namespace Facebook\HackRouter;
 
 use type Facebook\HackRouter\Tests\TestIntEnum;
+use function Facebook\FBExpect\expect;
 use type Facebook\HackRouter\Tests\TestStringEnum;
 
-final class UriBuilderTest extends \PHPUnit_Framework_TestCase {
+final class UriBuilderTest extends \Facebook\HackTest\HackTest {
   public function testLiteral(): void {
     $parts = (new UriPattern())
       ->literal('/foo')
       ->getParts();
-    $this->assertSame(
-      '/foo',
-      (new UriBuilder($parts))->getPath(),
-    );
+    expect(      (new UriBuilder($parts))->getPath(),
+)->toBeSame(
+      '/foo'    );
   }
 
   public function testStringParameter(): void {
@@ -32,10 +32,9 @@ final class UriBuilderTest extends \PHPUnit_Framework_TestCase {
     $path = (new UriBuilder($parts))
       ->setString('foo', 'derp')
       ->getPath();
-    $this->assertSame(
-      '/herp/derp',
-      $path,
-    );
+    expect(      $path,
+)->toBeSame(
+      '/herp/derp'    );
   }
 
   public function testParameterAsFirstPart(): void {
@@ -45,10 +44,9 @@ final class UriBuilderTest extends \PHPUnit_Framework_TestCase {
     $path = (new UriBuilder($parts))
       ->setString('herp', 'derp')
       ->getPath();
-    $this->assertSame(
-      '/derp',
-      $path,
-    );
+    expect(      $path,
+)->toBeSame(
+      '/derp'    );
   }
 
   public function testIntParameter(): void {
@@ -59,10 +57,9 @@ final class UriBuilderTest extends \PHPUnit_Framework_TestCase {
     $path = (new UriBuilder($parts))
       ->setInt('post_id', 123)
       ->getPath();
-    $this->assertSame(
-      '/post/123',
-      $path,
-    );
+    expect(      $path,
+)->toBeSame(
+      '/post/123'    );
   }
 
   public function testEnumParameter(): void {
@@ -72,54 +69,48 @@ final class UriBuilderTest extends \PHPUnit_Framework_TestCase {
     $path = (new UriBuilder($parts))
       ->setEnum(TestStringEnum::class, 'foo', TestStringEnum::BAR)
       ->getPath();
-    $this->assertSame(
-      '/'.TestStringEnum::BAR,
-      $path,
-    );
+    expect(      $path,
+)->toBeSame(
+      '/'.TestStringEnum::BAR    );
   }
 
-  /**
-   * @expectedException \HH\InvariantException
-   */
   public function testIntAsString(): void {
-    $parts = (new UriPattern())->int('foo')->getParts();
-    (new UriBuilder($parts))->setString('foo', 'bar');
+    expect(() ==> {
+      $parts = (new UriPattern())->int('foo')->getParts();
+      (new UriBuilder($parts))->setString('foo', 'bar');
+    })->toThrow(InvariantException::class);
   }
 
-  /**
-   * @expectedException \HH\InvariantException
-   */
-public function testSetIncorrectEnumType(): void {
-    $parts = (new UriPattern())
+  public function testSetIncorrectEnumType(): void {
+    expect(() ==> {
+      $parts = (new UriPattern())
       ->enum(TestStringEnum::class, 'foo')
       ->getParts();
-    $path = (new UriBuilder($parts))
+      $path = (new UriBuilder($parts))
       ->setEnum(TestIntEnum::class, 'foo', TestIntEnum::BAR);
+    })->toThrow(InvariantException::class);
   }
 
-  /**
-   * @expectedException \HH\InvariantException
-   */
   public function testSetTwice(): void {
-    $parts = (new UriPattern())->int('foo')->getParts();
-    (new UriBuilder($parts))
+    expect(() ==> {
+      $parts = (new UriPattern())->int('foo')->getParts();
+      (new UriBuilder($parts))
       ->setInt('foo', 123)
       ->setInt('foo', 123);
+    })->toThrow(InvariantException::class);
   }
 
-  /**
-   * @expectedException \HH\InvariantException
-   */
   public function testMissingValue(): void {
-    $parts = (new UriPattern())->int('foo')->getParts();
-    (new UriBuilder($parts))->getPath();
+    expect(() ==> {
+      $parts = (new UriPattern())->int('foo')->getParts();
+      (new UriBuilder($parts))->getPath();
+    })->toThrow(InvariantException::class);
   }
 
-  /**
-   * @expectedException \HH\InvariantException
-   */
   public function testSetInvalidParameter(): void {
-    $parts = (new UriPattern())->int('foo')->getParts();
-    (new UriBuilder($parts))->setInt('bar', 123);
+    expect(() ==> {
+      $parts = (new UriPattern())->int('foo')->getParts();
+      (new UriBuilder($parts))->setInt('bar', 123);
+    })->toThrow(InvariantException::class);
   }
 }

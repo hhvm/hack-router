@@ -12,7 +12,7 @@ namespace Facebook\HackRouter;
 
 use function Facebook\FBExpect\expect;
 
-final class ParserTest extends \PHPUnit_Framework_TestCase {
+final class ParserTest extends \Facebook\HackTest\HackTest {
   public function getExamplePatterns(): array<(string, string)> {
     return [
       tuple(
@@ -42,9 +42,7 @@ final class ParserTest extends \PHPUnit_Framework_TestCase {
     ];
   }
 
-  /**
-   * @dataProvider getExamplePatterns
-   */
+  <<DataProvider('getExamplePatterns')>>
   public function testPattern(string $pattern, string $expected): void {
     expect(PatternParser\Parser::parse($pattern)->toStringForDebug())
       ->toBeSame($expected);

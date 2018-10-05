@@ -15,10 +15,9 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.1",
-    "91carriage/phpunit-hhi": "^5.1",
     "zendframework/zend-diactoros": "^1.3",
-    "facebook/fbexpect": "^1.0",
-    "hhvm/hhast": "^3.28.0"
+    "facebook/fbexpect": "^2.0",
+    "hhvm/hhast": "^3.28.0",
+    "hhvm/hacktest": "^1.1"
   }
 }

@@ -15,7 +15,7 @@ use type Zend\Diactoros\ServerRequest;
 use function Facebook\FBExpect\expect;
 use namespace HH\Lib\Dict;
 
-final class RouterTest extends \PHPUnit_Framework_TestCase {
+final class RouterTest extends \Facebook\HackTest\HackTest {
   const keyset<string> MAP = keyset[
     '/foo',
     '/foo/',
@@ -98,7 +98,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     return $out;
   }
 
-  /** @dataProvider getAllResolvers */
+  <<DataProvider('getAllResolvers')>>
   public function testMethodNotAllowedResponses(
     string $_name,
     (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory
@@ -130,9 +130,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     )->toThrow(MethodNotAllowedException::class);
   }
 
-  /**
-   * @dataProvider expectedMatches
-   */
+  <<DataProvider('expectedMatches')>>
   public function testMatchesPattern(
     string $in,
     string $expected_responder,
@@ -144,9 +142,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     expect(dict($actual_data))->toBeSame($expected_data);
   }
 
-  /**
-   * @dataProvider expectedMatchesWithResolvers
-   */
+  <<DataProvider('expectedMatchesWithResolvers')>>
   public function testAllResolvers(
     string $_resolver_name,
     IResolver<string> $resolver,
@@ -171,9 +167,7 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
     expect(dict($data))->toBeSame($expected_data);
   }
 
-  /**
-   * @dataProvider expectedMatches
-   */
+  <<DataProvider('expectedMatches')>>
   public function testPsr7Support(
     string $path,
     string $_expected_responder,
@@ -195,19 +189,15 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
       /* headers = */ [],
     );
     list($psr_responder, $psr_data) = $router->routePsr7Request($psr_request);
-    $this->assertSame(
-      $direct_responder,
-      $psr_responder,
-    );
-    $this->assertEquals(
-      $direct_data,
-      $psr_data,
-    );
+    expect(      $psr_responder,
+)->toBeSame(
+      $direct_responder    );
+    expect(      $psr_data,
+)->toBePHPEqual(
+      $direct_data    );
   }
 
-  /**
-   * @dataProvider getAllResolvers
-   */
+  <<DataProvider('getAllResolvers')>>
   public function testNotFound(
     string $_resolver_name,
     (function(dict<HttpMethod, dict<string, string>>): IResolver<string>) $factory,
@@ -225,11 +215,10 @@ final class RouterTest extends \PHPUnit_Framework_TestCase {
      )->toThrow(NotFoundException::class);
   }
 
-  /**
-   * @expectedException \Facebook\HackRouter\MethodNotAllowedException
-   */
   public function testMethodNotAllowed(): void {
-    $this->getRouter()->routeRequest(HttpMethod::POST, '/foo');
+    expect(() ==> {
+      $this->getRouter()->routeRequest(HttpMethod::POST, '/foo');
+    })->toThrow(\Facebook\HackRouter\MethodNotAllowedException::class);
   }
 
   public function testCovariantTResponder(): void {
