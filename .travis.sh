@@ -6,7 +6,10 @@ composer install
 
 hh_client
 hhvm vendor/bin/hacktest tests/
-hhvm vendor/bin/hhast-lint
+
+if !(hhvm --version | grep -q -- -dev); then
+  hhvm vendor/bin/hhast-lint
+fi
 
 # Make sure we pass when a release is required
 EXPORT_DIR=$(mktemp -d)
