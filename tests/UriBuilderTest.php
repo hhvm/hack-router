@@ -19,9 +19,7 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
     $parts = (new UriPattern())
       ->literal('/foo')
       ->getParts();
-    expect(      (new UriBuilder($parts))->getPath(),
-)->toBeSame(
-      '/foo'    );
+    expect((new UriBuilder($parts))->getPath())->toBeSame('/foo');
   }
 
   public function testStringParameter(): void {
@@ -32,9 +30,7 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
     $path = (new UriBuilder($parts))
       ->setString('foo', 'derp')
       ->getPath();
-    expect(      $path,
-)->toBeSame(
-      '/herp/derp'    );
+    expect($path)->toBeSame('/herp/derp');
   }
 
   public function testParameterAsFirstPart(): void {
@@ -44,9 +40,7 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
     $path = (new UriBuilder($parts))
       ->setString('herp', 'derp')
       ->getPath();
-    expect(      $path,
-)->toBeSame(
-      '/derp'    );
+    expect($path)->toBeSame('/derp');
   }
 
   public function testIntParameter(): void {
@@ -57,9 +51,7 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
     $path = (new UriBuilder($parts))
       ->setInt('post_id', 123)
       ->getPath();
-    expect(      $path,
-)->toBeSame(
-      '/post/123'    );
+    expect($path)->toBeSame('/post/123');
   }
 
   public function testEnumParameter(): void {
@@ -69,9 +61,7 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
     $path = (new UriBuilder($parts))
       ->setEnum(TestStringEnum::class, 'foo', TestStringEnum::BAR)
       ->getPath();
-    expect(      $path,
-)->toBeSame(
-      '/'.TestStringEnum::BAR    );
+    expect($path)->toBeSame('/'.TestStringEnum::BAR);
   }
 
   public function testIntAsString(): void {
@@ -84,10 +74,10 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
   public function testSetIncorrectEnumType(): void {
     expect(() ==> {
       $parts = (new UriPattern())
-      ->enum(TestStringEnum::class, 'foo')
-      ->getParts();
+        ->enum(TestStringEnum::class, 'foo')
+        ->getParts();
       $path = (new UriBuilder($parts))
-      ->setEnum(TestIntEnum::class, 'foo', TestIntEnum::BAR);
+        ->setEnum(TestIntEnum::class, 'foo', TestIntEnum::BAR);
     })->toThrow(InvariantException::class);
   }
 
@@ -95,8 +85,8 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
     expect(() ==> {
       $parts = (new UriPattern())->int('foo')->getParts();
       (new UriBuilder($parts))
-      ->setInt('foo', 123)
-      ->setInt('foo', 123);
+        ->setInt('foo', 123)
+        ->setInt('foo', 123);
     })->toThrow(InvariantException::class);
   }
 
