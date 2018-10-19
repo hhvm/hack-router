@@ -10,10 +10,11 @@
 
 namespace Facebook\HackRouter;
 
-use type Facebook\HackRouter\Tests\TestRouter;
-use type Zend\Diactoros\ServerRequest;
 use function Facebook\FBExpect\expect;
 use namespace HH\Lib\Dict;
+use type Facebook\HackRouter\Tests\TestRouter;
+use type Facebook\HackTest\DataProvider;
+use type Zend\Diactoros\ServerRequest;
 
 final class RouterTest extends \Facebook\HackTest\HackTest {
   const keyset<string>

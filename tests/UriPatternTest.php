@@ -13,6 +13,7 @@ namespace Facebook\HackRouter;
 use type Facebook\HackRouter\Tests\TestStringEnum;
 use function Facebook\FBExpect\expect;
 use type Facebook\HackRouter\Tests\TestIntEnum;
+use type Facebook\HackTest\DataProvider;
 
 final class UriPatternTest extends \Facebook\HackTest\HackTest {
   public function testLiteral(): void {
