@@ -111,7 +111,7 @@ function get_example_paths(): ImmVector<string> {
 function main(): void {
   $router = new UriPatternsExample();
   foreach (get_example_paths() as $path) {
-    list($controller, $params) = $router->routeRequest(
+    list($controller, $params) = $router->routeMethodAndPath(
       HttpMethod::GET,
       $path,
     );

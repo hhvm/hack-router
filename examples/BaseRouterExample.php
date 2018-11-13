@@ -57,7 +57,7 @@ function main(): void {
   foreach (get_example_inputs() as $input) {
     list($method, $path) = $input;
 
-    list($responder, $params) = $router->routeRequest($method, $path);
+    list($responder, $params) = $router->routeMethodAndPath($method, $path);
     \printf(
       "%s %s\n\t%s\n",
       $method,
