@@ -4,42 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1dab4040243c9e761d5616e7c5c0f10",
+    "content-hash": "5fedd7d2159ef88cb157072783a64497",
     "packages": [
         {
-            "name": "hack-psr/psr7-http-message-hhi",
-            "version": "v1.0.1",
+            "name": "facebook/hack-http-request-response-interfaces",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fredemmott/psr7-http-message-hhi.git",
-                "reference": "163404a2284e2c45ce06d400ba35a3f6cc95b1b0"
+                "url": "https://github.com/facebookexperimental/hack-http-request-response-interfaces.git",
+                "reference": "b83a106d343c1086d72e895e8a60e1edb05efd88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fredemmott/psr7-http-message-hhi/zipball/163404a2284e2c45ce06d400ba35a3f6cc95b1b0",
-                "reference": "163404a2284e2c45ce06d400ba35a3f6cc95b1b0",
+                "url": "https://api.github.com/repos/facebookexperimental/hack-http-request-response-interfaces/zipball/b83a106d343c1086d72e895e8a60e1edb05efd88",
+                "reference": "b83a106d343c1086d72e895e8a60e1edb05efd88",
                 "shasum": ""
             },
-            "require": {
-                "psr/http-message": "^1.0"
+            "require-dev": {
+                "hhvm/hhast": "^3.28.0"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Typechecker definitions for PSR-7",
-            "homepage": "https://github.com/fredemmott/psr7-http-message-hhi",
-            "keywords": [
-                "hack",
-                "hhi",
-                "hhvm",
-                "http-message",
-                "psr",
-                "psr-7",
-                "psr7"
-            ],
-            "time": "2018-02-09T20:54:15+00:00"
+            "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/facebookexperimental/hack-http-request-response-interfaces",
+            "time": "2018-11-09T19:49:24+00:00"
         },
         {
             "name": "hhvm/hhvm-autoload",
@@ -126,56 +114,6 @@
             ],
             "description": "The Hack Standard Library",
             "time": "2018-10-18T18:21:07+00:00"
-        },
-        {
-            "name": "psr/http-message",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/http-message.git",
-                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
-                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Http\\Message\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for HTTP messages",
-            "homepage": "https://github.com/php-fig/http-message",
-            "keywords": [
-                "http",
-                "http-message",
-                "psr",
-                "psr-7",
-                "request",
-                "response"
-            ],
-            "time": "2016-08-06T14:39:51+00:00"
         }
     ],
     "packages-dev": [
@@ -359,6 +297,37 @@
             "time": "2018-10-18T22:07:15+00:00"
         },
         {
+            "name": "hhvm/hsl-experimental",
+            "version": "v3.29.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hhvm/hsl-experimental.git",
+                "reference": "788598c43555d6025eb7cebf2068eff33c775a20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hhvm/hsl-experimental/zipball/788598c43555d6025eb7cebf2068eff33c775a20",
+                "reference": "788598c43555d6025eb7cebf2068eff33c775a20",
+                "shasum": ""
+            },
+            "require": {
+                "hhvm": "^3.29.0",
+                "hhvm/hhvm-autoload": "^1.4",
+                "hhvm/hsl": "^3.29.0"
+            },
+            "require-dev": {
+                "facebook/fbexpect": "^2.0",
+                "hhvm/hacktest": "^1.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The Hack Standard Library - Experimental Additions",
+            "time": "2018-10-17T16:35:57+00:00"
+        },
+        {
             "name": "hhvm/type-assert",
             "version": "v3.2.5",
             "source": {
@@ -400,73 +369,122 @@
             "time": "2018-10-18T18:02:20+00:00"
         },
         {
-            "name": "zendframework/zend-diactoros",
-            "version": "1.8.6",
+            "name": "usox/hack-http-factory-interfaces",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "20da13beba0dde8fb648be3cc19765732790f46e"
+                "url": "https://github.com/usox/hack-http-factory-interfaces.git",
+                "reference": "baafc465db44928409bfdcd18b9abc60a70bea53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/20da13beba0dde8fb648be3cc19765732790f46e",
-                "reference": "20da13beba0dde8fb648be3cc19765732790f46e",
+                "url": "https://api.github.com/repos/usox/hack-http-factory-interfaces/zipball/baafc465db44928409bfdcd18b9abc60a70bea53",
+                "reference": "baafc465db44928409bfdcd18b9abc60a70bea53",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0",
-                "psr/http-message": "^1.0"
-            },
-            "provide": {
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "php-http/psr7-integration-tests": "dev-master",
-                "phpunit/phpunit": "^5.7.16 || ^6.0.8 || ^7.2.7",
-                "zendframework/zend-coding-standard": "~1.0"
+                "facebook/hack-http-request-response-interfaces": "dev-master",
+                "hhvm": "^3.29"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.8.x-dev",
-                    "dev-develop": "1.9.x-dev",
-                    "dev-release-2.0": "2.0.x-dev"
-                }
-            },
             "autoload": {
-                "files": [
-                    "src/functions/create_uploaded_file.php",
-                    "src/functions/marshal_headers_from_sapi.php",
-                    "src/functions/marshal_method_from_sapi.php",
-                    "src/functions/marshal_protocol_version_from_sapi.php",
-                    "src/functions/marshal_uri_from_sapi.php",
-                    "src/functions/normalize_server.php",
-                    "src/functions/normalize_uploaded_files.php",
-                    "src/functions/parse_cookie_header.php"
-                ],
                 "psr-4": {
-                    "Zend\\Diactoros\\": "src/"
+                    "Usox\\HackHttpFactory\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-2-Clause"
+                "MIT"
             ],
-            "description": "PSR HTTP Message implementations",
-            "homepage": "https://github.com/zendframework/zend-diactoros",
+            "authors": [
+                {
+                    "name": "Daniel Jakob",
+                    "email": "dev@usox.org"
+                }
+            ],
+            "description": "PSR-17 like http factory interfaces",
+            "homepage": "https://github.com/usox/hack-http-factory-interfaces",
             "keywords": [
-                "http",
-                "psr",
-                "psr-7"
+                "factory",
+                "hack",
+                "hhvm",
+                "http"
             ],
-            "time": "2018-09-05T19:29:37+00:00"
+            "time": "2018-11-09T20:45:33+00:00"
+        },
+        {
+            "name": "usox/hackttp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/usox/hackttp.git",
+                "reference": "3885b0abb80823f404d3ea6b73c6a5fddb491b88"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/usox/hackttp/zipball/3885b0abb80823f404d3ea6b73c6a5fddb491b88",
+                "reference": "3885b0abb80823f404d3ea6b73c6a5fddb491b88",
+                "shasum": ""
+            },
+            "require": {
+                "facebook/hack-http-request-response-interfaces": "dev-master",
+                "hhvm": "^3.29",
+                "hhvm/hsl": "^3.29",
+                "hhvm/hsl-experimental": "^3.29",
+                "hhvm/type-assert": "^3.2",
+                "usox/hack-http-factory-interfaces": "dev-master"
+            },
+            "require-dev": {
+                "hhvm/hhast": "^3.29",
+                "usox/hackmock": "^1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Usox\\HackTTP\\": "src/"
+                }
+            },
+            "scripts": {
+                "tests": [
+                    "env hhvm vendor/bin/hacktest tests"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Jakob",
+                    "email": "dev@usox.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Work in progress demo implementation of facebookexperimental/hack-http-request-response-interfaces",
+            "homepage": "https://github.com/usox/hackttp",
+            "keywords": [
+                "hack",
+                "hacklang",
+                "hhvm",
+                "http",
+                "message",
+                "request",
+                "response",
+                "stream"
+            ],
+            "support": {
+                "source": "https://github.com/usox/hackttp/tree/master",
+                "issues": "https://github.com/usox/hackttp/issues"
+            },
+            "time": "2018-11-09T20:54:43+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "facebook/hack-http-request-response-interfaces": 20,
+        "usox/hackttp": 20,
+        "usox/hack-http-factory-interfaces": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

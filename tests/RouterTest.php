@@ -14,7 +14,8 @@ use function Facebook\FBExpect\expect;
 use namespace HH\Lib\Dict;
 use type Facebook\HackRouter\Tests\TestRouter;
 use type Facebook\HackTest\DataProvider;
-use type Zend\Diactoros\ServerRequest;
+use type Usox\HackTTP\{ServerRequestFactory, UriFactory};
+use type Facebook\Experimental\Http\Message\HTTPMethod;
 
 final class RouterTest extends \Facebook\HackTest\HackTest {
   const keyset<string>
@@ -141,15 +142,15 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     $router = $this->getRouter()->setResolver($factory($map));
 
     list($responder, $_data) =
-      $router->routeRequest(HttpMethod::HEAD, 'getonly');
+      $router->routeMethodAndPath(HttpMethod::HEAD, 'getonly');
     expect($responder)->toBeSame('getonly');
-    expect(() ==> $router->routeRequest(HttpMethod::GET, 'headonly'))->toThrow(
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, 'headonly'))->toThrow(
       MethodNotAllowedException::class,
     );
-    expect(() ==> $router->routeRequest(HttpMethod::HEAD, 'postonly'))->toThrow(
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::HEAD, 'postonly'))->toThrow(
       MethodNotAllowedException::class,
     );
-    expect(() ==> $router->routeRequest(HttpMethod::GET, 'postonly'))->toThrow(
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, 'postonly'))->toThrow(
       MethodNotAllowedException::class,
     );
   }
@@ -161,7 +162,7 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     dict<string, string> $expected_data,
   ): void {
     list($actual_responder, $actual_data) =
-      $this->getRouter()->routeRequest(HttpMethod::GET, $in);
+      $this->getRouter()->routeMethodAndPath(HttpMethod::GET, $in);
     expect($actual_responder)->toBeSame($expected_responder);
     expect(dict($actual_data))->toBeSame($expected_data);
   }
@@ -176,7 +177,7 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
   ): void {
     list($responder, $data) = $this->getRouter()
       ->setResolver($resolver)
-      ->routeRequest(HttpMethod::GET, $in);
+      ->routeMethodAndPath(HttpMethod::GET, $in);
     expect($responder)->toBeSame($expected_responder);
     expect(dict($data))->toBeSame($expected_data);
 
@@ -186,31 +187,29 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
 
     list($responder, $data) = $this->getRouter()
       ->setResolver($resolver)
-      ->routeRequest(HttpMethod::HEAD, $in);
+      ->routeMethodAndPath(HttpMethod::HEAD, $in);
     expect($responder)->toBeSame($expected_responder);
     expect(dict($data))->toBeSame($expected_data);
   }
 
   <<DataProvider('expectedMatches')>>
-  public function testPsr7Support(
+  public function testRequestResponseInterfacesSupport(
     string $path,
     string $_expected_responder,
     dict<string, string> $_expected_data,
   ): void {
     $router = $this->getRouter();
     list($direct_responder, $direct_data) =
-      $router->routeRequest(HttpMethod::GET, $path);
+      $router->routeMethodAndPath(HttpMethod::GET, $path);
 
-    /* HH_FIXME[2049] no HHI for Diactoros */
-    $psr_request = new ServerRequest(
-      /* server = */ [],
-      /* file = */ [],
-      'http://example.com/'.$path,
-      'GET',
-      /* body = */ '/dev/null',
-      /* headers = */ [],
+    expect($path[0])->toBeSame('/');
+
+    $psr_request = (new ServerRequestFactory())->createServerRequest(
+      HTTPMethod::GET,
+      (new UriFactory())->createUri('http://example.com'.$path),
+      /* server params = */ dict[],
     );
-    list($psr_responder, $psr_data) = $router->routePsr7Request($psr_request);
+    list($psr_responder, $psr_data) = $router->routeRequest($psr_request);
     expect($psr_responder)->toBeSame($direct_responder);
     expect($psr_data)->toBePHPEqual($direct_data);
   }
@@ -222,7 +221,7 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
       $factory,
   ): void {
     $router = $this->getRouter()->setResolver($factory(dict[]));
-    expect(() ==> $router->routeRequest(HttpMethod::GET, '/__404'))->toThrow(
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/__404'))->toThrow(
       NotFoundException::class,
     );
 
@@ -230,14 +229,14 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
       ->setResolver($factory(dict[
         HttpMethod::GET => dict['/foo' => '/foo'],
       ]));
-    expect(() ==> $router->routeRequest(HttpMethod::GET, '/__404'))->toThrow(
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/__404'))->toThrow(
       NotFoundException::class,
     );
   }
 
   public function testMethodNotAllowed(): void {
     expect(() ==> {
-      $this->getRouter()->routeRequest(HttpMethod::POST, '/foo');
+      $this->getRouter()->routeMethodAndPath(HttpMethod::POST, '/foo');
     })->toThrow(\Facebook\HackRouter\MethodNotAllowedException::class);
   }
 

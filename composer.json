@@ -1,13 +1,14 @@
 {
   "name": "facebook/hack-router",
   "description": "URI routing for Hack",
+  "license": "MIT",
   "keywords": ["hack", "router", "routing", "hhvm"],
   "homepage": "https://github.com/hhvm/hack-router",
   "require": {
     "hhvm": "^3.28.0",
     "hhvm/hsl": "^3.28.0",
     "hhvm/hhvm-autoload": "^1.5.3",
-    "hack-psr/psr7-http-message-hhi": "^1.0.0"
+    "facebook/hack-http-request-response-interfaces": "dev-master"
   },
   "extra": {
     "branch-alias": {
@@ -15,9 +16,13 @@
     }
   },
   "require-dev": {
-    "zendframework/zend-diactoros": "^1.3",
     "facebook/fbexpect": "^2.0",
     "hhvm/hhast": "^3.28.0",
-    "hhvm/hacktest": "^1.1"
-  }
+    "hhvm/hacktest": "^1.1",
+    "usox/hackttp": "dev-master",
+    "usox/hack-http-factory-interfaces": "dev-master"
+  },
+  "repositories": [
+    { "type": "vcs", "url": "https://github.com/usox/hackttp.git" }
+  ]
 }

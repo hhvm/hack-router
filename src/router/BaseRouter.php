@@ -17,7 +17,7 @@ abstract class BaseRouter<+TResponder> {
   abstract protected function getRoutes(
   ): ImmMap<HttpMethod, ImmMap<string, TResponder>>;
 
-  final public function routeRequest(
+  final public function routeMethodAndPath(
     HttpMethod $method,
     string $path,
   ): (TResponder, ImmMap<string, string>) {
@@ -46,14 +46,14 @@ abstract class BaseRouter<+TResponder> {
     }
   }
 
-  final public function routePsr7Request(
-    \Psr\Http\Message\RequestInterface $request,
+  final public function routeRequest(
+    \Facebook\Experimental\Http\Message\RequestInterface $request,
   ): (TResponder, ImmMap<string, string>) {
     $method = HttpMethod::coerce($request->getMethod());
     if ($method === null) {
       throw new MethodNotAllowedException();
     }
-    return $this->routeRequest($method, $request->getUri()->getPath());
+    return $this->routeMethodAndPath($method, $request->getUri()->getPath());
   }
 
   protected function getResolver(): IResolver<TResponder> {
