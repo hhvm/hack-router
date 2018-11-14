@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fedd7d2159ef88cb157072783a64497",
+    "content-hash": "66042f9aba3b06b6c5b7fd1cf6a5c228",
     "packages": [
         {
             "name": "facebook/hack-http-request-response-interfaces",
@@ -370,16 +370,16 @@
         },
         {
             "name": "usox/hack-http-factory-interfaces",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/hack-http-factory-interfaces.git",
-                "reference": "baafc465db44928409bfdcd18b9abc60a70bea53"
+                "reference": "ca959516a20fefff9820322b4f4a49cc45cb3b9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/hack-http-factory-interfaces/zipball/baafc465db44928409bfdcd18b9abc60a70bea53",
-                "reference": "baafc465db44928409bfdcd18b9abc60a70bea53",
+                "url": "https://api.github.com/repos/usox/hack-http-factory-interfaces/zipball/ca959516a20fefff9820322b4f4a49cc45cb3b9e",
+                "reference": "ca959516a20fefff9820322b4f4a49cc45cb3b9e",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
                 "hhvm",
                 "http"
             ],
-            "time": "2018-11-09T20:45:33+00:00"
+            "time": "2018-11-14T08:03:01+00:00"
         },
         {
             "name": "usox/hackttp",
@@ -418,12 +418,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/hackttp.git",
-                "reference": "3885b0abb80823f404d3ea6b73c6a5fddb491b88"
+                "reference": "27da4e6b280d805eff81d8677807d1dc49be57ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/hackttp/zipball/3885b0abb80823f404d3ea6b73c6a5fddb491b88",
-                "reference": "3885b0abb80823f404d3ea6b73c6a5fddb491b88",
+                "url": "https://api.github.com/repos/usox/hackttp/zipball/27da4e6b280d805eff81d8677807d1dc49be57ad",
+                "reference": "27da4e6b280d805eff81d8677807d1dc49be57ad",
                 "shasum": ""
             },
             "require": {
@@ -432,7 +432,7 @@
                 "hhvm/hsl": "^3.29",
                 "hhvm/hsl-experimental": "^3.29",
                 "hhvm/type-assert": "^3.2",
-                "usox/hack-http-factory-interfaces": "dev-master"
+                "usox/hack-http-factory-interfaces": "0.1.0"
             },
             "require-dev": {
                 "hhvm/hhast": "^3.29",
@@ -444,11 +444,7 @@
                     "Usox\\HackTTP\\": "src/"
                 }
             },
-            "scripts": {
-                "tests": [
-                    "env hhvm vendor/bin/hacktest tests"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -471,19 +467,14 @@
                 "response",
                 "stream"
             ],
-            "support": {
-                "source": "https://github.com/usox/hackttp/tree/master",
-                "issues": "https://github.com/usox/hackttp/issues"
-            },
-            "time": "2018-11-09T20:54:43+00:00"
+            "time": "2018-11-14T08:10:06+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "facebook/hack-http-request-response-interfaces": 20,
-        "usox/hackttp": 20,
-        "usox/hack-http-factory-interfaces": 20
+        "usox/hackttp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

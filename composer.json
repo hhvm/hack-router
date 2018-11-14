@@ -19,10 +19,6 @@
     "facebook/fbexpect": "^2.0",
     "hhvm/hhast": "^3.28.0",
     "hhvm/hacktest": "^1.1",
-    "usox/hackttp": "dev-master",
-    "usox/hack-http-factory-interfaces": "dev-master"
-  },
-  "repositories": [
-    { "type": "vcs", "url": "https://github.com/usox/hackttp.git" }
-  ]
+    "usox/hackttp": "dev-master"
+  }
 }
