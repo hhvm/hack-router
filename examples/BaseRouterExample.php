@@ -52,6 +52,7 @@ function get_example_inputs(): ImmVector<(HttpMethod, string)> {
   };
 }
 
+<<__Entrypoint>>
 function main(): void {
   $router = new BaseRouterExample();
   foreach (get_example_inputs() as $input) {
@@ -66,6 +67,3 @@ function main(): void {
     );
   }
 }
-
-/* HH_IGNORE_ERROR[1002] top-level statement in strict file */
-main();
