@@ -18,4 +18,7 @@ enum HttpMethod: string {
   PATCH = 'PATCH';
   DELETE = 'DELETE';
   OPTIONS = 'OPTIONS';
+  PURGE = 'PURGE';
+  TRACE = 'TRACE';
+  CONNECT = 'CONNECT';
 }
