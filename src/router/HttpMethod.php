@@ -21,4 +21,13 @@ enum HttpMethod: string {
   PURGE = 'PURGE';
   TRACE = 'TRACE';
   CONNECT = 'CONNECT';
+  REPORT = 'REPORT';
+  LOCK = 'LOCK';
+  UNLOCK = 'UNLOCK';
+  COPY = 'COPY';
+  MOVE = 'MOVE';
+  MERGE = 'MERGE';
+  NOTIFY = 'NOTIFY';
+  SUBSCRIBE = 'SUBSCRIBE';
+  UNSUBSCRIBE = 'UNSUBSCRIBE';
 }
