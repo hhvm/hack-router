@@ -53,7 +53,7 @@ function get_example_inputs(): ImmVector<(HttpMethod, string)> {
 }
 
 <<__Entrypoint>>
-function main(): void {
+function main(): noreturn {
   $router = new BaseRouterExample();
   foreach (get_example_inputs() as $input) {
     list($method, $path) = $input;
@@ -66,4 +66,5 @@ function main(): void {
       $responder(dict($params)),
     );
   }
+  exit(0);
 }
