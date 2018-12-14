@@ -52,7 +52,7 @@ function get_example_inputs(): ImmVector<(HttpMethod, string)> {
   };
 }
 
-<<__Entrypoint>>
+<<__EntryPoint>>
 function main(): noreturn {
   $router = new BaseRouterExample();
   foreach (get_example_inputs() as $input) {
