@@ -10,6 +10,8 @@
 
 namespace Facebook\HackRouter;
 
+use namespace HH\Lib\{Str, Vec};
+
 class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function __construct(
     /* HH_FIXME[2053] */
@@ -39,8 +41,8 @@ class EnumRequestParameter<T> extends TypedUriParameter<T> {
   <<__Override>>
   public function getRegExpFragment(): ?string {
     $class = $this->enumClass;
-    $values = (new ImmVector($class::getValues()));
-    $sub_fragments = $values->map($value ==> \preg_quote($value));
-    return '(?:'.\implode('|', $sub_fragments).')';
+    $values = $class::getValues();
+    $sub_fragments = Vec\map($values, $value ==> \preg_quote((string) $value));
+    return '(?:'.Str\join($sub_fragments, '|').')';
   }
 }
