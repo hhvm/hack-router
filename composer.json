@@ -5,9 +5,9 @@
   "keywords": ["hack", "router", "routing", "hhvm"],
   "homepage": "https://github.com/hhvm/hack-router",
   "require": {
-    "hhvm": "^3.29.0",
-    "hhvm/hsl": "^3.29.0",
-    "hhvm/hhvm-autoload": "^1.5.3",
+    "hhvm": "^4.0",
+    "hhvm/hsl": "^4.0.0",
+    "hhvm/hhvm-autoload": "^2.0",
     "facebook/hack-http-request-response-interfaces": "^0.1"
   },
   "extra": {
@@ -17,7 +17,7 @@
   },
   "require-dev": {
     "facebook/fbexpect": "^2.0",
-    "hhvm/hhast": "^3.29.0",
+    "hhvm/hhast": "^4.0",
     "hhvm/hacktest": "^1.1",
     "usox/hackttp": "^0.1"
   }
