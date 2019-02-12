@@ -8,7 +8,7 @@
     "hhvm": "^4.0",
     "hhvm/hsl": "^4.0.0",
     "hhvm/hhvm-autoload": "^2.0",
-    "facebook/hack-http-request-response-interfaces": "^0.1"
+    "facebook/hack-http-request-response-interfaces": "^0.2"
   },
   "extra": {
     "branch-alias": {
