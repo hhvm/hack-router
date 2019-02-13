@@ -7,8 +7,7 @@
   "require": {
     "hhvm": "^4.0",
     "hhvm/hsl": "^4.0.0",
-    "hhvm/hhvm-autoload": "^2.0",
-    "facebook/hack-http-request-response-interfaces": "^0.1"
+    "facebook/hack-http-request-response-interfaces": "^0.2"
   },
   "extra": {
     "branch-alias": {
@@ -18,6 +17,7 @@
   "require-dev": {
     "facebook/fbexpect": "^2.0",
     "hhvm/hhast": "^4.0",
+    "hhvm/hhvm-autoload": "^2.0",
     "hhvm/hacktest": "^1.1",
     "usox/hackttp": "^0.1"
   }
