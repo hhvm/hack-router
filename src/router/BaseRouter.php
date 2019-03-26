@@ -56,11 +56,11 @@ abstract class BaseRouter<+TResponder> {
     return $this->routeMethodAndPath($method, $request->getUri()->getPath());
   }
 
+  private ?IResolver<TResponder> $resolver = null;
+
   protected function getResolver(): IResolver<TResponder> {
-    // Don't use <<__Memoize>> because that can be surprising with subclassing
-    static $resolver = null;
-    if ($resolver !== null) {
-      return $resolver;
+    if ($this->resolver !== null) {
+      return $this->resolver;
     }
 
     if (is_dev()) {
@@ -84,6 +84,7 @@ abstract class BaseRouter<+TResponder> {
         \apc_store(__FILE__.'/cache', $routes);
       }
     }
-    return new PrefixMatchingResolver($routes);
+    $this->resolver = new PrefixMatchingResolver($routes);
+    return $this->resolver;
   }
 }
