@@ -38,7 +38,7 @@ final class SimpleRegexpResolver<+TResponder> implements IResolver<TResponder> {
         continue;
       }
       $ret =
-        tuple($responder, Dict\filter_keys($matches, $key ==> is_string($key)));
+        tuple($responder, Dict\filter_keys($matches, $key ==> $key is string));
       return $ret;
     }
     throw new NotFoundException();

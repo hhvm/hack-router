@@ -71,7 +71,7 @@ final class PrefixMatchingResolver<+TResponder>
       $matched = $matches[0];
       $remaining = Str\strip_prefix($path, $matched);
 
-      $data = Dict\filter_keys($matches, $key ==> is_string($key));
+      $data = Dict\filter_keys($matches, $key ==> $key is string);
       $sub = $regexps[$regexp];
 
       if ($sub->isResponder()) {
