@@ -24,8 +24,9 @@ abstract class RequestParametersBase {
     KeyedTraversable<string, string> $values,
   ) {
     $this->values = new ImmMap($values);
-    $spec_vector_to_map = $specs ==>
-      Dict\pull($specs, $it ==> $it, $it ==> $it->getName());
+    $spec_vector_to_map = (
+      Traversable<RequestParameter> $specs
+    ) ==> Dict\pull($specs, $it ==> $it, $it ==> $it->getName());
 
     $this->requiredSpecs = $spec_vector_to_map($required_specs);
     $this->optionalSpecs = $spec_vector_to_map($optional_specs);
