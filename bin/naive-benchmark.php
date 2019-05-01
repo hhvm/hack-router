@@ -82,7 +82,9 @@ final class NaiveBenchmark {
           $expected_responder,
           $responder,
         );
-        $pretty_data = $dict ==> \var_export($dict, true)
+	$pretty_data = (
+	    dict<string, string> $dict
+	  ) ==> \var_export($dict, true)
           |> Str\split($$, "\n")
           |> Vec\map($$, $line ==> '    '.$line)
           |> Str\join($$, "\n");
