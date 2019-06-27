@@ -13,8 +13,8 @@ namespace Facebook\HackRouter\PrefixMatching;
 use type Facebook\HackRouter\PatternParser\{
   LiteralNode,
   Node,
-  Parser,
   ParameterNode,
+  Parser,
 };
 use namespace HH\Lib\{C, Dict, Keyset, Str, Vec};
 

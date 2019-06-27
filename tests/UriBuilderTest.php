@@ -10,9 +10,8 @@
 
 namespace Facebook\HackRouter;
 
-use type Facebook\HackRouter\Tests\TestIntEnum;
+use type Facebook\HackRouter\Tests\{TestIntEnum, TestStringEnum};
 use function Facebook\FBExpect\expect;
-use type Facebook\HackRouter\Tests\TestStringEnum;
 
 final class UriBuilderTest extends \Facebook\HackTest\HackTest {
   public function testLiteral(): void {

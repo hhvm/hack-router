@@ -10,7 +10,7 @@
 
 namespace Facebook\HackRouter\PatternParser;
 
-use namespace HH\Lib\{Vec, Str};
+use namespace HH\Lib\{Str, Vec};
 
 function tokenize(string $pattern): vec<Token> {
   $tokens = vec[];

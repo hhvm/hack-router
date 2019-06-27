@@ -16,8 +16,7 @@ namespace Facebook\HackRouter\Examples\BaseRouterExample;
 
 require_once(__DIR__.'/../vendor/hh_autoload.php');
 
-use type Facebook\HackRouter\BaseRouter;
-use type Facebook\HackRouter\HttpMethod;
+use type Facebook\HackRouter\{BaseRouter, HttpMethod};
 
 /** This can be whatever you want; in this case, it's a
  * callable, but classname<MyWebControllerBase> is also a
