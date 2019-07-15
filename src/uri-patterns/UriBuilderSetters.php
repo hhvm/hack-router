@@ -27,7 +27,7 @@ trait UriBuilderSetters {
     T $value,
   ): this {
     $spec = $this->parameters[$name] ?? null;
-    if ($spec && $spec instanceof EnumRequestParameter) {
+    if ($spec && $spec is EnumRequestParameter<_>) {
       // Null case is handled by standard checks in setValue()
       $expected_class = $spec->getEnumName();
       invariant(

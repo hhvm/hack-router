@@ -62,14 +62,14 @@ abstract class RequestParametersBase {
   ): T {
     $spec = $specs[$name];
     invariant(
-      /* HH_FIXME[4162] instanceof is too restrictive on classname*/
+      /* HH_FIXME[4162] need reified generics */
       $spec instanceof $class,
       'Expected %s to be a %s, got %s',
       $name,
       $class,
       \get_class($spec),
     );
-    return $spec;
+    return /* HH_FIXME[4110] */ $spec;
   }
 
   final protected function getSimpleTyped<T>(

@@ -61,7 +61,7 @@ final class PrefixMap<T> {
       }
       $node = C\firstx($nodes);
       $nodes = Vec\drop($nodes, 1);
-      if ($node instanceof LiteralNode) {
+      if ($node is LiteralNode) {
         if (C\is_empty($nodes)) {
           $literals[$node->getText()] = $responder;
         } else {
@@ -70,10 +70,10 @@ final class PrefixMap<T> {
         continue;
       }
 
-      if ($node instanceof ParameterNode && $node->getRegexp() === null) {
+      if ($node is ParameterNode && $node->getRegexp() === null) {
         $next = C\first($nodes);
         if (
-          $next instanceof LiteralNode && Str\starts_with($next->getText(), '/')
+          $next is LiteralNode && Str\starts_with($next->getText(), '/')
         ) {
           $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
           continue;

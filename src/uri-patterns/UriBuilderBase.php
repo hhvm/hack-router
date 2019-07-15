@@ -19,7 +19,7 @@ abstract class UriBuilderBase {
     $this->parts = new ImmVector($parts);
     $parameters = Map {};
     foreach ($parts as $part) {
-      if (!$part instanceof RequestParameter) {
+      if (!$part is RequestParameter) {
         continue;
       }
       $parameters[$part->getName()] = $part;
@@ -30,13 +30,13 @@ abstract class UriBuilderBase {
   final protected function getPathImpl(): string {
     $uri = '';
     foreach ($this->parts as $part) {
-      if ($part instanceof UriPatternLiteral) {
+      if ($part is UriPatternLiteral) {
         $uri .= $part->getValue();
         continue;
       }
 
       invariant(
-        $part instanceof RequestParameter,
+        $part is RequestParameter,
         'expecting all UriPatternParts to be literals or parameters, got %s',
         \get_class($part),
       );
@@ -85,6 +85,7 @@ abstract class UriBuilderBase {
       'trying to set %s twice',
       $name,
     );
+    /* HH_FIXME[4053] need reified generics */
     $this->values[$name] = $part->getUriFragment($value);
     return $this;
   }
