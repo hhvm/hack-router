@@ -64,7 +64,7 @@ abstract class RequestParametersBase {
     $spec = $specs[$name];
     invariant(
       /* HH_FIXME[4162] need reified generics */
-      $spec instanceof $class,
+      \is_a($spec, $class),
       'Expected %s to be a %s, got %s',
       $name,
       $class,

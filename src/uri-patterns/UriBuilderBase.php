@@ -74,7 +74,7 @@ abstract class UriBuilderBase {
       \implode(', ', $this->parameters->keys()->map($x ==> "'".$x."'")),
     );
     invariant(
-      $part instanceof $parameter_type,
+      \is_a($part, $parameter_type),
       'Expected %s to be a %s, got a %s',
       $name,
       $parameter_type,
