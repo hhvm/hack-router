@@ -75,7 +75,7 @@ final class UriBuilderTest extends \Facebook\HackTest\HackTest {
       $parts = (new UriPattern())
         ->enum(TestStringEnum::class, 'foo')
         ->getParts();
-      $path = (new UriBuilder($parts))
+      (new UriBuilder($parts))
         ->setEnum(TestIntEnum::class, 'foo', TestIntEnum::BAR);
     })->toThrow(InvariantException::class);
   }

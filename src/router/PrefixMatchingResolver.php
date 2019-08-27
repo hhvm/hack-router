@@ -61,7 +61,7 @@ final class PrefixMatchingResolver<+TResponder>
     }
 
     $regexps = $map->getRegexps();
-    foreach ($regexps as $regexp => $sub_map) {
+    foreach ($regexps as $regexp => $_sub_map) {
       $pattern = '#^'.$regexp.'#';
       $matches = [];
 
