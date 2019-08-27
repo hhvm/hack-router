@@ -127,7 +127,8 @@ final class NaiveBenchmark {
       'uncached prefix match' => () ==>
         PrefixMatchingResolver::fromFlatMap($map),
       'cached prefix map' => () ==> {
-        $prefix_map = \apc_fetch(__FUNCTION__);
+        $_success = null;
+        $prefix_map = \apc_fetch(__FUNCTION__, inout $_success);
         if ($prefix_map === false) {
           $prefix_map =
             Dict\map($map, $v ==> PrefixMatching\PrefixMap::fromFlatMap($v));

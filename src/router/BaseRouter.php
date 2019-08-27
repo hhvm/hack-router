@@ -66,7 +66,8 @@ abstract class BaseRouter<+TResponder> {
     if (is_dev()) {
       $routes = null;
     } else {
-      $routes = \apc_fetch(__FILE__.'/cache');
+      $_success = null;
+      $routes = \apc_fetch(__FILE__.'/cache', inout $_success);
       if ($routes === false) {
         $routes = null;
       }
