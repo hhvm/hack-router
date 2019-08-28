@@ -14,6 +14,8 @@ composer install
 hh_client
 
 vendor/bin/hacktest tests/
+# In prod, we have caching and no fallback handler. Check it.
+HH_FORCE_IS_DEV=0 vendor/bin/hacktest tests/
 if !(hhvm --version | grep -q -- -dev); then
   vendor/bin/hhast-lint
 fi
