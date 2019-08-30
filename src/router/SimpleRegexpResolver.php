@@ -34,7 +34,7 @@ final class SimpleRegexpResolver<+TResponder> implements IResolver<TResponder> {
     $map = $this->map[$method];
     foreach ($map as $regexp => $responder) {
       $matches = [];
-      if (\preg_match($regexp, $path, &$matches) !== 1) {
+      if (\preg_match_with_matches($regexp, $path, inout $matches) !== 1) {
         continue;
       }
       $ret =

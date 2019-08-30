@@ -65,7 +65,7 @@ final class PrefixMatchingResolver<+TResponder>
       $pattern = '#^'.$regexp.'#';
       $matches = [];
 
-      if (\preg_match($pattern, $path, &$matches) !== 1) {
+      if (\preg_match_with_matches($pattern, $path, inout $matches) !== 1) {
         continue;
       }
       $matched = $matches[0];
