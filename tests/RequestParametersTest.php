@@ -15,38 +15,38 @@ use function Facebook\FBExpect\expect;
 
 final class RequestParametersTest extends \Facebook\HackTest\HackTest {
   public function testStringParam(): void {
-    $parts = [new StringRequestParameter(
+    $parts = varray[new StringRequestParameter(
       StringRequestParameterSlashes::WITHOUT_SLASHES,
       'foo',
     )];
     $data = dict['foo' => 'bar'];
-    expect((new RequestParameters($parts, [], $data))->getString('foo'))
+    expect((new RequestParameters($parts, varray[], $data))->getString('foo'))
       ->toBeSame('bar');
   }
 
   public function testIntParam(): void {
-    $parts = [new IntRequestParameter('foo')];
+    $parts = varray[new IntRequestParameter('foo')];
     $data = dict['foo' => '123'];
-    expect((new RequestParameters($parts, [], $data))->getInt('foo'))->toBeSame(
+    expect((new RequestParameters($parts, varray[], $data))->getInt('foo'))->toBeSame(
       123,
     );
   }
 
   public function testFetchingStringAsInt(): void {
     expect(() ==> {
-      $parts = [new StringRequestParameter(
+      $parts = varray[new StringRequestParameter(
         StringRequestParameterSlashes::WITHOUT_SLASHES,
         'foo',
       )];
       $data = dict['foo' => 'bar'];
-      (new RequestParameters($parts, [], $data))->getInt('foo');
+      (new RequestParameters($parts, varray[], $data))->getInt('foo');
     })->toThrow(InvariantException::class);
   }
 
   public function testEnumParam(): void {
-    $parts = [new EnumRequestParameter(TestIntEnum::class, 'foo')];
+    $parts = varray[new EnumRequestParameter(TestIntEnum::class, 'foo')];
     $data = dict['foo' => (string)TestIntEnum::BAR];
-    $value = (new RequestParameters($parts, [], $data))->getEnum(
+    $value = (new RequestParameters($parts, varray[], $data))->getEnum(
       TestIntEnum::class,
       'foo',
     );
@@ -85,7 +85,7 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
       'bar' => '123',
       'baz' => (string)TestIntEnum::FOO,
     ];
-    $params = new RequestParameters($parts, [], $data);
+    $params = new RequestParameters($parts, varray[], $data);
     expect($params->getString('foo'))->toBeSame('some string');
     expect($params->getInt('bar'))->toBeSame(123);
     expect($params->getEnum(TestIntEnum::class, 'baz'))->toBeSame(
@@ -95,8 +95,8 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
 
   public function testGetOptional(): void {
     $params = new RequestParameters(
-      [],
-      [new StringRequestParameter(
+      varray[],
+      varray[new StringRequestParameter(
         StringRequestParameterSlashes::WITHOUT_SLASHES,
         'foo',
       )],
@@ -107,8 +107,8 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
 
   public function testGetMissingOptional(): void {
     $params = new RequestParameters(
-      [],
-      [new StringRequestParameter(
+      varray[],
+      varray[new StringRequestParameter(
         StringRequestParameterSlashes::WITHOUT_SLASHES,
         'foo',
       )],
@@ -120,8 +120,8 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
   public function testGetOptionalAsRequired(): void {
     expect(() ==> {
       $params = new RequestParameters(
-        [],
-        [new StringRequestParameter(
+        varray[],
+        varray[new StringRequestParameter(
           StringRequestParameterSlashes::WITHOUT_SLASHES,
           'foo',
         )],
@@ -134,11 +134,11 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
   public function testGetRequiredAsOptional(): void {
     expect(() ==> {
       $params = new RequestParameters(
-        [new StringRequestParameter(
+        varray[new StringRequestParameter(
           StringRequestParameterSlashes::WITHOUT_SLASHES,
           'foo',
         )],
-        [],
+        varray[],
         dict['foo' => 'bar'],
       );
       $params->getOptionalString('foo');
