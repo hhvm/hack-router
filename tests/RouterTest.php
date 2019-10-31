@@ -38,8 +38,8 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     ];
 
   public function expectedMatches(
-  ): array<(string, string, dict<string, string>)> {
-    return [
+  ): varray<(string, string, dict<string, string>)> {
+    return varray[
       tuple('/foo', '/foo', dict[]),
       tuple('/foo/', '/foo/', dict[]),
       tuple('/foo/bar', '/foo/bar', dict[]),
@@ -96,7 +96,7 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
       (function(dict<HttpMethod, dict<string, string>>): IResolver<string>),
     )
   > {
-    return [
+    return varray[
       tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
       tuple(
         'prefix matching',
@@ -110,7 +110,7 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     $map = dict[HttpMethod::GET => dict(self::MAP)];
     $resolvers = Dict\from_entries($this->getAllResolvers());
 
-    $out = [];
+    $out = varray[];
     $examples = $this->expectedMatches();
     foreach ($resolvers as $name => $resolver) {
       $resolver = $resolver($map);
