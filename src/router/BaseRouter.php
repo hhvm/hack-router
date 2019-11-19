@@ -10,7 +10,7 @@
 
 namespace Facebook\HackRouter;
 
-use namespace HH\Lib\Dict;
+use namespace HH\Lib\{C, Dict};
 use function Facebook\AutoloadMap\Generated\is_dev;
 
 abstract class BaseRouter<+TResponder> {
@@ -27,22 +27,20 @@ abstract class BaseRouter<+TResponder> {
       $data = Dict\map($data, $value ==> \urldecode($value));
       return tuple($responder, new ImmMap($data));
     } catch (NotFoundException $e) {
-      foreach (HttpMethod::getValues() as $next) {
-        if ($next === $method) {
-          continue;
-        }
-        try {
-          list($responder, $data) = $resolver->resolve($next, $path);
-          if ($method === HttpMethod::HEAD && $next === HttpMethod::GET) {
-            $data = Dict\map($data, $value ==> \urldecode($value));
-            return tuple($responder, new ImmMap($data));
-          }
-          throw new MethodNotAllowedException();
-        } catch (NotFoundException $_) {
-          continue;
-        }
+      $allowed = $this->getAllowedMethods($path);
+      if (C\is_empty($allowed)) {
+        throw $e;
       }
-      throw $e;
+
+      if (
+        $method === HttpMethod::HEAD && $allowed === keyset[HttpMethod::GET]
+      ) {
+        list($responder, $data) = $resolver->resolve(HttpMethod::GET, $path);
+        $data = Dict\map($data, $value ==> \urldecode($value));
+        return tuple($responder, new ImmMap($data));
+      }
+
+      throw new MethodNotAllowedException($allowed);
     }
   }
 
@@ -51,9 +49,27 @@ abstract class BaseRouter<+TResponder> {
   ): (TResponder, ImmMap<string, string>) {
     $method = HttpMethod::coerce($request->getMethod());
     if ($method === null) {
-      throw new MethodNotAllowedException();
+      throw new MethodNotAllowedException(
+        $this->getAllowedMethods($request->getUri()->getPath()),
+      );
     }
+
     return $this->routeMethodAndPath($method, $request->getUri()->getPath());
+  }
+
+  private function getAllowedMethods(string $path): keyset<HttpMethod> {
+    $resolver = $this->getResolver();
+    $allowed = keyset[];
+    foreach (HttpMethod::getValues() as $method) {
+      try {
+        list($_responder, $_data) = $resolver->resolve($method, $path);
+        $allowed[] = $method;
+      } catch (NotFoundException $_) {
+        continue;
+      }
+    }
+
+    return $allowed;
   }
 
   private ?IResolver<TResponder> $resolver = null;
@@ -76,9 +92,8 @@ abstract class BaseRouter<+TResponder> {
     if ($routes === null) {
       $routes = Dict\map(
         $this->getRoutes(),
-        $method_routes ==> PrefixMatching\PrefixMap::fromFlatMap(
-          dict($method_routes),
-        ),
+        $method_routes ==>
+          PrefixMatching\PrefixMap::fromFlatMap(dict($method_routes)),
       );
 
       if (!is_dev()) {
