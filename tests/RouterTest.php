@@ -18,24 +18,23 @@ use type Usox\HackTTP\{ServerRequestFactory, UriFactory};
 use type Facebook\Experimental\Http\Message\HTTPMethod;
 
 final class RouterTest extends \Facebook\HackTest\HackTest {
-  const keyset<string>
-    MAP = keyset[
-      '/foo',
-      '/foo/',
-      '/foo/bar',
-      '/foo/bar/{baz}',
-      '/foo/{bar}',
-      '/foo/{bar}/baz',
-      '/foo/{bar}{baz:.+}',
-      '/food/{noms}',
-      '/bar/{herp:\\d+}',
-      '/bar/{herp}',
-      '/unique/{foo}/bar',
-      '/optional_suffix_[foo]',
-      '/optional_suffix[/]',
-      '/optional_suffixes/[herp[/derp]]',
-      '/manual/en/{LegacyID}.php',
-    ];
+  const keyset<string> MAP = keyset[
+    '/foo',
+    '/foo/',
+    '/foo/bar',
+    '/foo/bar/{baz}',
+    '/foo/{bar}',
+    '/foo/{bar}/baz',
+    '/foo/{bar}{baz:.+}',
+    '/food/{noms}',
+    '/bar/{herp:\\d+}',
+    '/bar/{herp}',
+    '/unique/{foo}/bar',
+    '/optional_suffix_[foo]',
+    '/optional_suffix[/]',
+    '/optional_suffixes/[herp[/derp]]',
+    '/manual/en/{LegacyID}.php',
+  ];
 
   public function expectedMatches(
   ): varray<(string, string, dict<string, string>)> {
@@ -124,35 +123,45 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
   <<DataProvider('getAllResolvers')>>
   public function testMethodNotAllowedResponses(
     string $_name,
-    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>)
-      $factory,
+    (function(
+      dict<HttpMethod, dict<string, string>>,
+    ): IResolver<string>) $factory,
   ): void {
     $map = dict[
       HttpMethod::GET => dict[
-        'getonly' => 'getonly',
+        '/get' => 'get',
       ],
       HttpMethod::HEAD => dict[
-        'headonly' => 'headonly',
+        '/head' => 'head',
       ],
       HttpMethod::POST => dict[
-        'postonly' => 'postonly',
+        '/post' => 'post',
       ],
     ];
 
     $router = $this->getRouter()->setResolver($factory($map));
 
-    list($responder, $_data) =
-      $router->routeMethodAndPath(HttpMethod::HEAD, 'getonly');
-    expect($responder)->toBeSame('getonly');
-    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, 'headonly'))->toThrow(
-      MethodNotAllowedException::class,
+    // HEAD -> GET ( re-routing )
+    list($responder, $_data) = $router->routeMethodAndPath(
+      HttpMethod::HEAD,
+      '/get',
     );
-    expect(() ==> $router->routeMethodAndPath(HttpMethod::HEAD, 'postonly'))->toThrow(
-      MethodNotAllowedException::class,
-    );
-    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, 'postonly'))->toThrow(
-      MethodNotAllowedException::class,
-    );
+    expect($responder)->toBeSame('get');
+
+    // GET -> HEAD
+    $e = expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/head'))
+      ->toThrow(MethodNotAllowedException::class);
+    expect($e->getAllowedMethods())->toBeSame(keyset[HttpMethod::HEAD]);
+
+    // HEAD -> POST
+    $e = expect(() ==> $router->routeMethodAndPath(HttpMethod::HEAD, '/post'))
+      ->toThrow(MethodNotAllowedException::class);
+    expect($e->getAllowedMethods())->toBeSame(keyset[HttpMethod::POST]);
+
+    // GET -> POST
+    $e = expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/post'))
+      ->toThrow(MethodNotAllowedException::class);
+    expect($e->getAllowedMethods())->toEqual(keyset[HttpMethod::POST]);
   }
 
   <<DataProvider('expectedMatches')>>
@@ -161,8 +170,8 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     string $expected_responder,
     dict<string, string> $expected_data,
   ): void {
-    list($actual_responder, $actual_data) =
-      $this->getRouter()->routeMethodAndPath(HttpMethod::GET, $in);
+    list($actual_responder, $actual_data) = $this->getRouter()
+      ->routeMethodAndPath(HttpMethod::GET, $in);
     expect($actual_responder)->toBeSame($expected_responder);
     expect(dict($actual_data))->toBeSame($expected_data);
   }
@@ -199,8 +208,10 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     dict<string, string> $_expected_data,
   ): void {
     $router = $this->getRouter();
-    list($direct_responder, $direct_data) =
-      $router->routeMethodAndPath(HttpMethod::GET, $path);
+    list($direct_responder, $direct_data) = $router->routeMethodAndPath(
+      HttpMethod::GET,
+      $path,
+    );
 
     expect($path[0])->toBeSame('/');
 
@@ -217,21 +228,20 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
   <<DataProvider('getAllResolvers')>>
   public function testNotFound(
     string $_resolver_name,
-    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>)
-      $factory,
+    (function(
+      dict<HttpMethod, dict<string, string>>,
+    ): IResolver<string>) $factory,
   ): void {
     $router = $this->getRouter()->setResolver($factory(dict[]));
-    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/__404'))->toThrow(
-      NotFoundException::class,
-    );
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/__404'))
+      ->toThrow(NotFoundException::class);
 
     $router = $this->getRouter()
       ->setResolver($factory(dict[
         HttpMethod::GET => dict['/foo' => '/foo'],
       ]));
-    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/__404'))->toThrow(
-      NotFoundException::class,
-    );
+    expect(() ==> $router->routeMethodAndPath(HttpMethod::GET, '/__404'))
+      ->toThrow(NotFoundException::class);
   }
 
   public function testMethodNotAllowed(): void {
