@@ -15,7 +15,7 @@ use function Facebook\AutoloadMap\Generated\is_dev;
 
 abstract class BaseRouter<+TResponder> {
   abstract protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>>;
+  ): KeyedContainer<HttpMethod, KeyedContainer<string, TResponder>>;
 
   final public function routeMethodAndPath(
     HttpMethod $method,
