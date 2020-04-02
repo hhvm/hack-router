@@ -10,21 +10,23 @@
 
 namespace Facebook\HackRouter;
 
+use namespace HH\Lib\{C, Vec};
+
 abstract class UriBuilderBase {
-  protected ImmVector<UriPatternPart> $parts;
-  protected ImmMap<string, RequestParameter> $parameters;
-  private Map<string, string> $values = Map {};
+  protected vec<UriPatternPart> $parts;
+  protected dict<string, RequestParameter> $parameters;
+  private dict<string, string> $values = dict[];
 
   public function __construct(Traversable<UriPatternPart> $parts) {
-    $this->parts = new ImmVector($parts);
-    $parameters = Map {};
+    $this->parts = vec($parts);
+    $parameters = dict[];
     foreach ($parts as $part) {
       if (!$part is RequestParameter) {
         continue;
       }
       $parameters[$part->getName()] = $part;
     }
-    $this->parameters = $parameters->immutable();
+    $this->parameters = $parameters;
   }
 
   final protected function getPathImpl(): string {
@@ -47,11 +49,11 @@ abstract class UriBuilderBase {
 
       $name = $part->getName();
       invariant(
-        $this->values->containsKey($name),
+        C\contains_key($this->values, $name),
         'Parameter "%s" must be set',
         $name,
       );
-      $uri .= $this->values->at($name);
+      $uri .= $this->values[$name];
     }
     invariant(
       \substr($uri, 0, 1) === '/',
@@ -71,7 +73,10 @@ abstract class UriBuilderBase {
       $part !== null,
       '%s is not a valid parameter - expected one of [%s]',
       $name,
-      \implode(', ', $this->parameters->keys()->map($x ==> "'".$x."'")),
+      \implode(
+        ', ',
+        Vec\map_with_key($this->parameters, ($key, $_) ==> "'".$key."'"),
+      ),
     );
     invariant(
       \is_a($part, $parameter_type),
@@ -81,7 +86,7 @@ abstract class UriBuilderBase {
       \get_class($part),
     );
     invariant(
-      !$this->values->containsKey($name),
+      !C\contains_key($this->values, $name),
       'trying to set %s twice',
       $name,
     );

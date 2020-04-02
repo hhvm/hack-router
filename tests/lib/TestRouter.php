@@ -25,10 +25,10 @@ final class TestRouter<T> extends BaseRouter<T> {
 
   <<__Override>>
   protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, T>> {
-    return ImmMap {
-      HttpMethod::GET => new ImmMap($this->routes),
-    };
+  ): dict<HttpMethod, dict<string, T>> {
+    return dict[
+      HttpMethod::GET => $this->routes,
+    ];
   }
 
   public function setResolver(IResolver<T> $resolver): this {

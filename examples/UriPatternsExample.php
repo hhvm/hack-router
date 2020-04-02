@@ -16,14 +16,14 @@ namespace Facebook\HackRouter\Examples\UrlPatternsExample;
 
 require_once(__DIR__.'/../vendor/hh_autoload.php');
 
-use   type Facebook\HackRouter\{
+use type Facebook\HackRouter\{
   BaseRouter,
   GetFastRoutePatternFromUriPattern,
   GetUriBuilderFromUriPattern,
   HasUriPattern,
   HttpMethod,
   RequestParameters,
-  UriPattern
+  UriPattern,
 };
 
 <<__ConsistentConstruct>>
@@ -38,12 +38,10 @@ abstract class WebController implements HasUriPattern {
     return $this->uriParameters;
   }
 
-  public function __construct(
-    ImmMap<string, string> $uri_parameter_values,
-  ) {
+  public function __construct(dict<string, string> $uri_parameter_values) {
     $this->uriParameters = new RequestParameters(
       static::getUriPattern()->getParameters(),
-      ImmVector { },
+      vec[],
       $uri_parameter_values,
     );
   }
@@ -78,34 +76,33 @@ final class UserPageController extends WebController {
 type TResponder = classname<WebController>;
 
 final class UriPatternsExample extends BaseRouter<TResponder> {
-  public static function getControllers(): ImmVector<TResponder> {
-    return ImmVector {
+  public static function getControllers(): vec<TResponder> {
+    return vec[
       HomePageController::class,
       UserPageController::class,
-    };
+    ];
   }
 
   <<__Override>>
-  public function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
+  public function getRoutes(): dict<HttpMethod, dict<string, TResponder>> {
     $urls_to_controllers = dict[];
     foreach (self::getControllers() as $controller) {
       $pattern = $controller::getFastRoutePattern();
       $urls_to_controllers[$pattern] = $controller;
     }
-    return ImmMap {
-      HttpMethod::GET => new ImmMap($urls_to_controllers),
-    };
+    return dict [
+      HttpMethod::GET => $urls_to_controllers,
+    ];
   }
 }
 
-function get_example_paths(): ImmVector<string> {
-  return ImmVector {
+function get_example_paths(): vec<string> {
+  return vec[
     HomePageController::getUriBuilder()->getPath(),
     UserPageController::getUriBuilder()
       ->setString('user_name', 'Mr Hankey')
       ->getPath(),
-  };
+  ];
 }
 
 function main(): void {
@@ -115,11 +112,7 @@ function main(): void {
       HttpMethod::GET,
       $path,
     );
-    \printf(
-      "GET %s\n\t%s\n",
-      $path,
-      (new $controller($params))->getResponse(),
-    );
+    \printf("GET %s\n\t%s\n", $path, (new $controller($params))->getResponse());
   }
 }
 
