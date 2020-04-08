@@ -69,7 +69,7 @@ abstract class UriBuilderBase {
     $part = $this->parameters[$name] ?? null;
     invariant(
       $part !== null,
-      "%s is not a valid parameter - expected one of [%s]",
+      '%s is not a valid parameter - expected one of [%s]',
       $name,
       \implode(', ', $this->parameters->keys()->map($x ==> "'".$x."'")),
     );
