@@ -89,13 +89,13 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
   }
 
   public function getAllResolvers(
-  ): array<
+  ): vec<
     (
       string,
       (function(dict<HttpMethod, dict<string, string>>): IResolver<string>),
     )
   > {
-    return varray[
+    return vec[
       tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
       tuple(
         'prefix matching',
@@ -105,11 +105,11 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
   }
 
   public function expectedMatchesWithResolvers(
-  ): array<(string, IResolver<string>, string, string, dict<string, string>)> {
+  ): vec<(string, IResolver<string>, string, string, dict<string, string>)> {
     $map = dict[HttpMethod::GET => dict(self::MAP)];
     $resolvers = Dict\from_entries($this->getAllResolvers());
 
-    $out = varray[];
+    $out = vec[];
     $examples = $this->expectedMatches();
     foreach ($resolvers as $name => $resolver) {
       $resolver = $resolver($map);
