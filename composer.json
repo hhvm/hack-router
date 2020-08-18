@@ -19,6 +19,6 @@
     "hhvm/hhast": "^4.0",
     "hhvm/hhvm-autoload": "^2.0.8|^3.0",
     "hhvm/hacktest": "^2.0",
-    "usox/hackttp": "^0.3|^0.4|^0.5"
+    "usox/hackttp": "dev-master"
   }
 }
