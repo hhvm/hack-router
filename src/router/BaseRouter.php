@@ -20,12 +20,12 @@ abstract class BaseRouter<+TResponder> {
   final public function routeMethodAndPath(
     HttpMethod $method,
     string $path,
-  ): (TResponder, ImmMap<string, string>) {
+  ): (TResponder, dict<string, string>) {
     $resolver = $this->getResolver();
     try {
       list($responder, $data) = $resolver->resolve($method, $path);
       $data = Dict\map($data, $value ==> \urldecode($value));
-      return tuple($responder, new ImmMap($data));
+      return tuple($responder, $data);
     } catch (NotFoundException $e) {
       $allowed = $this->getAllowedMethods($path);
       if (C\is_empty($allowed)) {
@@ -37,7 +37,7 @@ abstract class BaseRouter<+TResponder> {
       ) {
         list($responder, $data) = $resolver->resolve(HttpMethod::GET, $path);
         $data = Dict\map($data, $value ==> \urldecode($value));
-        return tuple($responder, new ImmMap($data));
+        return tuple($responder, $data);
       }
 
       throw new MethodNotAllowedException($allowed);
@@ -46,7 +46,7 @@ abstract class BaseRouter<+TResponder> {
 
   final public function routeRequest(
     \Facebook\Experimental\Http\Message\RequestInterface $request,
-  ): (TResponder, ImmMap<string, string>) {
+  ): (TResponder, dict<string, string>) {
     $method = HttpMethod::coerce($request->getMethod());
     if ($method === null) {
       throw new MethodNotAllowedException(

@@ -10,10 +10,12 @@
 
 namespace Facebook\HackRouter;
 
+use namespace HH\Lib\Vec;
+
 // Non-final so you can extend it with additional convenience
 // methods.
 class UriPattern implements HasFastRouteFragment {
-  private Vector<UriPatternPart> $parts = Vector {};
+  private vec<UriPatternPart> $parts = vec[];
 
   final public function appendPart(UriPatternPart $part): this {
     $this->parts[] = $part;
@@ -21,25 +23,25 @@ class UriPattern implements HasFastRouteFragment {
   }
 
   final public function getFastRouteFragment(): string {
-    $fragments = $this->parts->map($part ==> $part->getFastRouteFragment());
+    $fragments = Vec\map($this->parts, $part ==> $part->getFastRouteFragment());
     return \implode('', $fragments);
   }
 
-  final public function getParts(): ImmVector<UriPatternPart> {
-    return $this->parts->immutable();
+  final public function getParts(): vec<UriPatternPart> {
+    return $this->parts;
   }
 
-  final public function getParameters(): ImmVector<UriParameter> {
-    return $this
-      ->parts
-      ->filter($x ==> $x is UriParameter)
-      ->map(
-        $x ==> {
-          assert($x is UriParameter);
-          return $x;
-        },
-      )
-      ->immutable();
+  final public function getParameters(): vec<UriParameter> {
+    return Vec\map(
+      Vec\filter($this->parts, $part ==> $part is UriParameter),
+      $part ==> {
+        invariant(
+          $part is UriParameter,
+          "Tell the typechecker what's going on",
+        );
+        return $part;
+      },
+    );
   }
 
   ///// Convenience Methods /////

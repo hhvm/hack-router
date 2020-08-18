@@ -25,22 +25,20 @@ A simple typed request router. Example:
  * callable, but classname<MyWebControllerBase> is also a
  * common choice.
  */
-type TResponder = (function(ImmMap<string, string>):string);
+type TResponder = (function(dict<string, string>): string);
 
 final class BaseRouterExample extends BaseRouter<TResponder> {
-  protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
-    return ImmMap {
-      HttpMethod::GET => ImmMap {
-        '/' =>
-          ($_params) ==> 'Hello, world',
-        '/user/{user_name}' =>
-          ($params) ==> 'Hello, '.$params['user_name'],
-      },
-      HttpMethod::POST => ImmMap {
+  <<__Override>>
+  protected function getRoutes(): dict<HttpMethod, dict<string, TResponder>> {
+    return dict[
+      HttpMethod::GET => dict[
+        '/' => ($_params) ==> 'Hello, world',
+        '/user/{user_name}' => ($params) ==> 'Hello, '.$params['user_name'],
+      ],
+      HttpMethod::POST => dict[
         '/' => ($_params) ==> 'Hello, POST world',
-      },
-    };
+      ],
+    ];
   }
 }
 ```
