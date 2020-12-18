@@ -30,16 +30,13 @@ class UriPattern implements HasFastRouteFragment {
   }
 
   final public function getParameters(): ImmVector<UriParameter> {
-    return $this
-      ->parts
-      ->filter($x ==> $x is UriParameter)
-      ->map(
-        $x ==> {
-          assert($x is UriParameter);
-          return $x;
-        },
-      )
-      ->immutable();
+    $out = Vector {};
+    foreach($this->parts as $part) {
+      if($part is UriParameter) {
+        $out->add($part);
+      }
+    }
+    return $out->immutable();
   }
 
   ///// Convenience Methods /////
