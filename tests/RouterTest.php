@@ -260,7 +260,6 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     BaseRouter<string> $_,
   ): void {}
 
-
   private function getRouter(): TestRouter<string> {
     return new TestRouter(dict(self::MAP));
   }

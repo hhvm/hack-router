@@ -52,7 +52,7 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
     );
     expect($value)->toBeSame(TestIntEnum::BAR);
 
-    $typechecker_test = (TestIntEnum $x) ==> {};
+    $typechecker_test = (TestIntEnum $_x) ==> {};
     $typechecker_test($value);
   }
 

@@ -10,7 +10,6 @@
 
 namespace Facebook\HackRouter\PatternParser;
 
-
 final class ParameterNode implements Node {
   public function __construct(private string $name, private ?string $regexp) {
   }

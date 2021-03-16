@@ -10,7 +10,6 @@
 
 namespace Facebook\HackRouter\PrefixMatching;
 
-
 final class PrefixMapOrResponder<T> {
   public function __construct(
     private ?PrefixMap<T> $map,
