@@ -21,6 +21,7 @@ final class TestRouter<T> extends BaseRouter<T> {
     private dict<string, T> $routes,
     private ?IResolver<T> $resolver = null,
   ) {
+    parent::__construct();
   }
 
   <<__Override>>
