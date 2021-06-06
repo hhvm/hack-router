@@ -19,17 +19,12 @@ use type Facebook\HackRouter\PatternParser\{
 use namespace HH\Lib\{C, Dict, Keyset, Str, Vec};
 
 final class PrefixMap<T> {
-  private int $prefixLength;
-
   public function __construct(
     private dict<string, T> $literals,
     private dict<string, PrefixMap<T>> $prefixes,
     private dict<string, PrefixMapOrResponder<T>> $regexps,
-  ) {
-    $this->prefixLength = C\is_empty($prefixes)
-      ? 0
-      : Str\length(C\first_keyx($prefixes));
-  }
+    private int $prefixLength,
+  ) {}
 
   public function getLiterals(): dict<string, T> {
     return $this->literals;
@@ -81,8 +76,13 @@ final class PrefixMap<T> {
 
       if ($node is ParameterNode && $node->getRegexp() === null) {
         $next = C\first($nodes);
-        if ($next is LiteralNode && Str\starts_with($next->getText(), '/')) {
+        if (
+          $next is LiteralNode &&
+          $next->getText() &&
+          $next->getText()[0] === '/'
+        ) {
           $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
+
           continue;
         }
       }
@@ -96,7 +96,11 @@ final class PrefixMap<T> {
     }
 
     $by_first = Dict\group_by($prefixes, $entry ==> $entry[0]);
-    $grouped = self::groupByCommonPrefix(Keyset\keys($by_first));
+    $prefix_length = 0;
+    $grouped = self::groupByCommonPrefix(
+      Keyset\keys($by_first),
+      inout $prefix_length,
+    );
     $prefixes = Dict\map_with_key(
       $grouped,
       ($prefix, $keys) ==> Vec\map(
@@ -135,20 +139,22 @@ final class PrefixMap<T> {
       );
     }
 
-    return new self($literals, $prefixes, $regexps);
+    return new self($literals, $prefixes, $regexps, $prefix_length);
   }
 
   private static function groupByCommonPrefix(
     keyset<string> $keys,
+    inout int $prefix_length,
   ): dict<string, keyset<string>> {
     if (C\is_empty($keys)) {
       return dict[];
     }
+
     $lens = Vec\map($keys, $key ==> Str\length($key));
-    $min = \min($lens);
-    invariant($min !== 0, "Shouldn't have 0-length prefixes");
+    $prefix_length = \min($lens);
+    invariant($prefix_length !== 0, "Shouldn't have 0-length prefixes");
     return $keys
-      |> Dict\group_by($$, $key ==> Str\slice($key, 0, $min))
+      |> Dict\group_by($$, $key ==> Str\slice($key, 0, $prefix_length))
       |> Dict\map($$, $vec ==> keyset($vec));
   }
 
