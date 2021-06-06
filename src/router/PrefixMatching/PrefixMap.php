@@ -19,11 +19,16 @@ use type Facebook\HackRouter\PatternParser\{
 use namespace HH\Lib\{C, Dict, Keyset, Str, Vec};
 
 final class PrefixMap<T> {
+  private int $prefixLength;
+
   public function __construct(
     private dict<string, T> $literals,
     private dict<string, PrefixMap<T>> $prefixes,
     private dict<string, PrefixMapOrResponder<T>> $regexps,
   ) {
+    $this->prefixLength = C\is_empty($prefixes)
+      ? 0
+      : Str\length(C\first_keyx($prefixes));
   }
 
   public function getLiterals(): dict<string, T> {
@@ -36,6 +41,10 @@ final class PrefixMap<T> {
 
   public function getRegexps(): dict<string, PrefixMapOrResponder<T>> {
     return $this->regexps;
+  }
+
+  public function getPrefixLength(): int {
+    return $this->prefixLength;
   }
 
   public static function fromFlatMap(dict<string, T> $map): PrefixMap<T> {
@@ -72,17 +81,15 @@ final class PrefixMap<T> {
 
       if ($node is ParameterNode && $node->getRegexp() === null) {
         $next = C\first($nodes);
-        if (
-          $next is LiteralNode && Str\starts_with($next->getText(), '/')
-        ) {
+        if ($next is LiteralNode && Str\starts_with($next->getText(), '/')) {
           $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
           continue;
         }
       }
       $regexps[] = tuple(
         Vec\concat(vec[$node], $nodes)
-        |> Vec\map($$, $n ==> $n->asRegexp('#'))
-        |> Str\join($$, ''),
+          |> Vec\map($$, $n ==> $n->asRegexp('#'))
+          |> Str\join($$, ''),
         vec[],
         $responder,
       );
