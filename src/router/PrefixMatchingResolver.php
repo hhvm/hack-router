@@ -49,12 +49,11 @@ final class PrefixMatchingResolver<+TResponder>
     }
 
     $prefixes = $map->getPrefixes();
-    if (!C\is_empty($prefixes)) {
-      $prefix_len = Str\length(C\first_keyx($prefixes));
-      $prefix = Str\slice($path, 0, $prefix_len);
+    if ($prefixes) {
+      $prefix = Str\slice($path, 0, $map->getPrefixLength());
       if (C\contains_key($prefixes, $prefix)) {
         return $this->resolveWithMap(
-          Str\strip_prefix($path, $prefix),
+          Str\slice($path, Str\length($prefix)),
           $prefixes[$prefix],
         );
       }
@@ -69,7 +68,7 @@ final class PrefixMatchingResolver<+TResponder>
         continue;
       }
       $matched = $matches[0];
-      $remaining = Str\strip_prefix($path, $matched);
+      $remaining = Str\slice($path, Str\length($matched));
 
       $data = Dict\filter_keys($matches, $key ==> $key is string);
       $sub = $regexps[$regexp];
@@ -81,8 +80,10 @@ final class PrefixMatchingResolver<+TResponder>
         continue;
       }
       try {
-        list($responder, $sub_data) =
-          $this->resolveWithMap($remaining, $sub->getMap());
+        list($responder, $sub_data) = $this->resolveWithMap(
+          $remaining,
+          $sub->getMap(),
+        );
       } catch (NotFoundException $_) {
         continue;
       }

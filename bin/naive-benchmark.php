@@ -10,8 +10,6 @@
 
 namespace Facebook\HackRouter;
 
-require_once (__DIR__.'/../vendor/hh_autoload.php');
-
 use namespace HH\Lib\{C, Dict, Keyset, Math, Str, Vec};
 
 final class NaiveBenchmark {
@@ -31,8 +29,10 @@ final class NaiveBenchmark {
   ): void {
     foreach ($impls as $name => $impl) {
       \printf("%s run for %s...\n", $run_name, $name);
-      list($init, $lookup, $lookup_per_item) =
-        self::testImplementation($name, $impl);
+      list($init, $lookup, $lookup_per_item) = self::testImplementation(
+        $name,
+        $impl,
+      );
       \printf(
         "... done (init: %0.02fms, lookups: %0.02fms, ".
         "per lookup: %0.02fms, estimated total per request: %0.02fms)\n",
@@ -82,12 +82,11 @@ final class NaiveBenchmark {
           $expected_responder,
           $responder,
         );
-	$pretty_data = (
-	    dict<string, string> $dict
-	  ) ==> \var_export($dict, true)
+        $pretty_data = (dict<string, string> $dict) ==> \var_export($dict, true)
           |> Str\split($$, "\n")
           |> Vec\map($$, $line ==> '    '.$line)
           |> Str\join($$, "\n");
+
         invariant(
           $data === $expected_data,
           "For resolver: %s\nFor path %s:\n  Expected data:\n%s\n  Actual data:\n%s\n",
@@ -130,8 +129,10 @@ final class NaiveBenchmark {
         $_success = null;
         $prefix_map = \apc_fetch(__FUNCTION__, inout $_success);
         if ($prefix_map === false) {
-          $prefix_map =
-            Dict\map($map, $v ==> PrefixMatching\PrefixMap::fromFlatMap($v));
+          $prefix_map = Dict\map(
+            $map,
+            $v ==> PrefixMatching\PrefixMap::fromFlatMap($v),
+          );
           \apc_store(__FUNCTION__, $prefix_map);
         }
         return new PrefixMatchingResolver($prefix_map);
@@ -140,4 +141,9 @@ final class NaiveBenchmark {
   }
 }
 
-NaiveBenchmark::main();
+<<__EntryPoint>>
+function naive_benchmarks_main(): void {
+  require_once(__DIR__.'/../vendor/autoload.hack');
+  \Facebook\AutoloadMap\initialize();
+  NaiveBenchmark::main();
+}

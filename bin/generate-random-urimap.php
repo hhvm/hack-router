@@ -10,8 +10,6 @@
 
 namespace Facebook\HackRouter;
 
-require_once (__DIR__.'/../vendor/hh_autoload.php');
-
 use namespace HH\Lib\{C, Dict, Keyset, Str, Vec};
 
 // Dump out a massive URI map for testing/benchmarking
@@ -28,7 +26,7 @@ final class RandomUriMapGenerator {
       |> Vec\flatten($$)
       |> Vec\filter($$, $row ==> !Str\starts_with($row[0], '/{'))
       |> Vec\sort_by($$, $row ==> $row[0]);
-    print (\json_encode($map, \JSON_PRETTY_PRINT)."\n");
+    print(\json_encode($map, \JSON_PRETTY_PRINT)."\n");
   }
 
   private static function generateExampleInner(
@@ -65,8 +63,10 @@ final class RandomUriMapGenerator {
         $examples = dict[];
         foreach ($base_examples as $base_uri => $base_data) {
           foreach ($child_examples as $child_uri => $child_data) {
-            $examples[$base_uri.$child_uri] =
-              Dict\merge($base_data, $child_data);
+            $examples[$base_uri.$child_uri] = Dict\merge(
+              $base_data,
+              $child_data,
+            );
           }
         }
         return tuple($prefix.$suffix, $examples);
@@ -100,8 +100,8 @@ final class RandomUriMapGenerator {
         return tuple(
           '/{'.$name.'}/',
           Vec\fill(\random_int(1, 5), '')
-          |> Keyset\map($$, $_ ==> self::randomAlnum(5, 15))
-          |> Dict\pull($$, $v ==> dict[$name => $v], $v ==> '/'.$v.'/'),
+            |> Keyset\map($$, $_ ==> self::randomAlnum(5, 15))
+            |> Dict\pull($$, $v ==> dict[$name => $v], $v ==> '/'.$v.'/'),
         );
       case 1:
         // Component with int regexp
@@ -109,8 +109,8 @@ final class RandomUriMapGenerator {
         return tuple(
           '/{'.$name.':\\d+}/',
           Vec\fill(\random_int(1, 5), '')
-          |> Keyset\map($$, $_ ==> (string)\random_int(1, \PHP_INT_MAX))
-          |> Dict\pull($$, $v ==> dict[$name => $v], $v ==> '/'.$v.'/'),
+            |> Keyset\map($$, $_ ==> (string)\random_int(1, \PHP_INT_MAX))
+            |> Dict\pull($$, $v ==> dict[$name => $v], $v ==> '/'.$v.'/'),
         );
       // Literal
       default:
@@ -120,4 +120,11 @@ final class RandomUriMapGenerator {
   }
 }
 
-RandomUriMapGenerator::main();
+
+<<__EntryPoint>>
+function generate_random_urimap_main(): void {
+  require_once(__DIR__.'/../vendor/autoload.hack');
+  \Facebook\AutoloadMap\initialize();
+
+  RandomUriMapGenerator::main();
+}

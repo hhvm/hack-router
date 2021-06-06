@@ -23,8 +23,8 @@ final class PrefixMap<T> {
     private dict<string, T> $literals,
     private dict<string, PrefixMap<T>> $prefixes,
     private dict<string, PrefixMapOrResponder<T>> $regexps,
-  ) {
-  }
+    private int $prefixLength,
+  ) {}
 
   public function getLiterals(): dict<string, T> {
     return $this->literals;
@@ -36,6 +36,10 @@ final class PrefixMap<T> {
 
   public function getRegexps(): dict<string, PrefixMapOrResponder<T>> {
     return $this->regexps;
+  }
+
+  public function getPrefixLength(): int {
+    return $this->prefixLength;
   }
 
   public static function fromFlatMap(dict<string, T> $map): PrefixMap<T> {
@@ -73,23 +77,28 @@ final class PrefixMap<T> {
       if ($node is ParameterNode && $node->getRegexp() === null) {
         $next = C\first($nodes);
         if (
-          $next is LiteralNode && Str\starts_with($next->getText(), '/')
+          $next is LiteralNode &&
+          $next->getText() !== '' &&
+          $next->getText()[0] === '/'
         ) {
           $regexps[] = tuple($node->asRegexp('#'), $nodes, $responder);
+
           continue;
         }
       }
       $regexps[] = tuple(
         Vec\concat(vec[$node], $nodes)
-        |> Vec\map($$, $n ==> $n->asRegexp('#'))
-        |> Str\join($$, ''),
+          |> Vec\map($$, $n ==> $n->asRegexp('#'))
+          |> Str\join($$, ''),
         vec[],
         $responder,
       );
     }
 
     $by_first = Dict\group_by($prefixes, $entry ==> $entry[0]);
-    $grouped = self::groupByCommonPrefix(Keyset\keys($by_first));
+    list($prefix_length, $grouped) = self::groupByCommonPrefix(
+      Keyset\keys($by_first),
+    );
     $prefixes = Dict\map_with_key(
       $grouped,
       ($prefix, $keys) ==> Vec\map(
@@ -128,21 +137,25 @@ final class PrefixMap<T> {
       );
     }
 
-    return new self($literals, $prefixes, $regexps);
+    return new self($literals, $prefixes, $regexps, $prefix_length);
   }
 
   private static function groupByCommonPrefix(
     keyset<string> $keys,
-  ): dict<string, keyset<string>> {
+  ): (int, dict<string, keyset<string>>) {
     if (C\is_empty($keys)) {
-      return dict[];
+      return tuple(0, dict[]);
     }
+
     $lens = Vec\map($keys, $key ==> Str\length($key));
-    $min = \min($lens);
-    invariant($min !== 0, "Shouldn't have 0-length prefixes");
-    return $keys
-      |> Dict\group_by($$, $key ==> Str\slice($key, 0, $min))
-      |> Dict\map($$, $vec ==> keyset($vec));
+    $prefix_length = \min($lens);
+    invariant($prefix_length !== 0, "Shouldn't have 0-length prefixes");
+    return tuple(
+      $prefix_length,
+      $keys
+        |> Dict\group_by($$, $key ==> Str\slice($key, 0, $prefix_length))
+        |> Dict\map($$, $vec ==> keyset($vec)),
+    );
   }
 
   public function getSerializable(): mixed where T as string {
