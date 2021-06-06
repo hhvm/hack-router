@@ -96,10 +96,8 @@ final class PrefixMap<T> {
     }
 
     $by_first = Dict\group_by($prefixes, $entry ==> $entry[0]);
-    $prefix_length = 0;
-    $grouped = self::groupByCommonPrefix(
+    list($prefix_length, $grouped) = self::groupByCommonPrefix(
       Keyset\keys($by_first),
-      inout $prefix_length,
     );
     $prefixes = Dict\map_with_key(
       $grouped,
@@ -144,18 +142,20 @@ final class PrefixMap<T> {
 
   private static function groupByCommonPrefix(
     keyset<string> $keys,
-    inout int $prefix_length,
-  ): dict<string, keyset<string>> {
+  ): (int, dict<string, keyset<string>>) {
     if (C\is_empty($keys)) {
-      return dict[];
+      return tuple(0, dict[]);
     }
 
     $lens = Vec\map($keys, $key ==> Str\length($key));
     $prefix_length = \min($lens);
     invariant($prefix_length !== 0, "Shouldn't have 0-length prefixes");
-    return $keys
-      |> Dict\group_by($$, $key ==> Str\slice($key, 0, $prefix_length))
-      |> Dict\map($$, $vec ==> keyset($vec));
+    return tuple(
+      $prefix_length,
+      $keys
+        |> Dict\group_by($$, $key ==> Str\slice($key, 0, $prefix_length))
+        |> Dict\map($$, $vec ==> keyset($vec)),
+    );
   }
 
   public function getSerializable(): mixed where T as string {
