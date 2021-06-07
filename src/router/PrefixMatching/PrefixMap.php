@@ -110,7 +110,7 @@ final class PrefixMap<T> {
             if ($text === $prefix) {
               return tuple($nodes, $responder);
             }
-            $suffix = Str\strip_prefix($text, $prefix);
+            $suffix = Str\slice($text, $prefix_length);
             return tuple(
               Vec\concat(vec[new LiteralNode($suffix)], $nodes),
               $responder,
