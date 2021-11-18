@@ -56,7 +56,7 @@ abstract class RequestParametersBase {
     return self::getSpec($this->optionalSpecs, $class, $name);
   }
 
-  final private static function getSpec<T as RequestParameter>(
+  private static function getSpec<T as RequestParameter>(
     dict<string, RequestParameter> $specs,
     classname<T> $class,
     string $name,
