@@ -1,5 +1,7 @@
-Hack-Router [![Build Status](https://travis-ci.org/hhvm/hack-router.svg?branch=master)](https://travis-ci.org/hhvm/hack-router)
+Hack-Router
 ===========
+
+[![Continuous Integration](https://github.com/hhvm/hack-router/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/hhvm/hack-router/actions/workflows/build-and-test.yml)
 
 Fast, type-safe request routing, parameter retrieval, and link generation, with PSR-7 support.
 
