@@ -37,8 +37,8 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
   ];
 
   public function expectedMatches(
-  ): varray<(string, string, dict<string, string>)> {
-    return varray[
+  ): vec<(string, string, dict<string, string>)> {
+    return vec[
       tuple('/foo', '/foo', dict[]),
       tuple('/foo/', '/foo/', dict[]),
       tuple('/foo/bar', '/foo/bar', dict[]),
@@ -88,13 +88,10 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     $_ = $this->expectedMatchesWithResolvers();
   }
 
-  public function getAllResolvers(
-  ): vec<
-    (
-      string,
-      (function(dict<HttpMethod, dict<string, string>>): IResolver<string>),
-    )
-  > {
+  public function getAllResolvers(): vec<(
+    string,
+    (function(dict<HttpMethod, dict<string, string>>): IResolver<string>),
+  )> {
     return vec[
       tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
       tuple(
@@ -142,10 +139,8 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     $router = $this->getRouter()->setResolver($factory($map));
 
     // HEAD -> GET ( re-routing )
-    list($responder, $_data) = $router->routeMethodAndPath(
-      HttpMethod::HEAD,
-      '/get',
-    );
+    list($responder, $_data) =
+      $router->routeMethodAndPath(HttpMethod::HEAD, '/get');
     expect($responder)->toBeSame('get');
 
     // GET -> HEAD
@@ -208,10 +203,8 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
     dict<string, string> $_expected_data,
   ): void {
     $router = $this->getRouter();
-    list($direct_responder, $direct_data) = $router->routeMethodAndPath(
-      HttpMethod::GET,
-      $path,
-    );
+    list($direct_responder, $direct_data) =
+      $router->routeMethodAndPath(HttpMethod::GET, $path);
 
     expect($path[0])->toBeSame('/');
 
