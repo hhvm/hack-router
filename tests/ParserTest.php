@@ -14,8 +14,8 @@ use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\DataProvider;
 
 final class ParserTest extends \Facebook\HackTest\HackTest {
-  public function getExamplePatterns(): varray<(string, string)> {
-    return varray[
+  public function getExamplePatterns(): vec<(string, string)> {
+    return vec[
       tuple('/foo', "['/foo']"),
       tuple('/foo/{bar}', "['/foo/', {bar}]"),
       tuple('/foo/[{bar}]', "['/foo/', ?[{bar}]]"),

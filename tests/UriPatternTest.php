@@ -71,8 +71,14 @@ final class UriPatternTest extends \Facebook\HackTest\HackTest {
     )->toBeSame((new IntRequestParameter('foo'))->assert('123'));
   }
 
-  public function exampleInvalidInts(): varray<varray<string>> {
-    return varray[varray['foo'], varray['0123foo'], varray['0.123foo'], varray['0.123'], varray['0x1e3']];
+  public function exampleInvalidInts(): vec<vec<string>> {
+    return vec[
+      vec['foo'],
+      vec['0123foo'],
+      vec['0.123foo'],
+      vec['0.123'],
+      vec['0x1e3'],
+    ];
   }
 
   <<DataProvider('exampleInvalidInts')>>
