@@ -147,14 +147,14 @@ final class PrefixMap<T> {
       return tuple(0, dict[]);
     }
 
-    $lens = Vec\map($keys, $key ==> Str\length($key));
+    $lens = Vec\map($keys, Str\length<>);
     $prefix_length = \min($lens);
     invariant($prefix_length !== 0, "Shouldn't have 0-length prefixes");
     return tuple(
       $prefix_length,
       $keys
         |> Dict\group_by($$, $key ==> Str\slice($key, 0, $prefix_length))
-        |> Dict\map($$, $vec ==> keyset($vec)),
+        |> Dict\map($$, keyset<>),
     );
   }
 
