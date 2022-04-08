@@ -24,7 +24,7 @@ abstract class BaseRouter<+TResponder> {
     $resolver = $this->getResolver();
     try {
       list($responder, $data) = $resolver->resolve($method, $path);
-      $data = Dict\map($data, $value ==> \urldecode($value));
+      $data = Dict\map($data, \urldecode<>);
       return tuple($responder, new ImmMap($data));
     } catch (NotFoundException $e) {
       $allowed = $this->getAllowedMethods($path);
@@ -36,7 +36,7 @@ abstract class BaseRouter<+TResponder> {
         $method === HttpMethod::HEAD && $allowed === keyset[HttpMethod::GET]
       ) {
         list($responder, $data) = $resolver->resolve(HttpMethod::GET, $path);
-        $data = Dict\map($data, $value ==> \urldecode($value));
+        $data = Dict\map($data, \urldecode<>);
         return tuple($responder, new ImmMap($data));
       }
 

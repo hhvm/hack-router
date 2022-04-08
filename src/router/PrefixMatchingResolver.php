@@ -23,7 +23,7 @@ final class PrefixMatchingResolver<+TResponder>
   public static function fromFlatMap(
     dict<HttpMethod, dict<string, TResponder>> $map,
   ): PrefixMatchingResolver<TResponder> {
-    $map = Dict\map($map, $flat_map ==> PrefixMap::fromFlatMap($flat_map));
+    $map = Dict\map($map, PrefixMap::fromFlatMap<>);
     return new self($map);
   }
 

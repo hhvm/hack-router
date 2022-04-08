@@ -96,7 +96,7 @@ final class RouterTest extends \Facebook\HackTest\HackTest {
       tuple('simple regexp', $map ==> new SimpleRegexpResolver($map)),
       tuple(
         'prefix matching',
-        $map ==> PrefixMatchingResolver::fromFlatMap($map),
+        PrefixMatchingResolver::fromFlatMap<>,
       ),
     ];
   }
