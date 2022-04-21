@@ -20,5 +20,10 @@
     "hhvm/hhvm-autoload": "^2.0.8|^3.0",
     "hhvm/hacktest": "^2.0",
     "usox/hackttp": "^0.5"
+  },
+  "config": {
+    "allow-plugins": {
+      "hhvm/hhvm-autoload": true
+    }
   }
 }
