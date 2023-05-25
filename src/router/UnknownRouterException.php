@@ -10,6 +10,7 @@
 
 namespace Facebook\HackRouter;
 
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
 class UnknownRouterException extends InternalServerErrorException {
   public function __construct(private vec<mixed> $fastRouteData) {
     parent::__construct(

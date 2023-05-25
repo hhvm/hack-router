@@ -48,7 +48,7 @@ final class BaseRouterExample extends BaseRouter<TResponder> {
 ```
 
 Simplified for conciseness - see
-[`examples/BaseRouterExample.php`](examples/BaseRouterExample.php) for
+[`examples/RunBaseRouterExample.php`](examples/RunBaseRouterExample.php) for
 full executable example.
 
 UriPatterns
@@ -87,7 +87,7 @@ $link = UserPageController::getUriBuilder()
 ```
 
 These examples are simplified for conciseness - see
-[`examples/UriPatternsExample.php`](examples/UriPatternsExample.php) for
+[`examples/RunUriPatternsExample.php`](examples/RunUriPatternsExample.php) for
 full executable example.
 
 Codegen

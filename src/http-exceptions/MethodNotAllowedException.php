@@ -10,6 +10,7 @@
 
 namespace Facebook\HackRouter;
 
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
 class MethodNotAllowedException extends HttpException {
   public function __construct(
     protected keyset<HttpMethod> $allowed,

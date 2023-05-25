@@ -10,5 +10,5 @@
 
 namespace Facebook\HackRouter;
 
-class InternalServerErrorException extends HttpException {
-}
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] @see UnknownRouterException.
+class InternalServerErrorException extends HttpException {}

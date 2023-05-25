@@ -14,16 +14,14 @@
 
 namespace Facebook\HackRouter\Examples\UrlPatternsExample;
 
-require_once(__DIR__.'/../vendor/hh_autoload.php');
-
-use   type Facebook\HackRouter\{
+use type Facebook\HackRouter\{
   BaseRouter,
   GetFastRoutePatternFromUriPattern,
   GetUriBuilderFromUriPattern,
   HasUriPattern,
   HttpMethod,
   RequestParameters,
-  UriPattern
+  UriPattern,
 };
 
 <<__ConsistentConstruct>>
@@ -38,12 +36,10 @@ abstract class WebController implements HasUriPattern {
     return $this->uriParameters;
   }
 
-  public function __construct(
-    ImmMap<string, string> $uri_parameter_values,
-  ) {
+  public function __construct(ImmMap<string, string> $uri_parameter_values) {
     $this->uriParameters = new RequestParameters(
       static::getUriPattern()->getParameters(),
-      ImmVector { },
+      ImmVector {},
       $uri_parameter_values,
     );
   }
@@ -86,8 +82,7 @@ final class UriPatternsExample extends BaseRouter<TResponder> {
   }
 
   <<__Override>>
-  public function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
+  public function getRoutes(): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
     $urls_to_controllers = dict[];
     foreach (self::getControllers() as $controller) {
       $pattern = $controller::getFastRoutePattern();
@@ -107,21 +102,3 @@ function get_example_paths(): ImmVector<string> {
       ->getPath(),
   };
 }
-
-function main(): void {
-  $router = new UriPatternsExample();
-  foreach (get_example_paths() as $path) {
-    list($controller, $params) = $router->routeMethodAndPath(
-      HttpMethod::GET,
-      $path,
-    );
-    \printf(
-      "GET %s\n\t%s\n",
-      $path,
-      (new $controller($params))->getResponse(),
-    );
-  }
-}
-
-/* HH_IGNORE_ERROR[1002] top-level statement in strict file */
-main();

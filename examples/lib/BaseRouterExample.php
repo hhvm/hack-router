@@ -14,15 +14,13 @@
 
 namespace Facebook\HackRouter\Examples\BaseRouterExample;
 
-require_once(__DIR__.'/../vendor/hh_autoload.php');
-
 use type Facebook\HackRouter\{BaseRouter, HttpMethod};
 
 /** This can be whatever you want; in this case, it's a
  * callable, but classname<MyWebControllerBase> is also a
  * common choice.
  */
-type TResponder = (function(dict<string, string>):string);
+type TResponder = (function(dict<string, string>): string);
 
 final class BaseRouterExample extends BaseRouter<TResponder> {
   <<__Override>>
@@ -30,10 +28,8 @@ final class BaseRouterExample extends BaseRouter<TResponder> {
   ): ImmMap<HttpMethod, ImmMap<string, TResponder>> {
     return ImmMap {
       HttpMethod::GET => ImmMap {
-        '/' =>
-          ($_params) ==> 'Hello, world',
-        '/user/{user_name}' =>
-          ($params) ==> 'Hello, '.$params['user_name'],
+        '/' => ($_params) ==> 'Hello, world',
+        '/user/{user_name}' => ($params) ==> 'Hello, '.$params['user_name'],
       },
       HttpMethod::POST => ImmMap {
         '/' => ($_params) ==> 'Hello, POST world',
@@ -49,21 +45,4 @@ function get_example_inputs(): ImmVector<(HttpMethod, string)> {
     tuple(HttpMethod::GET, '/user/bar'),
     tuple(HttpMethod::POST, '/'),
   };
-}
-
-<<__EntryPoint>>
-function main(): noreturn {
-  $router = new BaseRouterExample();
-  foreach (get_example_inputs() as $input) {
-    list($method, $path) = $input;
-
-    list($responder, $params) = $router->routeMethodAndPath($method, $path);
-    \printf(
-      "%s %s\n\t%s\n",
-      $method,
-      $path,
-      $responder(dict($params)),
-    );
-  }
-  exit(0);
 }

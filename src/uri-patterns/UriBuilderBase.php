@@ -80,12 +80,15 @@ abstract class UriBuilderBase {
       $parameter_type,
       \get_class($part),
     );
+    $part = \HH\FIXME\UNSAFE_CAST<RequestParameter, TypedUriParameter<T>>(
+      $part,
+      'is_a($part, $parameter_type) ~= $part is TypedUriParameter<T>',
+    );
     invariant(
       !$this->values->containsKey($name),
       'trying to set %s twice',
       $name,
     );
-    /* HH_FIXME[4053] need reified generics */
     $this->values[$name] = $part->getUriFragment($value);
     return $this;
   }

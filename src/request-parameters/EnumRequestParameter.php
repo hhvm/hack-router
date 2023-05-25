@@ -12,17 +12,21 @@ namespace Facebook\HackRouter;
 
 use namespace HH\Lib\{Str, Vec};
 
+/**
+ * WARNING: hh_client will not infer a correct enum type when given `SomeEnum::class`.
+ * @see RequestParametersTest::testInvalidEnumParamToUri() (grep for @ref)
+ * `EnumRequestParameterExplicit` is typesafe, so you can use that instead.
+ */
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] comment above.
 class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function __construct(
-    /* HH_FIXME[2053] */
-    private classname<\HH\BuiltinEnum<T>> $enumClass,
+    private \HH\enumname<T> $enumClass,
     string $name,
   ) {
     parent::__construct($name);
   }
 
-  /* HH_FIXME[2053] */
-  final public function getEnumName(): classname<\HH\BuiltinEnum<T>> {
+  final public function getEnumName(): \HH\enumname<T> {
     return $this->enumClass;
   }
 
@@ -42,7 +46,7 @@ class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function getRegExpFragment(): ?string {
     $class = $this->enumClass;
     $values = $class::getValues();
-    $sub_fragments = Vec\map($values, $value ==> \preg_quote((string) $value));
+    $sub_fragments = Vec\map($values, $value ==> \preg_quote((string)$value));
     return '(?:'.Str\join($sub_fragments, '|').')';
   }
 }
