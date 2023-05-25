@@ -10,5 +10,5 @@
 
 namespace Facebook\HackRouter;
 
-// HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
-class NotFoundException extends HttpException {}
+final class EnumRequestParameterExplicit<<<__Explicit>> T>
+  extends EnumRequestParameter<T> {}

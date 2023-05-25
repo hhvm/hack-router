@@ -1,4 +1,5 @@
 <?hh // strict
+
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +11,6 @@
 
 namespace Facebook\HackRouter;
 
-// HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
-class NotFoundException extends HttpException {}
+type BaseRouterOptions = shape(
+  ?'use_get_responder_for_head' => bool,
+);

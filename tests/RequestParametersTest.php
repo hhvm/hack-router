@@ -62,11 +62,26 @@ final class RequestParametersTest extends \Facebook\HackTest\HackTest {
     );
   }
 
+  // @ref EnumRequestParameter<T>
   public function testInvalidEnumParamToUri(): void {
     expect(() ==> {
       $part = (new EnumRequestParameter(TestIntEnum::class, 'foo'));
-      /* HH_IGNORE_ERROR[4110] intentionally bad type */
+      // hh_client expands the inferred generic here to include TestStringEnum.
+      // This used to be a type error in a previous version of hhvm!
       $_throws = $part->getUriFragment(TestStringEnum::BAR);
+    })->toThrow(\UnexpectedValueException::class);
+  }
+
+  public function testInvalidEnumExplicitParamToUri(): void {
+    expect(() ==> {
+      $part = (
+        new EnumRequestParameterExplicit<TestIntEnum>(TestIntEnum::class, 'foo')
+      );
+      $value = \HH\FIXME\UNSAFE_CAST<TestStringEnum, TestIntEnum>(
+        TestStringEnum::BAR,
+        'Telling lies for the purpose of testing.',
+      );
+      $_throws = $part->getUriFragment($value);
     })->toThrow(\UnexpectedValueException::class);
   }
 

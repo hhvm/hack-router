@@ -10,23 +10,18 @@
 
 namespace Facebook\HackRouter\Tests;
 
-use type Facebook\HackRouter\{
-  BaseRouter,
-  HttpMethod,
-  IResolver,
-};
+use type Facebook\HackRouter\{BaseRouter, HttpMethod, IResolver};
 
-final class TestRouter<T> extends BaseRouter<T> {
+final class NoHeadGetRewriteRouter<T> extends BaseRouter<T> {
   public function __construct(
     private dict<string, T> $routes,
     private ?IResolver<T> $resolver = null,
   ) {
-    parent::__construct();
+    parent::__construct(shape('use_get_responder_for_head' => false));
   }
 
   <<__Override>>
-  protected function getRoutes(
-  ): ImmMap<HttpMethod, ImmMap<string, T>> {
+  protected function getRoutes(): ImmMap<HttpMethod, ImmMap<string, T>> {
     return ImmMap {
       HttpMethod::GET => new ImmMap($this->routes),
     };
