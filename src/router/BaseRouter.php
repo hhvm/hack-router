@@ -14,9 +14,12 @@ use namespace HH\Lib\{C, Dict};
 use function Facebook\AutoloadMap\Generated\is_dev;
 
 abstract class BaseRouter<+TResponder> {
-  public function __construct(
-    private BaseRouterOptions $options = shape('use_get_responder_for_head' => true)
-  ) {}
+  private bool $useGetResponderForHead;
+
+  public function __construct(?BaseRouterOptions $options = null) {
+    $this->useGetResponderForHead =
+      Shapes::idx($options, 'use_get_responder_for_head', true);
+  }
 
   abstract protected function getRoutes(
   ): KeyedContainer<HttpMethod, KeyedContainer<string, TResponder>>;
@@ -37,7 +40,9 @@ abstract class BaseRouter<+TResponder> {
       }
 
       if (
-        $this->options['use_get_responder_for_head'] && $method === HttpMethod::HEAD && $allowed === keyset[HttpMethod::GET]
+        $this->useGetResponderForHead &&
+        $method === HttpMethod::HEAD &&
+        $allowed === keyset[HttpMethod::GET]
       ) {
         list($responder, $data) = $resolver->resolve(HttpMethod::GET, $path);
         $data = Dict\map($data, \urldecode<>);

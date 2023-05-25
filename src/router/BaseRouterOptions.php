@@ -12,5 +12,5 @@
 namespace Facebook\HackRouter;
 
 type BaseRouterOptions = shape(
-  'use_get_responder_for_head' => bool,
+  ?'use_get_responder_for_head' => bool,
 );
