@@ -12,7 +12,12 @@ namespace Facebook\HackRouter;
 
 use namespace HH\Lib\{Str, Vec};
 
-// HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
+/**
+ * WARNING: hh_client will not infer a correct enum type when given `SomeEnum::class`.
+ * @see RequestParametersTest::testInvalidEnumParamToUri() (grep for @ref)
+ * `EnumRequestParameterExplicit` is typesafe, so you can use that instead.
+ */
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] comment above.
 class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function __construct(
     private \HH\enumname<T> $enumClass,
