@@ -32,8 +32,7 @@ trait RequestParameterGetters {
   }
 
   final public function getEnum<TValue>(
-    /* HH_FIXME[2053] */
-    classname<\HH\BuiltinEnum<TValue>> $class,
+    \HH\enumname<TValue> $class,
     string $name,
   ): TValue {
     $value = $this->getEnumImpl(
@@ -45,8 +44,7 @@ trait RequestParameterGetters {
   }
 
   final public function getOptionalEnum<TValue>(
-    /* HH_FIXME[2053] */
-    classname<\HH\BuiltinEnum<TValue>> $class,
+    \HH\enumname<TValue> $class,
     string $name,
   ): ?TValue {
     return $this->getEnumImpl(
@@ -58,8 +56,7 @@ trait RequestParameterGetters {
 
   final private function getEnumImpl<TValue>(
     EnumRequestParameter<TValue> $spec,
-    /* HH_FIXME[2053] */
-    classname<\HH\BuiltinEnum<TValue>> $class,
+    \HH\enumname<TValue> $class,
     string $name,
   ): ?TValue {
     invariant(

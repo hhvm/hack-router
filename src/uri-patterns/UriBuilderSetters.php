@@ -22,7 +22,7 @@ trait UriBuilderSetters {
   }
 
   final public function setEnum<T>(
-    /* HH_FIXME[2053] */ classname<\HH\BuiltinEnum<T>> $class,
+    \HH\enumname<T> $class,
     string $name,
     T $value,
   ): this {

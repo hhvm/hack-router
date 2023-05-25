@@ -68,8 +68,7 @@ class UriPattern implements HasFastRouteFragment {
   }
 
   final public function enum<T>(
-    /* HH_FIXME[2053] \HH\BuiltinEnum is an implementation detail */
-    classname<\HH\BuiltinEnum<T>> $enum_class,
+    \HH\enumname<T> $enum_class,
     string $name,
   ): this {
     return $this->appendPart(new EnumRequestParameter($enum_class, $name));

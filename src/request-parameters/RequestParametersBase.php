@@ -24,9 +24,8 @@ abstract class RequestParametersBase {
     KeyedTraversable<string, string> $values,
   ) {
     $this->values = new ImmMap($values);
-    $spec_vector_to_map = (
-      Traversable<RequestParameter> $specs
-    ) ==> Dict\pull($specs, $it ==> $it, $it ==> $it->getName());
+    $spec_vector_to_map = (Traversable<RequestParameter> $specs) ==>
+      Dict\pull($specs, $it ==> $it, $it ==> $it->getName());
 
     $this->requiredSpecs = $spec_vector_to_map($required_specs);
     $this->optionalSpecs = $spec_vector_to_map($optional_specs);
@@ -63,14 +62,13 @@ abstract class RequestParametersBase {
   ): T {
     $spec = $specs[$name];
     invariant(
-      /* HH_FIXME[4162] need reified generics */
       \is_a($spec, $class),
       'Expected %s to be a %s, got %s',
       $name,
       $class,
       \get_class($spec),
     );
-    return /* HH_FIXME[4110] */ $spec;
+    return \HH\FIXME\UNSAFE_CAST<RequestParameter, T>($spec, 'is_a($spec, $class) ~= $spec is T');
   }
 
   final protected function getSimpleTyped<T>(

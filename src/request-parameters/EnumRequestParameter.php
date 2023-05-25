@@ -15,15 +15,13 @@ use namespace HH\Lib\{Str, Vec};
 // HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
 class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function __construct(
-    /* HH_FIXME[2053] */
-    private classname<\HH\BuiltinEnum<T>> $enumClass,
+    private \HH\enumname<T> $enumClass,
     string $name,
   ) {
     parent::__construct($name);
   }
 
-  /* HH_FIXME[2053] */
-  final public function getEnumName(): classname<\HH\BuiltinEnum<T>> {
+  final public function getEnumName(): \HH\enumname<T> {
     return $this->enumClass;
   }
 
