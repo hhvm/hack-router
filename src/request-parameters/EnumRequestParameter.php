@@ -12,6 +12,7 @@ namespace Facebook\HackRouter;
 
 use namespace HH\Lib\{Str, Vec};
 
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] maybe extended outside this library.
 class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function __construct(
     /* HH_FIXME[2053] */
@@ -42,7 +43,7 @@ class EnumRequestParameter<T> extends TypedUriParameter<T> {
   public function getRegExpFragment(): ?string {
     $class = $this->enumClass;
     $values = $class::getValues();
-    $sub_fragments = Vec\map($values, $value ==> \preg_quote((string) $value));
+    $sub_fragments = Vec\map($values, $value ==> \preg_quote((string)$value));
     return '(?:'.Str\join($sub_fragments, '|').')';
   }
 }

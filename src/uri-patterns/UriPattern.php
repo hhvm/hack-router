@@ -10,8 +10,8 @@
 
 namespace Facebook\HackRouter;
 
-// Non-final so you can extend it with additional convenience
-// methods.
+// Non-final so you can extend it with additional convenience methods.
+// HHAST_IGNORE_ERROR[FinalOrAbstractClass] message above.
 class UriPattern implements HasFastRouteFragment {
   private Vector<UriPatternPart> $parts = Vector {};
 
@@ -31,8 +31,8 @@ class UriPattern implements HasFastRouteFragment {
 
   final public function getParameters(): ImmVector<UriParameter> {
     $out = Vector {};
-    foreach($this->parts as $part) {
-      if($part is UriParameter) {
+    foreach ($this->parts as $part) {
+      if ($part is UriParameter) {
         $out->add($part);
       }
     }
